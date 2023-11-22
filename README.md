@@ -1,31 +1,22 @@
 
-## 自定义扩展了Moveable
+
+这个拓展了阴影, 自定义了React Moveable
 <p align="middle" ><img src="https://raw.githubusercontent.com/daybrush/moveable/master/demo/images/logo.png"/></p>
-<h2 align="middle">Moveable</h2>
+<h2 align="middle">React Moveable</h2>
 <p align="middle">
-<a href="https://opencollective.com/moveable" alt="Financial Contributors on Open Collective"><img src="https://opencollective.com/moveable/all/badge.svg?label=financial+contributors" /></a>
-<a href="https://www.npmjs.com/package/moveable" target="_blank"><img src="https://img.shields.io/npm/v/moveable.svg?style=flat-square&color=007acc&label=version" alt="npm version" /></a>
+<a href="https://www.npmjs.com/package/react-moveable" target="_blank"><img src="https://img.shields.io/npm/v/react-moveable.svg?style=flat-square&color=007acc&label=version" alt="npm version" /></a>
 <img src="https://img.shields.io/badge/language-typescript-blue.svg?style=flat-square"/>
 <a href="https://github.com/daybrush/moveable/blob/master/LICENSE" target="_blank"><img src="https://img.shields.io/github/license/daybrush/moveable.svg?style=flat-square&label=license&color=08CE5D"/></a>
-<a href="https://github.com/daybrush/moveable/tree/master/packages/react-moveable" target="_blank"><img alt="React" src="https://img.shields.io/static/v1.svg?label=&message=React&style=flat-square&color=61daeb"></a>
-<a href="https://github.com/daybrush/moveable/tree/master/packages/preact-moveable" target="_blank"><img alt="Preact" src="https://img.shields.io/static/v1.svg?label=&message=Preact&style=flat-square&color=673ab8"></a>
-<a href="https://github.com/daybrush/moveable/tree/master/packages/ngx-moveable" target="_blank"><img alt="Angular" src="https://img.shields.io/static/v1.svg?label=&message=Angular&style=flat-square&color=C82B38"></a>
-<a href="https://github.com/daybrush/moveable/tree/master/packages/vue-moveable" target="_blank"><img
-    alt="Vue"
-    src="https://img.shields.io/static/v1.svg?label=&message=Vue&style=flat-square&color=3fb984"></a>
-<a href="https://github.com/daybrush/moveable/tree/master/packages/vue3-moveable" target="_blank"><img
-    alt="Vue 3"
-    src="https://img.shields.io/static/v1.svg?label=&message=Vue%203&style=flat-square&color=3fb984"></a>
-<a href="https://github.com/daybrush/moveable/tree/master/packages/svelte-moveable" target="_blank"><img alt="Svelte" src="https://img.shields.io/static/v1.svg?label=&message=Svelte&style=flat-square&color=C82B38"></a>
-<a href="https://github.com/daybrush/moveable/tree/master/packages/lit-moveable" target="_blank"><img alt="Lit" src="https://img.shields.io/static/v1.svg?label=&message=Lit&style=flat-square&color=61daeb"></a>
 </p>
-<p align="middle">Moveable is Draggable, Resizable, Scalable, Rotatable, Warpable, Pinchable, Groupable, Snappable</p>
+<p align="middle">A React Component that create Moveable, Draggable, Resizable, Scalable, Rotatable, Warpable, Pinchable, Groupable, Snappable.</p>
 <p align="middle">
     <a href="https://daybrush.com/moveable" target="_blank"><strong>Demo</strong></a> /
     <a href="https://daybrush.com/moveable/storybook/" target="_blank"><strong>Storybook</strong></a> /
     <a href="https://daybrush.com/moveable/release/latest/doc/" target="_blank"><strong>API</strong></a> /
     <a href="https://github.com/daybrush/scena" target="_blank"><strong>Main Project</strong></a>
 </p>
+
+
 
 <table width="100%" align="center">
 <tr>
@@ -83,7 +74,7 @@
 * **Resizable** indicates whether the target's width and height can be increased or decreased.
 * **Scalable** indicates whether the target's x and y can be scale of transform.
 * **Rotatable** indicates whether the target can be rotated.
-* **Warpable** indicates whether the target can be warped (distorted, bented).
+* **Warpable** indicates whether the target can be warped(distorted, bented).
 * **Pinchable** indicates whether the target can be pinched with draggable, resizable, scalable, rotatable.
 * **Groupable** indicates Whether the targets can be moved in group with draggable, resizable, scalable, rotatable.
 * **Snappable** indicates whether to snap to the guideline.
@@ -94,16 +85,9 @@
 * Support Major Browsers
 * Support 3d Transform
 
-
 ## ⚙️ Installation
-### npm
 ```sh
-$ npm i moveable
-```
-
-### scripts
-```html
-<script src="//daybrush.com/moveable/release/latest/dist/moveable.min.js"></script>
+$ npm i react-moveable
 ```
 
 ## 📄 Documents
@@ -115,145 +99,161 @@ $ npm i moveable
 * [API Documentation](https://daybrush.com/moveable/release/latest/doc/)
 
 ## 🚀 How to use
-```ts
-import Moveable from "moveable";
 
-const moveable = new Moveable(document.body, {
-    target: document.querySelector(".target"),
-    // If the container is null, the position is fixed. (default: parentElement(document.body))
-    container: document.body,
-    draggable: true,
-    resizable: true,
-    scalable: true,
-    rotatable: true,
-    warpable: true,
-    // Enabling pinchable lets you use events that
-    // can be used in draggable, resizable, scalable, and rotateable.
-    pinchable: true, // ["resizable", "scalable", "rotatable"]
-    origin: true,
-    keepRatio: true,
-    // Resize, Scale Events at edges.
-    edge: false,
-    throttleDrag: 0,
-    throttleResize: 0,
-    throttleScale: 0,
-    throttleRotate: 0,
-});
-/* draggable */
-moveable.on("dragStart", ({ target, clientX, clientY }) => {
-    console.log("onDragStart", target);
-}).on("drag", ({
-    target, transform,
-    left, top, right, bottom,
-    beforeDelta, beforeDist, delta, dist,
-    clientX, clientY,
-}) => {
-    console.log("onDrag left, top", left, top);
-    target!.style.left = `${left}px`;
-    target!.style.top = `${top}px`;
-    // console.log("onDrag translate", dist);
-    // target!.style.transform = transform;
-}).on("dragEnd", ({ target, isDrag, clientX, clientY }) => {
-    console.log("onDragEnd", target, isDrag);
-});
+```tsx
+import Moveable from "react-moveable";
 
-/* resizable */
-moveable.on("resizeStart", ({ target, clientX, clientY }) => {
-    console.log("onResizeStart", target);
-}).on("resize", ({ target, width, height, dist, delta, clientX, clientY }) => {
-    console.log("onResize", target);
-    delta[0] && (target!.style.width = `${width}px`);
-    delta[1] && (target!.style.height = `${height}px`);
-}).on("resizeEnd", ({ target, isDrag, clientX, clientY }) => {
-    console.log("onResizeEnd", target, isDrag);
-});
+render() {
+    return (
+        <Moveable
+            target={document.querySelector(".target")}
+            container={null}
+            origin={true}
 
-/* scalable */
-moveable.on("scaleStart", ({ target, clientX, clientY }) => {
-    console.log("onScaleStart", target);
-}).on("scale", ({
-    target, scale, dist, delta, transform, clientX, clientY,
-}: OnScale) => {
-    console.log("onScale scale", scale);
-    target!.style.transform = transform;
-}).on("scaleEnd", ({ target, isDrag, clientX, clientY }) => {
-    console.log("onScaleEnd", target, isDrag);
-});
+            /* Resize event edges */
+            edge={false}
 
-/* rotatable */
-moveable.on("rotateStart", ({ target, clientX, clientY }) => {
-    console.log("onRotateStart", target);
-}).on("rotate", ({ target, beforeDelta, delta, dist, transform, clientX, clientY }) => {
-    console.log("onRotate", dist);
-    target!.style.transform = transform;
-}).on("rotateEnd", ({ target, isDrag, clientX, clientY }) => {
-    console.log("onRotateEnd", target, isDrag);
-});
+            /* draggable */
+            draggable={true}
+            throttleDrag={0}
+            onDragStart={({ target, clientX, clientY }) => {
+                console.log("onDragStart", target);
+            }}
+            onDrag={({
+                target,
+                beforeDelta, beforeDist,
+                left, top,
+                right, bottom,
+                delta, dist,
+                transform,
+                clientX, clientY,
+            }: OnDrag) => {
+                console.log("onDrag left, top", left, top);
+                // target!.style.left = `${left}px`;
+                // target!.style.top = `${top}px`;
+                console.log("onDrag translate", dist);
+                target!.style.transform = transform;
+            }}
+            onDragEnd={({ target, isDrag, clientX, clientY }) => {
+                console.log("onDragEnd", target, isDrag);
+            }}
 
-/* warpable */
-this.matrix = [
-    1, 0, 0, 0,
-    0, 1, 0, 0,
-    0, 0, 1, 0,
-    0, 0, 0, 1,
-];
-moveable.on("warpStart", ({ target, clientX, clientY }) => {
-    console.log("onWarpStart", target);
-}).on("warp", ({
-    target,
-    clientX,
-    clientY,
-    delta,
-    dist,
-    multiply,
-    transform,
-}) => {
-    console.log("onWarp", target);
-    // target.style.transform = transform;
-    this.matrix = multiply(this.matrix, delta);
-    target.style.transform = `matrix3d(${this.matrix.join(",")})`;
-}).on("warpEnd", ({ target, isDrag, clientX, clientY }) => {
-    console.log("onWarpEnd", target, isDrag);
-});
+            /* When resize or scale, keeps a ratio of the width, height. */
+            keepRatio={true}
 
-/* pinchable */
-// Enabling pinchable lets you use events that
-// can be used in draggable, resizable, scalable, and rotateable.
-moveable.on("pinchStart", ({ target, clientX, clientY }) => {
-    // pinchStart event occur before dragStart, rotateStart, scaleStart, resizeStart
-    console.log("onPinchStart");
-}).on("pinch", ({ target, clientX, clientY, datas }) => {
-    // pinch event occur before drag, rotate, scale, resize
-    console.log("onPinch");
-}).on("pinchEnd", ({ isDrag, target, clientX, clientY, datas }) => {
-    // pinchEnd event occur before dragEnd, rotateEnd, scaleEnd, resizeEnd
-    console.log("onPinchEnd");
-});
+            /* resizable*/
+            /* Only one of resizable, scalable, warpable can be used. */
+            resizable={true}
+            throttleResize={0}
+            onResizeStart={({ target , clientX, clientY}) => {
+                console.log("onResizeStart", target);
+            }}
+            onResize={({
+                target, width, height,
+                dist, delta, direction,
+                clientX, clientY,
+            }: OnResize) => {
+                console.log("onResize", target);
+                delta[0] && (target!.style.width = `${width}px`);
+                delta[1] && (target!.style.height = `${height}px`);
+            }}
+            onResizeEnd={({ target, isDrag, clientX, clientY }) => {
+                console.log("onResizeEnd", target, isDrag);
+            }}
+
+            /* scalable */
+            /* Only one of resizable, scalable, warpable can be used. */
+            scalable={true}
+            throttleScale={0}
+            onScaleStart={({ target, clientX, clientY }) => {
+                console.log("onScaleStart", target);
+            }}
+            onScale={({
+                target, scale, dist, delta, transform,
+                clientX, clientY,
+            }: OnScale) => {
+                console.log("onScale scale", scale);
+                target!.style.transform = transform;
+            }}
+            onScaleEnd={({ target, isDrag, clientX, clientY }) => {
+                console.log("onScaleEnd", target, isDrag);
+            }}
+
+            /* rotatable */
+            rotatable={true}
+            throttleRotate={0}
+            onRotateStart={({ target, clientX, clientY }) => {
+                console.log("onRotateStart", target);
+            }}
+            onRotate={({
+                target,
+                delta, dist,
+                transform,
+                clientX, clientY,
+            }: onRotate) => {
+                console.log("onRotate", dist);
+                target!.style.transform = transform;
+            }}
+            onRotateEnd={({ target, isDrag, clientX, clientY }) => {
+                console.log("onRotateEnd", target, isDrag);
+            }}
+            // Enabling pinchable lets you use events that
+            // can be used in draggable, resizable, scalable, and rotateable.
+            pinchable={true}
+            onPinchStart={({ target, clientX, clientY, datas }) => {
+                // pinchStart event occur before dragStart, rotateStart, scaleStart, resizeStart
+                console.log("onPinchStart");
+            }}
+            onPinch={({ target, clientX, clientY, datas }) => {
+                // pinch event occur before drag, rotate, scale, resize
+                console.log("onPinch");
+            }}
+            onPinchEnd={({ isDrag, target, clientX, clientY, datas }) => {
+                // pinchEnd event occur before dragEnd, rotateEnd, scaleEnd, resizeEnd
+                console.log("onPinchEnd");
+            }}
+        />
+    );
+}
 ```
 
+### React 18 concurrent mode
 
-## 📦 Packages
-* [**moveable**](https://github.com/daybrush/moveable/blob/master/packages/moveable): A Vanilla Component that create Moveable, Draggable, Resizable, Scalable, Rotatable, Warpable, Pinchable.
-* [**react-moveable**](https://github.com/daybrush/moveable/blob/master/packages/react-moveable): A React Component that create Moveable, Draggable, Resizable, Scalable, Rotatable, Warpable, Pinchable.
-* [**preact-moveable**](https://github.com/daybrush/moveable/blob/master/packages/preact-moveable): A Preact Component that create Moveable, Draggable, Resizable, Scalable, Rotatable, Warpable, Pinchable.
-* [**ngx-moveable**](https://github.com/daybrush/moveable/blob/master/packages/ngx-moveable): An Angular Component that create Moveable, Draggable, Resizable, Scalable, Rotatable, Warpable, Pinchable.
-* [**svelte-moveable**](https://github.com/daybrush/moveable/blob/master/packages/svelte-moveable): A Svelte Component that create Moveable, Draggable, Resizable, Scalable, Rotatable, Warpable, Pinchable.
-* [**lit-moveable**](https://github.com/daybrush/moveable/blob/master/packages/lit-moveable): A Lit Component that create Moveable, Draggable, Resizable, Scalable, Rotatable, Warpable, Pinchable.
-* [**vue-moveable**](https://github.com/daybrush/moveable/blob/master/packages/vue-moveable): A Vue Component that create Moveable, Draggable, Resizable, Scalable, Rotatable, Warpable, Pinchable.
-* [**vue3-moveable**](https://github.com/daybrush/moveable/blob/master/packages/vue-moveable): A Vue 3 Component that create Moveable, Draggable, Resizable, Scalable, Rotatable, Warpable, Pinchable.
+If you are using React 18's concurrent mode, use `flushSync` for UI sync.
+
+```tsx
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import { flushSync } from "react-dom";
+
+import Moveable from "react-moveable";
+
+
+function App() {
+    return <Moveable flushSync={flushSync} />
+}
+
+const root = ReactDOM.createRoot(document.getElementById("root"));
+
+root.render(
+    <React.StrictMode>
+        <App />
+    </React.StrictMode>
+);
+```
 
 ## ⚙️ Developments
-The `moveable` repo is managed as a [monorepo](https://github.com/lerna/lerna) with `yarn`.
+### `npm start`
 
 The main project was made with `react` and I used [`croact`](https://github.com/daybrush/croact) to make it lighter with umd.
 
 For development and testing, check in [packages/react-moveable](https://github.com/daybrush/moveable/blob/master/packages/react-moveable).
 
-### `npm run storybook`
+
 
 ```
-$ yarn install
-$ npm run bootstrap
+$ yarn
+$ npm run packages:build
 $ npm run storybook
 ```
 
@@ -266,9 +266,12 @@ You will also see any lint errors in the console.
 ## ⭐️ Show Your Support
 Please give a ⭐️ if this project helped you!
 
+
+
 ## 👏 Contributing
 
 If you have any questions or requests or want to contribute to `moveable` or other packages, please write the [issue](https://github.com/daybrush/moveable/issues) or give me a Pull Request freely.
+
 
 ### Code Contributors
 
@@ -288,6 +291,8 @@ If you find a bug, please report to us opening a new [Issue](https://github.com/
 		<img src="https://daybrush.com/sponsors/sponsors.svg"/>
 	</a>
 </p>
+
+
 
 ## 📝 License
 

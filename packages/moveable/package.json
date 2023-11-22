@@ -1,9 +1,8 @@
 {
-  "name": "moveable",
-  "version": "0.52.0",
+  "name": "moveable-kk",
+  "version": "0.0.1",
   "description": "Moveable is Draggable, Resizable, Scalable, Rotatable, Warpable, Pinchable, Groupable, Snappable.",
   "main": "./dist/moveable.cjs.js",
-  "main2": "./src/index.cjs.ts",
    "module": "./dist/moveable.esm.js",
   "sideEffects": false,
   "types": "declaration/index.d.ts",
@@ -50,9 +49,9 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/daybrush/moveable/blob/master/packages/moveable"
+    "url": "https://github.com/kakajun/moveable-kk"
   },
-  "author": "Daybrush",
+  "author": "kakajun",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/daybrush/moveable/issues"
