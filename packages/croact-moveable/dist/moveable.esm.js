@@ -1,10 +1,10 @@
 /*
 Copyright (c) 2019 Daybrush
-name: croact-moveable
+name: croact-moveable-kk
 license: MIT
-author: Daybrush
+author: kakajun
 repository: https://github.com/daybrush/moveable/blob/master/packages/croact-moveable
-version: 1.8.0
+version: 0.0.1
 */
 import getAgent from '@egjs/agent';
 import { prefixNames, prefixCSS, ref, withMethods, refs } from 'framework-utils';

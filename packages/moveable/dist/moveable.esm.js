@@ -1,15 +1,15 @@
 /*
 Copyright (c) 2019 Daybrush
-name: moveable
+name: moveable-kk
 license: MIT
-author: Daybrush
-repository: https://github.com/daybrush/moveable/blob/master/packages/moveable
-version: 0.52.0
+author: kakajun
+repository: https://github.com/kakajun/moveable-kk
+version: 0.0.1
 */
 import { ref, Properties } from 'framework-utils';
 import * as React from 'croact';
 import { renderSelf } from 'croact';
-import Moveable$1, { MOVEABLE_PROPS, MOVEABLE_METHODS, MOVEABLE_EVENTS, getElementInfo as getElementInfo$1, makeAble as makeAble$1 } from 'croact-moveable';
+import Moveable$1, { MOVEABLE_PROPS, MOVEABLE_METHODS, MOVEABLE_EVENTS, getElementInfo as getElementInfo$1, makeAble as makeAble$1 } from 'croact-moveable-kk';
 import { camelize, getDocument, isArray } from '@daybrush/utils';
 import EventEmitter from '@scena/event-emitter';
 

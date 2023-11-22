@@ -1,6 +1,6 @@
 {
   "name": "moveable-kk",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Moveable is Draggable, Resizable, Scalable, Rotatable, Warpable, Pinchable, Groupable, Snappable.",
   "main": "./dist/moveable.cjs.js",
    "module": "./dist/moveable.esm.js",
@@ -67,7 +67,7 @@
     "@daybrush/utils": "^1.13.0",
     "@scena/event-emitter": "^1.0.5",
     "croact": "^1.0.4",
-    "croact-moveable": "~1.8.0",
+    "croact-moveable-kk": "0.0.2",
     "react-moveable": "~1.55.0"
   },
   "devDependencies": {

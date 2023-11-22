@@ -1,10 +1,10 @@
 /*
 Copyright (c) 2019 Daybrush
-name: moveable
+name: moveable-kk
 license: MIT
-author: Daybrush
-repository: https://github.com/daybrush/moveable/blob/master/packages/moveable
-version: 0.52.0
+author: kakajun
+repository: https://github.com/kakajun/moveable-kk
+version: 0.0.1
 */
 (function (global, factory) {
     typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :

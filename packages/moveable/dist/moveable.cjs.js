@@ -1,16 +1,16 @@
 /*
 Copyright (c) 2019 Daybrush
-name: moveable
+name: moveable-kk
 license: MIT
-author: Daybrush
-repository: https://github.com/daybrush/moveable/blob/master/packages/moveable
-version: 0.52.0
+author: kakajun
+repository: https://github.com/kakajun/moveable-kk
+version: 0.0.1
 */
 'use strict';
 
 var frameworkUtils = require('framework-utils');
 var React = require('croact');
-var Moveable$1 = require('croact-moveable');
+var Moveable$1 = require('croact-moveable-kk');
 var utils = require('@daybrush/utils');
 var EventEmitter = require('@scena/event-emitter');
 
