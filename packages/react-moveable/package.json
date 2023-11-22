@@ -1,6 +1,6 @@
 {
-    "name": "react-moveable",
-    "version": "1.55.0",
+    "name": "react-moveable-kk",
+    "version": "0.0.1",
     "description": "A React Component that create Moveable, Draggable, Resizable, Scalable, Rotatable, Warpable, Pinchable, Groupable.",
     "main1": "./src/index.ts",
     "module1": "./src/index.ts",
@@ -60,14 +60,14 @@
     ],
     "repository": {
         "type": "git",
-        "url": "https://github.com/daybrush/moveable/blob/master/packages/react-moveable"
+        "url": "https://github.com/kakajun/moveable-kk"
     },
-    "author": "Daybrush",
+    "author": "kakajun",
     "license": "MIT",
     "bugs": {
-        "url": "https://github.com/daybrush/moveable/issues"
+        "url": "https://github.com/kakajun/moveable-kk/issues"
     },
-    "homepage": "https://daybrush.com/moveable",
+    "homepage": "https://github.com/kakajun/moveable-kk",
     "devDependencies": {
         "@babel/core": "^7.7.2",
         "@croffle/bakery": "^0.0.25",
