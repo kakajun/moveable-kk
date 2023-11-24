@@ -37,9 +37,15 @@ devDependencies:
   vue:
     specifier: ^3.3.4
     version: 3.3.8(typescript@4.8.4)
+  vue-router:
+    specifier: ^4.2.5
+    version: 4.2.5(vue@3.3.8)
   vue-tsc:
     specifier: ^1.8.1
     version: 1.8.22(typescript@4.8.4)
+  vue3-infinite-viewer:
+    specifier: 0.17.1
+    version: 0.17.1
 
 packages:
 
@@ -80,7 +86,6 @@ packages:
 
   /@egjs/agent@2.4.3:
     resolution: {integrity: sha512-XvksSENe8wPeFlEVouvrOhKdx8HMniJ3by7sro2uPF3M6QqWwjzVcmvwoPtdjiX8O1lfRoLhQMp1a7NGlVTdIA==}
-    dev: false
 
   /@egjs/children-differ@1.0.1:
     resolution: {integrity: sha512-DRvyqMf+CPCOzAopQKHtW+X8iN6Hy6SFol+/7zCUiE5y4P/OB8JP8FtU4NxtZwtafvSL4faD5KoQYPj3JHzPFQ==}
@@ -482,6 +487,10 @@ packages:
       '@vue/shared': 3.3.8
     dev: true
 
+  /@vue/devtools-api@6.5.1:
+    resolution: {integrity: sha512-+KpckaAQyfbvshdDW5xQylLni1asvNSGme1JFs8I1+/H5pHEhqUKMEQD/qn3Nx5+/nycBq11qAEi8lk+LXI2dA==}
+    dev: true
+
   /@vue/language-core@1.8.22(typescript@4.8.4):
     resolution: {integrity: sha512-bsMoJzCrXZqGsxawtUea1cLjUT9dZnDsy5TuZ+l1fxRMzUGQUG9+Ypq4w//CqpWmrx7nIAJpw2JVF/t258miRw==}
     peerDependencies:
@@ -746,6 +755,17 @@ packages:
   /import-lazy@4.0.0:
     resolution: {integrity: sha512-rKtvo6a868b5Hu3heneU+L4yEQ4jYKLtjpnPeUdK7h0yzXGmyBTypknlkCvHFBqfX9YlorEiMM6Dnq/5atfHkw==}
     engines: {node: '>=8'}
+    dev: true
+
+  /infinite-viewer@0.29.1:
+    resolution: {integrity: sha512-/ZWsJxgB5Atg/M3rb2HlYY33XrRkOcRIRlRTZoCWsORO/xvFSprm7gq2gB8DZvkjlkRnIOeR9TjZSLn8LFK19w==}
+    dependencies:
+      '@daybrush/utils': 1.13.0
+      '@egjs/agent': 2.4.3
+      '@scena/event-emitter': 1.0.5
+      css-styled: 1.0.8
+      framework-utils: 1.1.0
+      gesto: 1.19.2
     dev: true
 
   /is-core-module@2.13.1:
@@ -1079,6 +1099,15 @@ packages:
       fsevents: 2.3.3
     dev: true
 
+  /vue-router@4.2.5(vue@3.3.8):
+    resolution: {integrity: sha512-DIUpKcyg4+PTQKfFPX88UWhlagBEBEfJ5A8XDXRJLUnZOvcpMF8o/dnL90vpVkGaPbjvXazV/rC1qBKrZlFugw==}
+    peerDependencies:
+      vue: ^3.2.0
+    dependencies:
+      '@vue/devtools-api': 6.5.1
+      vue: 3.3.8(typescript@4.8.4)
+    dev: true
+
   /vue-template-compiler@2.7.15:
     resolution: {integrity: sha512-yQxjxMptBL7UAog00O8sANud99C6wJF+7kgbcwqkvA38vCGF7HWE66w0ZFnS/kX5gSoJr/PQ4/oS3Ne2pW37Og==}
     dependencies:
@@ -1096,6 +1125,12 @@ packages:
       '@vue/language-core': 1.8.22(typescript@4.8.4)
       semver: 7.5.4
       typescript: 4.8.4
+    dev: true
+
+  /vue3-infinite-viewer@0.17.1:
+    resolution: {integrity: sha512-KghbYFXpZhrRT0aia12Xvl93TRrrQ2Fa/R1f4HkUm/MbgkXl6r45RT70HnRRC8R3pOD7oz99dwHjY8P5/SFJDA==}
+    dependencies:
+      infinite-viewer: 0.29.1
     dev: true
 
   /vue@3.3.8(typescript@4.8.4):
