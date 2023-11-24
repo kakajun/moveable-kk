@@ -164,40 +164,6 @@ const setSelectedTargets = (nextTargetes) => {
 </template>
 
 <style scoped>
-
-html,
-body {
-    position: relative;
-    height: 100%;
-    margin: 0;
-    padding: 0;
-}
-
-html:has(.no-relative),
-body:has(.no-relative) {
-    margin: 8px;
-    padding: 8px;
-    position: static;
-    /* border: 8px solid red; */
-}
-
-html:has(.no-relative) {
-    position: relative;
-}
-
-html:has(.margin),
-body:has(.margin) {
-    /* margin-top: 50px; */
-}
-
-.margin .root {
-    position: static;
-}
-
-.description {
-    padding: 10px;
-}
-
 .root {
     position: relative;
 }
@@ -206,25 +172,6 @@ body:has(.margin) {
     background: #fcfafa;
     position: relative;
     margin-top: 50px;
-}
-
-.will-change-container {
-    padding-left: 100px;
-    padding-top: 100px;
-    will-change: transform;
-}
-
-.will-change-target {
-    position: relative;
-    width: 100px;
-    height: 100px;
-    line-height: 100px;
-    text-align: center;
-    background: #ee8;
-    color: #333;
-    font-weight: bold;
-    border: 1px solid #333;
-    box-sizing: border-box;
 }
 
 .target {
@@ -241,52 +188,6 @@ body:has(.margin) {
     border: 1px solid #333;
     box-sizing: border-box;
 }
-
-.target1 {
-    left: 120px;
-    top: 120px;
-}
-
-.target2 {
-    left: 300px;
-    top: 140px;
-}
-
-.target3 {
-    left: 180px;
-    top: 250px;
-}
-
-.nested {
-    position: absolute;
-    border: 4px solid #ccc;
-    width: 100px;
-    height: 100px;
-    top: 50px;
-    left: 70px;
-    color: #333;
-    /* box-sizing: border-box; */
-}
-
-.nested.first {
-    top: 150px;
-}
-
-.nested.rotate {
-    transform-origin: 0 0;
-    transform: rotate(-30deg);
-}
-
-.nested.scale {
-    transform: scale(1.5, 1.5);
-}
-
-.nested .target {
-    top: 50px;
-    left: 50px
-}
-
-
 /* pos guidelines */
 .moveable-normal.pink {
 
@@ -330,28 +231,6 @@ body:has(.margin) {
     border-top-color: green !important;
     border-left-color: green !important;
 }
-
-.scrollArea {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: calc(100vh - 100px);
-    overflow: auto;
-}
-
-.scrollArea:before {
-    content: "";
-    display: block;
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 300%;
-    width: 100%;
-    background: linear-gradient(#333,
-            #fff);
-}
-
 .infinite-viewer {
     height: 500px;
 }

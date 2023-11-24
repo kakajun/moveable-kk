@@ -2,13 +2,8 @@
 import Moveable from "./components/index";
 import { ref, onMounted } from "vue";
 import Selecto from "./components/Selecto.vue"
-const snappable = true;
-const isDisplaySnapDigit = true;
-const isDisplayInnerSnapDigit = false;
-const snapGap = true;
 const snapDirections = { "top": true, "left": true, "bottom": true, "right": true, "center": true, "middle": true };
 const elementSnapDirections = { "top": true, "left": true, "bottom": true, "right": true, "center": true, "middle": true };
-const snapThreshold = 5;
 const elementGuidelines=ref([])
 const maxSnapElementGuidelineDistance = 9999;
 const moveableRef = ref(null);
@@ -58,7 +53,6 @@ const onChangeTargets = e => {
 
 }
 
-
 const hitRate = 0;
 const selectByClick = true;
 const selectFromInside = false;
@@ -106,9 +100,9 @@ const onSelectEnd = e => {
             </div>
             <div class="target element4" style="width: 150px;height: 150px;">Target</div>
             <Moveable ref="moveableRef"  :target="targets" :draggable="true" :scalable="true" :rotatable="true"
-                :zoom="0.8" :snappable="snappable" :isDisplaySnapDigit="isDisplaySnapDigit"
-                :isDisplayInnerSnapDigit="isDisplayInnerSnapDigit" :snapGap="snapGap" :snapDirections="snapDirections"
-                :elementSnapDirections="elementSnapDirections" :snapThreshold="snapThreshold"
+                :zoom="0.8" :snappable="true" :isDisplaySnapDigit="true"
+                :isDisplayInnerSnapDigit="false" :snapGap="true" :snapDirections="snapDirections"
+                :elementSnapDirections="elementSnapDirections" :snapThreshold="5"
                 :maxSnapElementGuidelineDistance="maxSnapElementGuidelineDistance" :elementGuidelines="elementGuidelines"
                 @rotate="onRotate" @scale="onScale" @resize="onResize" @dragGroupEnd="dragGroupEnd"
                 @ChangeTargets="onChangeTargets" @click="onClick" @drag="onDrag" @snap="onSnap" @clickGroup="onClickGroup"
@@ -122,40 +116,9 @@ const onSelectEnd = e => {
 </template>
 <style scoped>
 
-html,
-body {
-    position: relative;
-    height: 100%;
-    margin: 0;
-    padding: 0;
-}
-
-html:has(.no-relative),
-body:has(.no-relative) {
-    margin: 8px;
-    padding: 8px;
-    position: static;
-    /* border: 8px solid red; */
-}
-
-html:has(.no-relative) {
-    position: relative;
-}
-
-html:has(.margin),
-body:has(.margin) {
-    /* margin-top: 50px; */
-}
-
-.margin .root {
-    position: static;
-}
-
-.description {
-    padding: 10px;
-}
-
 .root {
+    left: 100px;
+    top:20px;
     position: relative;
 }
 
@@ -164,26 +127,6 @@ body:has(.margin) {
     position: relative;
     margin-top: 50px;
 }
-
-.will-change-container {
-    padding-left: 100px;
-    padding-top: 100px;
-    will-change: transform;
-}
-
-.will-change-target {
-    position: relative;
-    width: 100px;
-    height: 100px;
-    line-height: 100px;
-    text-align: center;
-    background: #ee8;
-    color: #333;
-    font-weight: bold;
-    border: 1px solid #333;
-    box-sizing: border-box;
-}
-
 .target {
     position: absolute;
     width: 100px;
@@ -198,52 +141,6 @@ body:has(.margin) {
     border: 1px solid #333;
     box-sizing: border-box;
 }
-
-.target1 {
-    left: 120px;
-    top: 120px;
-}
-
-.target2 {
-    left: 300px;
-    top: 140px;
-}
-
-.target3 {
-    left: 180px;
-    top: 250px;
-}
-
-.nested {
-    position: absolute;
-    border: 4px solid #ccc;
-    width: 100px;
-    height: 100px;
-    top: 50px;
-    left: 70px;
-    color: #333;
-    /* box-sizing: border-box; */
-}
-
-.nested.first {
-    top: 150px;
-}
-
-.nested.rotate {
-    transform-origin: 0 0;
-    transform: rotate(-30deg);
-}
-
-.nested.scale {
-    transform: scale(1.5, 1.5);
-}
-
-.nested .target {
-    top: 50px;
-    left: 50px
-}
-
-
 /* pos guidelines */
 .moveable-normal.pink {
 
@@ -288,56 +185,12 @@ body:has(.margin) {
     border-left-color: green !important;
 }
 
-.scrollArea {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: calc(100vh - 100px);
-    overflow: auto;
-}
-
-.scrollArea:before {
-    content: "";
-    display: block;
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 300%;
-    width: 100%;
-    background: linear-gradient(#333,
-            #fff);
-}
-
 .infinite-viewer {
     height: 500px;
 }
 
 .control-padding .moveable-around-control {
     background: #f55 !important;
-}
-
-
-.cube {
-    display: inline-block;
-    border-radius: 5px;
-    width: 40px;
-    height: 40px;
-    margin: 4px;
-    background: #eee;
-    --color: rgb(255, 68, 255);
-    color: #333;
-    line-height: 40px;
-    text-align: center;
-}
-
-/* .rCS1w3zcxh .moveable-line{
-  background: #ff4aff !important;
-} */
-
-.cube .cube {
-    background: #ddd;
-    margin-left: 20px;
 }
 
 </style>
