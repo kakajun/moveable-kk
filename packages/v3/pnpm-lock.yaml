@@ -13,6 +13,9 @@ dependencies:
     version: 0.0.3
 
 devDependencies:
+  '@moveable/helper':
+    specifier: 0.1.3
+    version: 0.1.3
   '@vitejs/plugin-vue':
     specifier: ^4.2.3
     version: 4.5.0(vite@4.5.0)(vue@3.3.8)
@@ -339,7 +342,6 @@ packages:
     resolution: {integrity: sha512-hSSyPkU7/cZuJys79rG0/xMs2Py09a8RUvBtpi/AftLYeSS8JAmMNwiw9lL19nddsVNB9cb2UON+U6uyFNS8Zw==}
     dependencies:
       '@daybrush/utils': 1.13.0
-    dev: false
 
   /@rollup/pluginutils@5.0.5:
     resolution: {integrity: sha512-6aEYR910NyP73oHiJglti74iRyOwgFU4x3meH/H8OJx6Ry0j6cOVZ5X/wTvub7G7Ao6qaHBEaNsV3GLJkSsF+Q==}

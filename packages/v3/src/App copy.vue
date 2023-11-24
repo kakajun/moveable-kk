@@ -1,9 +1,7 @@
 <script setup>
 import Moveable from "./components/index";
-import { ref, onMounted } from "vue";
+import { ref, onMounted ,watch} from "vue";
 import Selecto from "./components/Selecto.vue"
-import { GroupManager } from "@moveable/helper";
-import { deepFlat } from "@daybrush/utils";
 import './app.css'
 const snappable = true;
 const isDisplaySnapDigit = true;
@@ -19,9 +17,6 @@ const targets = ref([]);
 onMounted(() => {
     const selectedTargets = document.getElementsByClassName("target");
     elementGuidelines.value=['container',... Array.from(selectedTargets)]
-
-    const elements = selectoRef.value.getSelectableElements();
-            groupManager.set([], elements);
 })
 const onRender = e => {
     e.target.style.cssText += e.cssText;
@@ -64,7 +59,6 @@ const onChangeTargets = e => {
 
 }
 
-const groupManager = new GroupManager([]);
 
 const hitRate = 0;
 const selectByClick = true;
@@ -81,66 +75,28 @@ const onRenderGroup = e => {
     });
 };
 const onDragStart = (e) => {
-    const moveable = moveableRef.value;
-            const target = e.inputEvent.target;
-            const flatted = deepFlat(targets.value);
-            if (target.tagName === "BUTTON" || moveable.isMoveableElement(target)
-                || flatted.some(t => t === target || t.contains(target))
-            ) {
-                e.stop();
-            }
+    console.log(e, 'onDragStart');
+    const target = e.inputEvent.target;
+    if (moveableRef.value.isMoveableElement(target)
+        || targets.value.some(t => t === target || t.contains(target))
+    ) {
+        e.stop();
+    }
 };
 const onSelectEnd = e => {
-            const { isDragStart, added, removed, inputEvent } = e;
-            const moveable = moveableRef.value;
-            if (isDragStart) {
-                inputEvent.preventDefault();
-                moveable.waitToChangeTarget().then(() => {
-                    moveable.dragStart(inputEvent);
-                });
-            }
-            let nextChilds;
-            if (isDragStart) {
-                nextChilds = groupManager.selectCompletedChilds(
-                    targets.value,
-                    added,
-                    removed
-                );
-            } else {
-                nextChilds = groupManager.selectSameDepthChilds(
-                    targets.value,
-                    added,
-                    removed
-                );
-            }
-            e.currentTarget.setSelectedTargets(nextChilds.flatten());
-            setSelectedTargets(nextChilds.targets());
-        };
+    if (e.isDragStartEnd) {
+        e.inputEvent.preventDefault();
+        moveableRef.value.waitToChangeTarget().then(() => {
+            moveableRef.value.dragStart(e.inputEvent);
+        });
+    }
+    targets.value = e.selected;
 
-
-const setSelectedTargets = (nextTargetes) => {
-            selectoRef.value.setSelectedTargets(deepFlat(nextTargetes));
-            targets.value = nextTargetes;
-        };
-        const onClick = () => {
-            const nextGroup = groupManager.group(targets.value, true);
-            if (nextGroup) {
-                targets.value = nextGroup;
-            }
-        };
-        const onClick$0 = () => {
-            const nextGroup = groupManager.ungroup(targets.value);
-            if (nextGroup) {
-                targets.value = nextGroup;
-            }
-        };
+};
 
 </script>
 <template>
     <div class="root">
-        <button @click="onClick">Group</button>
-            &nbsp;
-            <button @click="onClick$0">Ungroup</button>
         <div class="container" @mouseEnter.native="mouseEnter"
             style="left: 0;top: 100px;width: 500px;height: 500px;border: 1px solid #f1eeee;">
             <div class="target element1" id='element1' style="width: 100px;height: 100px;left: 20px;top: 120px;">Element1
