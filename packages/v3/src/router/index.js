@@ -6,6 +6,10 @@ import SelectoSelect from '../views/Selecto-select.vue'
 
 const routes = [
   {
+    path:'/',
+    redirect:'/SelectoGroup'
+  },
+  {
     path:'/SelectoGroup',
     component:SelectoGroup
   },
@@ -22,9 +26,9 @@ const routes = [
     component:SelectoSelect
   },
   {
-    path:'/',
-    redirect:'/SelectoGroup'
-  }
+    path:'/VueInfiniteViewer',
+    component:()=>import('../views/VueInfiniteViewer.vue')
+  },
 ]
 
 const router = createRouter({

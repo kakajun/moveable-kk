@@ -4,6 +4,7 @@
     <router-link to="/SelectoMany">SelectoMany</router-link>
     <router-link to="/SelectoSelectMany">SelectoSelectMany</router-link>
     <router-link to="/SelectoSelect">SelectoSelect</router-link>
+    <router-link to="/VueInfiniteViewer">VueInfiniteViewer</router-link>
   </div>
 
 </template>

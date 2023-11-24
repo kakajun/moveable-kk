@@ -1,121 +1,92 @@
-<script>
+<script setup>
 import { deepFlat } from "@daybrush/utils";
 import Selecto from "./components/Selecto.vue"
 import Moveable from "./components/index";
 import { GroupManager } from "@moveable/helper";
 import { ref, onMounted } from "vue";
 
-export default {
-    components: { Moveable, Selecto },
-    setup() {
-        const groupManager = new GroupManager([]);
-        const targets = ref([]);
-        const moveableRef = ref(null);
-        const selectoRef = ref(null);
-        const cubes = [];
-        for (let i = 0; i < 30; ++i) {
-            cubes.push(i);
-        }
-        const setSelectedTargets = (nextTargetes) => {
-            selectoRef.value.setSelectedTargets(deepFlat(nextTargetes));
-            targets.value = nextTargetes;
-        };
-        const onClick = () => {
-            const nextGroup = groupManager.group(targets.value, true);
-            if (nextGroup) {
-                targets.value = nextGroup;
-            }
-        };
-        const onClick$0 = () => {
-            const nextGroup = groupManager.ungroup(targets.value);
-            if (nextGroup) {
-                targets.value = nextGroup;
-            }
-        };
-        const onDrag = e => {
-            e.target.style.transform = e.transform;
-        };
-        const onRenderGroup = e => {
-            e.events.forEach(ev => {
-                ev.target.style.cssText += ev.cssText;
-            });
-        };
-        const onDragStart = e => {
-            const moveable = moveableRef.value;
-            const target = e.inputEvent.target;
-            const flatted = deepFlat(targets.value);
-            if (target.tagName === "BUTTON" || moveable.isMoveableElement(target)
-                || flatted.some(t => t === target || t.contains(target))
-            ) {
-                e.stop();
-            }
-        };
-        const onSelectEnd = e => {
-            const { isDragStart, added, removed, inputEvent } = e;
-            const moveable = moveableRef.value;
-            if (isDragStart) {
-                inputEvent.preventDefault();
-                moveable.waitToChangeTarget().then(() => {
-                    moveable.dragStart(inputEvent);
-                });
-            }
-            let nextChilds;
-            if (isDragStart) {
-                nextChilds = groupManager.selectCompletedChilds(
-                    targets.value,
-                    added,
-                    removed
-                );
-            } else {
-                nextChilds = groupManager.selectSameDepthChilds(
-                    targets.value,
-                    added,
-                    removed
-                );
-            }
-            e.currentTarget.setSelectedTargets(nextChilds.flatten());
-            setSelectedTargets(nextChilds.targets());
-        };
-        onMounted(() => {
-            const elements = selectoRef.value.getSelectableElements();
-            groupManager.set([], elements);
-        });
-        return {
-            onClick,
-            onClick$0,
-            moveableRef,
-            targets,
-            onDrag,
-            onRenderGroup,
-            selectoRef,
-            window,
-            onDragStart,
-            onSelectEnd,
-            cubes
-        };
+const groupManager = new GroupManager([]);
+const targets = ref([]);
+const moveableRef = ref(null);
+const selectoRef = ref(null);
+const cubes = [];
+for (let i = 0; i < 30; ++i) {
+    cubes.push(i);
+}
+const setSelectedTargets = (nextTargetes) => {
+    selectoRef.value.setSelectedTargets(deepFlat(nextTargetes));
+    targets.value = nextTargetes;
+};
+const onClick = () => {
+    const nextGroup = groupManager.group(targets.value, true);
+    if (nextGroup) {
+        targets.value = nextGroup;
     }
 };
+const onClick$0 = () => {
+    const nextGroup = groupManager.ungroup(targets.value);
+    if (nextGroup) {
+        targets.value = nextGroup;
+    }
+};
+const onDrag = e => {
+    e.target.style.transform = e.transform;
+};
+const onRenderGroup = e => {
+    e.events.forEach(ev => {
+        ev.target.style.cssText += ev.cssText;
+    });
+};
+const onDragStart = e => {
+    const moveable = moveableRef.value;
+    const target = e.inputEvent.target;
+    const flatted = deepFlat(targets.value);
+    if (target.tagName === "BUTTON" || moveable.isMoveableElement(target)
+        || flatted.some(t => t === target || t.contains(target))
+    ) {
+        e.stop();
+    }
+};
+const onSelectEnd = e => {
+    const { isDragStart, added, removed, inputEvent } = e;
+    const moveable = moveableRef.value;
+    if (isDragStart) {
+        inputEvent.preventDefault();
+        moveable.waitToChangeTarget().then(() => {
+            moveable.dragStart(inputEvent);
+        });
+    }
+    let nextChilds;
+    if (isDragStart) {
+        nextChilds = groupManager.selectCompletedChilds(
+            targets.value,
+            added,
+            removed
+        );
+    } else {
+        nextChilds = groupManager.selectSameDepthChilds(
+            targets.value,
+            added,
+            removed
+        );
+    }
+    e.currentTarget.setSelectedTargets(nextChilds.flatten());
+    setSelectedTargets(nextChilds.targets());
+};
+onMounted(() => {
+    const elements = selectoRef.value.getSelectableElements();
+    groupManager.set([], elements);
+});
 </script>
 <template>
     <div class="moveable app">
         <div class="container">
-            <div
-                class="logo logos"
-                id="logo"
-            >
-                <a
-                    href="https://github.com/daybrush/selecto"
-                    target="_blank"
-                >
-                    <img
-                        src="https://daybrush.com/selecto/images/256x256.png"
-                        class="selecto"/>
+            <div class="logo logos" id="logo">
+                <a href="https://github.com/daybrush/selecto" target="_blank">
+                    <img src="https://daybrush.com/selecto/images/256x256.png" class="selecto" />
                 </a>
-                <a
-                    href="https://github.com/daybrush/moveable"
-                    target="_blank"
-                >
-                    <img src="https://daybrush.com/moveable/images/256x256.png"/>
+                <a href="https://github.com/daybrush/moveable" target="_blank">
+                    <img src="https://daybrush.com/moveable/images/256x256.png" />
                 </a>
             </div>
             <h1>You can Group & Ungroup selected targets.</h1>
@@ -123,40 +94,20 @@ export default {
             <button @click="onClick">Group</button>
             &nbsp;
             <button @click="onClick$0">Ungroup</button>
-            <Moveable
-                ref="moveableRef"
-                :draggable="true"
-                :rotatable="true"
-                :scalable="true"
-                :target="targets"
-                @drag="onDrag"
-                @renderGroup="onRenderGroup"
-            ></Moveable>
-            <Selecto
-                ref="selectoRef"
-                :dragContainer="window"
-                :selectableTargets="['.selecto-area .cube']"
-                :hitRate="0"
-                :selectByClick="true"
-                :selectFromInside="false"
-                :toggleContinueSelect="['shift']"
-                :ratio="0"
-                @dragStart="onDragStart"
-                @selectEnd="onSelectEnd"
-            ></Selecto>
+            <Moveable ref="moveableRef" :draggable="true" :rotatable="true" :scalable="true" :target="targets"
+                @drag="onDrag" @renderGroup="onRenderGroup"></Moveable>
+            <Selecto ref="selectoRef" :dragContainer="window" :selectableTargets="['.selecto-area .cube']" :hitRate="0"
+                :selectByClick="true" :selectFromInside="false" :toggleContinueSelect="['shift']" :ratio="0"
+                @dragStart="onDragStart" @selectEnd="onSelectEnd"></Selecto>
             <div class="elements selecto-area">
-                <div
-                    class="cube"
-                    :key="i"
-                    v-for="i in cubes"
-                >{{i}}</div>
+                <div class="cube" :key="i" v-for="i in cubes">{{ i }}</div>
             </div>
             <div class="empty elements"></div>
         </div>
     </div>
 </template>
-<style>
-html, body, #root {
+<style scoped>
+#root {
     position: relative;
     margin: 0;
     padding: 0;
@@ -220,7 +171,8 @@ body {
     line-height: 40px;
 }
 
-h1, .description {
+h1,
+.description {
     text-align: center;
 }
 
@@ -276,7 +228,8 @@ h1, .description {
     user-select: none;
 }
 
-.infinite-viewer, .scroll {
+.infinite-viewer,
+.scroll {
     width: 100%;
     height: 300px;
     box-sizing: border-box;
@@ -297,6 +250,7 @@ h1, .description {
     margin: auto;
     width: 100%;
 }
+
 .correct .target {
     position: relative;
     width: 100px;
@@ -307,6 +261,7 @@ h1, .description {
     text-align: center;
     display: inline-block;
 }
+
 .correct svg {
     position: absolute;
     width: 100%;
@@ -317,6 +272,7 @@ h1, .description {
     opacity: 0.9;
     transform: translateZ(0px);
 }
+
 .correct svg path {
     stroke: #333;
     stroke-width: 2;

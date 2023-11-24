@@ -4,7 +4,7 @@
     <router-view></router-view>
   </template>
   <script setup>
-  import Tabbar from './Tabbar.vue';
+  import Tabbar from './router/Tabbar.vue';
 
   </script>
   <style scoped>

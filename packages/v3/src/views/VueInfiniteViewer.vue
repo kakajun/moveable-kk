@@ -1,6 +1,40 @@
+<template>
+  <div class="wrapper">
+    <VueInfiniteViewer class="viewer">
+    <div class="viewport">
+      <div class="root">
+        <div class="container" @mouseEnter.native="mouseEnter"
+            style="left: 0;top: 100px;width: 500px;height: 500px;border: 1px solid #f1eeee;">
+            <div class="target element1" id='element1' style="width: 100px;height: 100px;left: 20px;top: 120px;">Element1
+            </div>
+            <div class="target element2" id='element2' style="width: 100px;height: 100px;left: 400px;top: 120px;">Element2
+            </div>
+            <div class="target element3" id='element3' style="width: 300px;height: 100px;top: 400px;left: 50px;">Element3
+            </div>
+            <div class="target element4" style="width: 150px;height: 150px;">Target</div>
+            <Moveable ref="moveableRef"  :target="targets" :draggable="true" :scalable="true" :rotatable="true"
+                :zoom="0.8" :snappable="snappable" :isDisplaySnapDigit="isDisplaySnapDigit"
+                :isDisplayInnerSnapDigit="isDisplayInnerSnapDigit" :snapGap="snapGap" :snapDirections="snapDirections"
+                :elementSnapDirections="elementSnapDirections" :snapThreshold="snapThreshold"
+                :maxSnapElementGuidelineDistance="maxSnapElementGuidelineDistance" :elementGuidelines="elementGuidelines"
+                @rotate="onRotate" @scale="onScale" @resize="onResize" @dragGroupEnd="dragGroupEnd"
+                @ChangeTargets="onChangeTargets" @click="onClick" @drag="onDrag" @snap="onSnap" @clickGroup="onClickGroup"
+                @render="onRender" @renderGroup="onRenderGroup" />
+            <Selecto ref="selectoRef" :dragContainer="'.container'" :selectableTargets="['.target']" :hitRate="hitRate"
+                :selectByClick="selectByClick" :selectFromInside="selectFromInside"
+                :toggleContinueSelect="toggleContinueSelect" :ratio="ratio" :keyContainer="window" @dragStart="onDragStart"
+                @selectEnd="onSelectEnd" />
+        </div>
+    </div>
+  </div>
+  </VueInfiniteViewer>
+  </div>
+
+</template>
 <script setup>
+import { VueInfiniteViewer } from "vue3-infinite-viewer";
 import Moveable from "./components/index";
-import { ref, onMounted } from "vue";
+import { ref, onMounted ,watch} from "vue";
 import Selecto from "./components/Selecto.vue"
 const snappable = true;
 const isDisplaySnapDigit = true;
@@ -94,62 +128,32 @@ const onSelectEnd = e => {
 };
 
 </script>
-<template>
-    <div class="root">
-        <div class="container" @mouseEnter.native="mouseEnter"
-            style="left: 0;top: 100px;width: 500px;height: 500px;border: 1px solid #f1eeee;">
-            <div class="target element1" id='element1' style="width: 100px;height: 100px;left: 20px;top: 120px;">Element1
-            </div>
-            <div class="target element2" id='element2' style="width: 100px;height: 100px;left: 400px;top: 120px;">Element2
-            </div>
-            <div class="target element3" id='element3' style="width: 300px;height: 100px;top: 400px;left: 50px;">Element3
-            </div>
-            <div class="target element4" style="width: 150px;height: 150px;">Target</div>
-            <Moveable ref="moveableRef"  :target="targets" :draggable="true" :scalable="true" :rotatable="true"
-                :zoom="0.8" :snappable="snappable" :isDisplaySnapDigit="isDisplaySnapDigit"
-                :isDisplayInnerSnapDigit="isDisplayInnerSnapDigit" :snapGap="snapGap" :snapDirections="snapDirections"
-                :elementSnapDirections="elementSnapDirections" :snapThreshold="snapThreshold"
-                :maxSnapElementGuidelineDistance="maxSnapElementGuidelineDistance" :elementGuidelines="elementGuidelines"
-                @rotate="onRotate" @scale="onScale" @resize="onResize" @dragGroupEnd="dragGroupEnd"
-                @ChangeTargets="onChangeTargets" @click="onClick" @drag="onDrag" @snap="onSnap" @clickGroup="onClickGroup"
-                @render="onRender" @renderGroup="onRenderGroup" />
-            <Selecto ref="selectoRef" :dragContainer="'.container'" :selectableTargets="['.target']" :hitRate="hitRate"
-                :selectByClick="selectByClick" :selectFromInside="selectFromInside"
-                :toggleContinueSelect="toggleContinueSelect" :ratio="ratio" :keyContainer="window" @dragStart="onDragStart"
-                @selectEnd="onSelectEnd" />
-        </div>
-    </div>
-</template>
 <style scoped>
-
-html,
-body {
-    position: relative;
-    height: 100%;
-    margin: 0;
-    padding: 0;
+.wrapper{
+  position: absolute;
+  left: 100px;
+  top:  100px;
+}
+.container {
+  position: relative;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+.viewer {
+  border: 1px solid black;
+  position: relative;
+  width: 800px;
+  height: 800px;
+}
+.viewport {
+  position: relative;
+  /* margin-left: 200px; */
+  width: 700px;
+  height: 600px;
+  background: #f55;
 }
 
-html:has(.no-relative),
-body:has(.no-relative) {
-    margin: 8px;
-    padding: 8px;
-    position: static;
-    /* border: 8px solid red; */
-}
-
-html:has(.no-relative) {
-    position: relative;
-}
-
-html:has(.margin),
-body:has(.margin) {
-    /* margin-top: 50px; */
-}
-
-.margin .root {
-    position: static;
-}
 
 .description {
     padding: 10px;
@@ -339,5 +343,4 @@ body:has(.margin) {
     background: #ddd;
     margin-left: 20px;
 }
-
 </style>

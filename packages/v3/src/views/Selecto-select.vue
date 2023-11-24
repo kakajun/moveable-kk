@@ -1,128 +1,76 @@
-<script>
+<script setup>
 import Moveable from "./components/index";
-
 import Selecto from "./components/Selecto.vue"
 import { ref } from "vue";
-
-export default {
-    components: { Moveable, Selecto },
-    setup() {
-        const hitRate = 0;
-        const selectByClick = true;
-        const selectFromInside = false;
-        const toggleContinueSelect = ["shift"];
-        const ratio = 0;
-        const cubes = [];
-        for (let i = 0; i < 30; ++i) {
-            cubes.push(i);
-        }
-        const targets = ref([]);
-        const moveableRef = ref(null);
-        const selectoRef = ref(null);
-        const onClickGroup = e => {
-            selectoRef.value.clickTarget(e.inputEvent, e.inputTarget);
-        };
-        const onRender = e => {
-            e.target.style.cssText += e.cssText;
-        };
-        const onRenderGroup = e => {
-            e.events.forEach(ev => {
-                ev.target.style.cssText += ev.cssText;
-            });
-        };
-        const onDragStart = (e) => {
-            const target = e.inputEvent.target;
-            if (moveableRef.value.isMoveableElement(target)
-                || targets.value.some(t => t === target || t.contains(target))
-            ) {
-                e.stop();
-            }
-        };
-        const onSelectEnd = e => {
-            if (e.isDragStartEnd) {
-                e.inputEvent.preventDefault();
-                moveableRef.value.waitToChangeTarget().then(() => {
-                    moveableRef.value.dragStart(e.inputEvent);
-                });
-            }
-            targets.value = e.selected;
-        };
-        return {
-            moveableRef,
-            targets,
-            onClickGroup,
-            onRender,
-            onRenderGroup,
-            selectoRef,
-            hitRate,
-            selectByClick,
-            selectFromInside,
-            toggleContinueSelect,
-            ratio,
-            window,
-            onDragStart,
-            onSelectEnd,
-            cubes
-        };
+const hitRate = 0;
+const selectByClick = true;
+const selectFromInside = false;
+const toggleContinueSelect = ["shift"];
+const ratio = 0;
+const cubes = [];
+for (let i = 0; i < 30; ++i) {
+    cubes.push(i);
+}
+const targets = ref([]);
+const moveableRef = ref(null);
+const selectoRef = ref(null);
+const onClickGroup = e => {
+    selectoRef.value.clickTarget(e.inputEvent, e.inputTarget);
+};
+const onRender = e => {
+    e.target.style.cssText += e.cssText;
+};
+const onRenderGroup = e => {
+    e.events.forEach(ev => {
+        ev.target.style.cssText += ev.cssText;
+    });
+};
+const onDragStart = (e) => {
+    const target = e.inputEvent.target;
+    if (moveableRef.value.isMoveableElement(target)
+        || targets.value.some(t => t === target || t.contains(target))
+    ) {
+        e.stop();
     }
+};
+const onSelectEnd = e => {
+    if (e.isDragStartEnd) {
+        e.inputEvent.preventDefault();
+        moveableRef.value.waitToChangeTarget().then(() => {
+            moveableRef.value.dragStart(e.inputEvent);
+        });
+    }
+    targets.value = e.selected;
 };
 </script>
 <template>
     <div class="moveable app">
         <div class="container">
-            <div
-                class="logo logos"
-                id="logo"
-            >
-                <a
-                    href="https://github.com/daybrush/selecto"
-                    target="_blank"
-                >
-                    <img
-                        src="https://daybrush.com/selecto/images/256x256.png"
-                        class="selecto"/>
+            <div class="logo logos" id="logo">
+                <a href="https://github.com/daybrush/selecto" target="_blank">
+                    <img src="https://daybrush.com/selecto/images/256x256.png" class="selecto" />
                 </a>
-                <a
-                    href="https://github.com/daybrush/moveable"
-                    target="_blank"
-                >
-                    <img src="https://daybrush.com/moveable/images/256x256.png"/>
+                <a href="https://github.com/daybrush/moveable" target="_blank">
+                    <img src="https://daybrush.com/moveable/images/256x256.png" />
                 </a>
             </div>
             <h1>Change the Moveable targets by selecting it.</h1>
             <p class="description">You can drag and move targets and select them.</p>
-            <Moveable
-                ref="moveableRef"
-                :target="targets"
-                :draggable="true"
-                @clickGroup="onClickGroup"
-                @render="onRender"
-                @renderGroup="onRenderGroup"/>
-            <Selecto
-                ref="selectoRef"
-                :dragContainer="'.container'"
-                :selectableTargets="['.target']"
-                :hitRate="hitRate"
-                :selectByClick="selectByClick"
-                :selectFromInside="selectFromInside"
-                :toggleContinueSelect="toggleContinueSelect"
-                :ratio="ratio"
-                :keyContainer="window"
-                @dragStart="onDragStart"
-                @selectEnd="onSelectEnd"/>
+            <Moveable ref="moveableRef" :target="targets" :draggable="true" @clickGroup="onClickGroup" @render="onRender"
+                @renderGroup="onRenderGroup" />
+            <Selecto ref="selectoRef" :dragContainer="'.container'" :selectableTargets="['.target']" :hitRate="hitRate"
+                :selectByClick="selectByClick" :selectFromInside="selectFromInside"
+                :toggleContinueSelect="toggleContinueSelect" :ratio="ratio" :keyContainer="window" @dragStart="onDragStart"
+                @selectEnd="onSelectEnd" />
             <div class="container selecto-area">
-                <div
-                    class="cube target"
-                    :key="i"
-                    v-for="i in cubes"
-                ></div>
+                <div class="cube target" :key="i" v-for="i in cubes"></div>
             </div>
 
         </div>
     </div>
 </template>
-<style>
-html, body, #root {
+<style scoped>
+#root {
     position: relative;
     margin: 0;
     padding: 0;
@@ -186,7 +134,8 @@ body {
     line-height: 40px;
 }
 
-h1, .description {
+h1,
+.description {
     text-align: center;
 }
 
@@ -242,7 +191,8 @@ h1, .description {
     user-select: none;
 }
 
-.infinite-viewer, .scroll {
+.infinite-viewer,
+.scroll {
     width: 100%;
     height: 300px;
     box-sizing: border-box;
@@ -263,6 +213,7 @@ h1, .description {
     margin: auto;
     width: 100%;
 }
+
 .correct .target {
     position: relative;
     width: 100px;
@@ -273,6 +224,7 @@ h1, .description {
     text-align: center;
     display: inline-block;
 }
+
 .correct svg {
     position: absolute;
     width: 100%;
@@ -283,6 +235,7 @@ h1, .description {
     opacity: 0.9;
     transform: translateZ(0px);
 }
+
 .correct svg path {
     stroke: #333;
     stroke-width: 2;
