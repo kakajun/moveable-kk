@@ -11,17 +11,116 @@ const snapGap = true;
 const snapDirections = { "top": true, "left": true, "bottom": true, "right": true, "center": true, "middle": true };
 const elementSnapDirections = { "top": true, "left": true, "bottom": true, "right": true, "center": true, "middle": true };
 const snapThreshold = 5;
-const elementGuidelines=ref([])
+const elementGuidelines = ref([])
 const maxSnapElementGuidelineDistance = 9999;
 const moveableRef = ref(null);
 const targets = ref([]);
-onMounted(() => {
-    const selectedTargets = document.getElementsByClassName("target");
-    elementGuidelines.value=['container',... Array.from(selectedTargets)]
+const activeItem = ref();
+const componentSlist = ref([{
+    id: 'element1',
+    style: {
+        width: 100,
+        height: 100,
+        rotate:0,
+        transform:'rotate(0deg)',
+        top: 0,
+        left: 0
+    },
 
+},
+{
+    id: 'element2',
+    style: {
+        width: 100,
+        height: 100,
+        top: 100,
+        left: 100,
+        rotate:0,
+        transform:'rotate(0deg)',
+    }
+},
+{
+    id: 'element3',
+    style: {
+        width: 100,
+        height: 100,
+        top: 200,
+        left: 200,
+        rotate:0,
+        transform:'rotate(0deg)',
+    }
+},
+{
+    id: 'element4',
+    style: {
+        width: 100,
+        height: 100,
+        top: 300,
+        left: 300,
+        rotate:0,
+        transform:'rotate(0deg)',
+    }
+}]);
+onMounted(() => {
+   const copyComponentSliststr = localStorage.getItem('componentSlist');
+    if (copyComponentSliststr) {
+        componentSlist.value= JSON.parse(copyComponentSliststr)
+    }
+    const selectedTargets = document.getElementsByClassName("target");
+    elementGuidelines.value = ['container', ...Array.from(selectedTargets)]
     const elements = selectoRef.value.getSelectableElements();
-            groupManager.set([], elements);
+    groupManager.set([], elements);
 })
+
+let moveItem = {}
+let groupEvent = null
+const selectByClick =ref(true);
+const onMouseDownItem = item => {
+    console.log("onMouseDownItem");
+    activeItem.value = item
+}
+
+const onClickItem=item=>{
+    console.log("onClickItem");
+}
+const eventStart = () => {
+    console.log('eventStart');
+    selectByClick.value = false
+    const item = activeItem.value.style
+    Object.assign(moveItem, item, {
+        offset: {
+            top: item.top,
+            left: item.left,
+            width: item.width,
+            height: item.height
+        }
+    })
+}
+const eventEnd = () => {
+    // 在操作完成后更新目标数据，防止频繁刷新DOM导致卡顿
+    selectByClick.value = true
+    const item = activeItem.value.style
+    item.top = Math.round(moveItem.top)
+    item.left = Math.round(moveItem.left)
+    item.width = Math.round(moveItem.width)
+    item.height = Math.round(moveItem.height)
+    item.rotate = moveItem.rotate
+    item.transform = `rotate(${moveItem.rotate}deg)`
+    moveItem = {}
+    localStorage.setItem('componentSlist', JSON.stringify(componentSlist.value));
+}
+
+const onDragStart = e => {
+    if (e.inputEvent.target.nodeName === 'PRE') {
+        activeItem.value.editable && stop()
+    }
+    eventStart()
+}
+
+const onDragEnd = e => {
+    eventEnd()
+    console.log(componentSlist.value, 'componentSlist');
+}
 const onRender = e => {
     e.target.style.cssText += e.cssText;
 };
@@ -37,9 +136,12 @@ const onScale = ({ target, transform }) => {
     target.style.transform = transform;
 }
 
-const onDrag = ({ target, transform }) => {
-    console.log('onDrag');
-    target.style.transform = transform;
+const onDrag = (e) => {
+    moveItem.top = e.top
+    moveItem.left = e.left
+    moveItem.width = e.width
+    moveItem.height = e.height
+    e.target.style.transform = e.transform;
 }
 const onRotate = ({ target, transform }) => {
     target.style.transform = transform;
@@ -50,20 +152,18 @@ const dragGroupEnd = e => {
 const onChangeTargets = e => {
     console.log(e.targets, 'onChangeTargets');
     if (e.targets.length == 1) {
-   const selectedTargets = document.getElementsByClassName("target");
-   const wrapper=document.getElementsByClassName("container");
-   const allDoms =[wrapper[0],... Array.from(selectedTargets)]
-   // 目标变化后要过滤掉自己,否则会产生对标原来自己位置的bug
-    elementGuidelines.value=allDoms.filter(item=>e.targets[0]!=item)
-    console.log(elementGuidelines.value,"elementGuidelines.value");
+        const selectedTargets = document.getElementsByClassName("target");
+        const wrapper = document.getElementsByClassName("container");
+        const allDoms = [wrapper[0], ...Array.from(selectedTargets)]
+        // 目标变化后要过滤掉自己,否则会产生对标原来自己位置的bug
+        elementGuidelines.value = allDoms.filter(item => e.targets[0] != item)
+        console.log(elementGuidelines.value, "elementGuidelines.value");
     }
 
 }
 
 const groupManager = new GroupManager([]);
-
 const hitRate = 0;
-const selectByClick = true;
 const selectFromInside = false;
 const toggleContinueSelect = ["shift"];
 const ratio = 0;
@@ -76,90 +176,88 @@ const onRenderGroup = e => {
         ev.target.style.cssText += ev.cssText;
     });
 };
-const onDragStart = (e) => {
+const onDragStartSelecto = (e) => {
     const moveable = moveableRef.value;
-            const target = e.inputEvent.target;
-            const flatted = deepFlat(targets.value);
-            if (target.tagName === "BUTTON" || moveable.isMoveableElement(target)
-                || flatted.some(t => t === target || t.contains(target))
-            ) {
-                e.stop();
-            }
+    const target = e.inputEvent.target;
+    const flatted = deepFlat(targets.value);
+    if (moveable.isMoveableElement(target)
+        || flatted.some(t => t === target || t.contains(target))
+    ) {
+        console.log("5555555555555");
+        e.stop();
+    }
 };
 const onSelectEnd = e => {
-            const { isDragStart, added, removed, inputEvent } = e;
-            const moveable = moveableRef.value;
-            if (isDragStart) {
-                inputEvent.preventDefault();
-                moveable.waitToChangeTarget().then(() => {
-                    moveable.dragStart(inputEvent);
-                });
-            }
-            let nextChilds;
-            if (isDragStart) {
-                nextChilds = groupManager.selectCompletedChilds(
-                    targets.value,
-                    added,
-                    removed
-                );
-            } else {
-                nextChilds = groupManager.selectSameDepthChilds(
-                    targets.value,
-                    added,
-                    removed
-                );
-            }
-            e.currentTarget.setSelectedTargets(nextChilds.flatten());
-            setSelectedTargets(nextChilds.targets());
-        };
+    const { isDragStart, added, removed, inputEvent } = e;
+    const moveable = moveableRef.value;
+    if (isDragStart) {
+        inputEvent.preventDefault();
+        moveable.waitToChangeTarget().then(() => {
+            moveable.dragStart(inputEvent);
+        });
+    }
+    let nextChilds;
+    if (isDragStart) {
+        nextChilds = groupManager.selectCompletedChilds(
+            targets.value,
+            added,
+            removed
+        );
+    } else {
+        nextChilds = groupManager.selectSameDepthChilds(
+            targets.value,
+            added,
+            removed
+        );
+    }
+    e.currentTarget.setSelectedTargets(nextChilds.flatten());
+    setSelectedTargets(nextChilds.targets());
+};
 
 
 const setSelectedTargets = (nextTargetes) => {
-            selectoRef.value.setSelectedTargets(deepFlat(nextTargetes));
-            targets.value = nextTargetes;
-        };
-        const onClick = () => {
-            const nextGroup = groupManager.group(targets.value, true);
-            if (nextGroup) {
-                targets.value = nextGroup;
-            }
-        };
-        const onClick$0 = () => {
-            const nextGroup = groupManager.ungroup(targets.value);
-            if (nextGroup) {
-                targets.value = nextGroup;
-            }
-        };
+    selectoRef.value.setSelectedTargets(deepFlat(nextTargetes));
+    targets.value = nextTargetes;
+    console.log(nextTargetes, 'setSelectedTargets');
+};
+const onClick = () => {
+    const nextGroup = groupManager.group(targets.value, true);
+    console.log(nextGroup, "nextGroup");
+    if (nextGroup) {
+        targets.value = nextGroup;
+    }
+};
+const onClick$0 = () => {
+    const nextGroup = groupManager.ungroup(targets.value);
+    if (nextGroup) {
+        targets.value = nextGroup;
+    }
+};
 
 </script>
 <template>
     <div class="root">
         <button @click="onClick">Group</button>
-            &nbsp;
-            <button @click="onClick$0">Ungroup</button>
-        <div class="container"
-            style="left: 0;top: 100px;width: 500px;height: 500px;border: 1px solid #f1eeee;">
-            <div class="target element1" id='element1' style="width: 100px;height: 100px;left: 20px;top: 120px;">Element1
+        &nbsp;
+        <button @click="onClick$0">Ungroup</button>
+        <div class="container" style="left: 0;top: 100px;width: 500px;height: 500px;border: 1px solid #f1eeee;">
+            <div @click="onClickItem" @mousedown="onMouseDownItem(item)" v-for="(item, index) in componentSlist" :key="index"
+                :class="'target ' + item.id" :id='item.id'
+                :style="'width:' + item.style.width + 'px;height:' + item.style.height + 'px;left:' + item.style.left + 'px;top:' + item.style.top + 'px;'">
+                {{ item.id }}
             </div>
-            <div class="target element2" id='element2' style="width: 100px;height: 100px;left: 400px;top: 120px;">Element2
-            </div>
-            <div class="target element3" id='element3' style="width: 300px;height: 100px;top: 400px;left: 50px;">Element3
-            </div>
-            <div class="target element4" style="width: 150px;height: 150px;">Target</div>
-
         </div>
-        <Moveable ref="moveableRef"  :target="targets" :draggable="true" :scalable="true" :rotatable="true"
-                :zoom="0.8" :snappable="snappable" :isDisplaySnapDigit="isDisplaySnapDigit"
-                :isDisplayInnerSnapDigit="isDisplayInnerSnapDigit" :snapGap="snapGap" :snapDirections="snapDirections"
-                :elementSnapDirections="elementSnapDirections" :snapThreshold="snapThreshold"
-                :maxSnapElementGuidelineDistance="maxSnapElementGuidelineDistance" :elementGuidelines="elementGuidelines"
-                @rotate="onRotate" @scale="onScale" @resize="onResize" @dragGroupEnd="dragGroupEnd"
-                @ChangeTargets="onChangeTargets" @click="onClick" @drag="onDrag" @snap="onSnap" @clickGroup="onClickGroup"
-                @render="onRender" @renderGroup="onRenderGroup" />
-            <Selecto ref="selectoRef" :dragContainer="'.container'" :selectableTargets="['.target']" :hitRate="hitRate"
-                :selectByClick="selectByClick" :selectFromInside="selectFromInside"
-                :toggleContinueSelect="toggleContinueSelect" :ratio="ratio" :keyContainer="window" @dragStart="onDragStart"
-                @selectEnd="onSelectEnd" />
+        <Moveable ref="moveableRef" :target="targets" :draggable="true" :scalable="true" :rotatable="true" :zoom="0.8"
+            :snappable="snappable" :isDisplaySnapDigit="isDisplaySnapDigit"
+            :isDisplayInnerSnapDigit="isDisplayInnerSnapDigit" :snapGap="snapGap" :snapDirections="snapDirections"
+            :elementSnapDirections="elementSnapDirections" :snapThreshold="snapThreshold"
+            :maxSnapElementGuidelineDistance="maxSnapElementGuidelineDistance" :elementGuidelines="elementGuidelines"
+            @rotate="onRotate" @scale="onScale" @resize="onResize" @dragGroupEnd="dragGroupEnd" @dragStart='onDragStart'
+            @dragEnd="onDragEnd" @changeTargets="onChangeTargets" @click="onClick" @drag="onDrag" @snap="onSnap"
+            @clickGroup="onClickGroup" @render="onRender" @renderGroup="onRenderGroup" />
+        <Selecto ref="selectoRef" :dragContainer="'.container'" :selectableTargets="['.target']" :hitRate="hitRate"
+            :selectByClick="selectByClick" :selectFromInside="selectFromInside" :toggleContinueSelect="toggleContinueSelect"
+            :ratio="ratio" :keyContainer="window" @dragStart="onDragStartSelecto" @selectEnd="onSelectEnd" />
     </div>
 </template>
 
@@ -188,6 +286,7 @@ const setSelectedTargets = (nextTargetes) => {
     border: 1px solid #333;
     box-sizing: border-box;
 }
+
 /* pos guidelines */
 .moveable-normal.pink {
 
@@ -231,6 +330,7 @@ const setSelectedTargets = (nextTargetes) => {
     border-top-color: green !important;
     border-left-color: green !important;
 }
+
 .infinite-viewer {
     height: 500px;
 }
@@ -261,5 +361,4 @@ const setSelectedTargets = (nextTargetes) => {
     background: #ddd;
     margin-left: 20px;
 }
-
 </style>
