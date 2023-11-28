@@ -98,8 +98,8 @@ onMounted(() => {
     const children=refList.value.children;
     const elements = selectoRef.value.getSelectableElements();
     groupManager.set([] , elements);   // 这个必须要,否则多选不会生效
-    groupManager.group([children[0],children[1]] , true);   // 这里设置成组
-    groupManager.group([children[2],children[3]] , true);
+    // groupManager.group([children[0],children[1]] , true);   // 这里设置成组
+    // groupManager.group([children[2],children[3]] , true);
     console.log(elements,"elements");
      // 这里获取localStorage
     const copyComponentSliststr = localStorage.getItem('componentSlist');
