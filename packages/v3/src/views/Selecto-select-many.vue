@@ -20,7 +20,7 @@
             @dragEnd="onDragEnd" @changeTargets="onChangeTargets" @drag="onDrag" @snap="onSnap"
             @clickGroup="onClickGroup" @render="onRender" @renderGroup="onRenderGroup" @drag-group-start="dragGroupStart"
             @drag-group-end="dragGroupEnd" @drag-group="onDragGroup" />
-        <Selecto ref="selectoRef" :dragContainer="'.container'"
+        <Selecto ref="selectoRef" :dragContainer="'.container'" :getElementRect="Moveable.getElementInfo"
         :selectableTargets="['.target']" :hitRate="hitRate"
             :selectByClick="selectByClick" :selectFromInside="selectFromInside" :toggleContinueSelect="toggleContinueSelect"
             :ratio="ratio"   @dragStart="onDragStartSelecto" @selectEnd="onSelectEnd" />
@@ -93,9 +93,6 @@ const componentSlist = ref([{
     }
 }]);
 const refList=ref([]);
-// const setRefAction = (el) => {
-//     refList.value.push(el);
-// }
 
 onMounted(() => {
     const children=refList.value.children;
@@ -103,7 +100,7 @@ onMounted(() => {
     groupManager.set([] , elements);   // 这个必须要,否则多选不会生效
     groupManager.group([children[0],children[1]] , true);   // 这里设置成组
     groupManager.group([children[2],children[3]] , true);
-
+    console.log(elements,"elements");
      // 这里获取localStorage
     const copyComponentSliststr = localStorage.getItem('componentSlist');
     if (copyComponentSliststr) {
@@ -111,7 +108,7 @@ onMounted(() => {
     }
     const selectedTargets = document.getElementsByClassName("target");
     elementGuidelines.value = ['container', ...Array.from(selectedTargets)]
-
+    console.log(selectedTargets, 'selectedTargets')
 
 })
 
