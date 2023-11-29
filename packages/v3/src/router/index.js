@@ -11,7 +11,7 @@ const routes = [
   },
   {
     path:'/master',
-    // component:master
+    component:master
   },
   {
     path:'/SelectoGroup',
