@@ -91,7 +91,7 @@ const onSelectEnd = (e) => {
     //更新选中的组件id
     setTargetIds(layerIds);
     //更新图层列表状态
-    const { visible, layerInstances } = layerListStore;
+    const { visible, layerInstances } = layerListStore();
     if (visible) {
         layerIds.forEach((id) => {
             layerInstances[id]?.setState({ selected: true });

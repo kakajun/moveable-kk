@@ -456,7 +456,7 @@ export const toggleHotKeyDes = () => {
  * 切换组件库弹框
  */
 export const toggleLayer = () => {
-    const { setVisible, visible } = layerListStore;
+    const { setVisible, visible } = layerListStore();
     setVisible && setVisible(!visible);
 };
 

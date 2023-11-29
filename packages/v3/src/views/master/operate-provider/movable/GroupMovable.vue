@@ -3,7 +3,7 @@
         <Moveable ref="movableRef" :target="targets" :draggable="true" :resizable="true" :keepRatio="false"
             :maxSnapElementGuidelineDistance="300" :snappable="true" :snapGap="false" :snapThreshold="5"
             :isDisplaySnapDigit="true" :snapDirections="snapDirections"
-            :elementSnapDirections="elementSnapDirections" :ables="[dimensionViewable]" :dimensionViewable="true" :verticalGuidelines="['0', '50%', '100%']"
+            :elementSnapDirections="elementSnapDirections"  :verticalGuidelines="['0', '50%', '100%']"
             :horizontalGuidelines="['0', '50%', '100%']" :isDisplayInnerSnapDigit="true"
             :elementGuidelines="selectedTargets" :throttleDrag="rasterize ? dragStep : 1"
             :throttleResize="rasterize ? resizeStep : 1" @clickGroup="handleClickGroup" @drag="onDrag"
@@ -14,8 +14,10 @@
 
 <script setup>
 import { ref, onMounted } from 'vue';
+import designerStore from "../../store/DesignerStore.js";
 import Moveable from "../../../components/Moveable.vue";
 import eventOperateStore from "../EventOperateStore.js";
+const {canvasConfig: {rasterize, dragStep, resizeStep}} = designerStore();
 const movableRef = ref(null);
 const targets = ref([]);
 const snapDirections={
@@ -52,13 +54,13 @@ const onDrag = (e) => {
 
 const onDragStart = (e) => {
     const { target } = e;
-    const { layerConfigs } = designerStore;
+    const { layerConfigs } = designerStore();
     const { lock } = layerConfigs[target.id];
     if (lock) return false;
 };
 
 const onDragEnd = (e) => {
-    const { updateLayout } = designerStore;
+    const { updateLayout } = designerStore();
     const { backoff, setBackoff } = eventOperateStore();
     const { lastEvent, target } = e;
     if (lastEvent) {
@@ -81,7 +83,7 @@ const onDragEnd = (e) => {
 
 const onDragGroup = (e) => {
     const { targets } = e;
-    const { layerConfigs } = designerStore;
+    const { layerConfigs } = designerStore();
     const firstLock = layerConfigs[targets[0].id].lock;
     if (firstLock) return false;
     else e.events.forEach((ev) => (ev.target.style.transform = ev.transform));
@@ -89,7 +91,7 @@ const onDragGroup = (e) => {
 
 const onDragGroupEnd = (e) => {
     const { targets } = e;
-    const { updateLayout, layerConfigs } = designerStore;
+    const { updateLayout, layerConfigs } = designerStore();
     const firstLock = layerConfigs[targets[0].id].lock;
     if (firstLock) return false;
     const { backoff, setBackoff, setGroupCoordinate, groupCoordinate } = eventOperateStore();
@@ -121,7 +123,7 @@ const onDragGroupEnd = (e) => {
 
 const onResizeStart = (e) => {
     const { target } = e;
-    const { layerConfigs } = designerStore;
+    const { layerConfigs } = designerStore();
     const { lock } = layerConfigs[target.id];
     if (lock) return false;
 };
@@ -134,7 +136,7 @@ const onResize = (e) => {
 };
 
 const onResizeEnd = (e) => {
-    const { updateLayout } = designerStore;
+    const { updateLayout } = designerStore();
     const { backoff, setBackoff } = eventOperateStore();
     const { target, lastEvent } = e;
     if (lastEvent) {
@@ -157,13 +159,13 @@ const onResizeEnd = (e) => {
 
 const onResizeGroupStart = (e) => {
     const { targets } = e;
-    const { layerConfigs } = designerStore;
+    const { layerConfigs } = designerStore();
     const firstLock = layerConfigs[targets[0].id].lock;
     if (firstLock) return false;
 };
 
 const onResizeGroup = (e) => {
-    const { updateLayout } = designerStore;
+    const { updateLayout } = designerStore();
     const { backoff, setBackoff } = eventOperateStore();
     const data = [];
     e.events.forEach((ev) => {
@@ -204,7 +206,7 @@ const onResizeGroup = (e) => {
 };
 
 const onResizeGroupEnd = (e) => {
-    const { updateLayout } = designerStore;
+    const { updateLayout } = designerStore();
     const { backoff, setBackoff } = eventOperateStore();
     const data = [];
     e.events.forEach((ev) => {
