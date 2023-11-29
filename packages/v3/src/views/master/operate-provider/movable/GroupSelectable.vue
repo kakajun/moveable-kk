@@ -1,9 +1,7 @@
 <template>
-    <div>
         <Selecto ref="selectorRef" :dragContainer="'.lc-event-container'" :selectableTargets="['.lc-comp-item']"
             :hitRate="0" :selectByClick="true" :selectFromInside="false" :toggleContinueSelect="['ctrl']" :ratio="0"
             @dragStart="onDragStart" @selectEnd="onSelectEnd" />
-    </div>
 </template>
 
 <script setup>
@@ -103,6 +101,7 @@ const onSelectEnd = (e) => {
 };
 
 const onDragStart = (e) => {
+    console.log("555555555555");
     const { movableRef, targets } = eventOperateStore();
     const movable = movableRef.current;
     const target = e.inputEvent.target;

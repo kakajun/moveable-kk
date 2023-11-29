@@ -1,30 +1,15 @@
 
 <template>
-    <div>
         <Moveable ref="movableRef" :target="targets" :draggable="true" :resizable="true" :keepRatio="false"
             :maxSnapElementGuidelineDistance="300" :snappable="true" :snapGap="false" :snapThreshold="5"
-            :isDisplaySnapDigit="true" :snapDirections="{
-                top: true,
-                right: true,
-                bottom: true,
-                left: true,
-                center: true,
-                middle: true
-            }" :elementSnapDirections="{
-    top: true,
-    right: true,
-    bottom: true,
-    left: true,
-    center: true,
-    middle: true
-}" :ables="[dimensionViewable]" :dimensionViewable="true" :verticalGuidelines="['0', '50%', '100%']"
+            :isDisplaySnapDigit="true" :snapDirections="snapDirections"
+            :elementSnapDirections="elementSnapDirections" :ables="[dimensionViewable]" :dimensionViewable="true" :verticalGuidelines="['0', '50%', '100%']"
             :horizontalGuidelines="['0', '50%', '100%']" :isDisplayInnerSnapDigit="true"
             :elementGuidelines="selectedTargets" :throttleDrag="rasterize ? dragStep : 1"
             :throttleResize="rasterize ? resizeStep : 1" @clickGroup="handleClickGroup" @drag="onDrag"
             @dragStart="onDragStart" @dragEnd="onDragEnd" @dragGroup="onDragGroup" @dragGroupEnd="onDragGroupEnd"
             @resizeStart="onResizeStart" @resize="onResize" @resizeEnd="onResizeEnd" @resizeGroupStart="onResizeGroupStart"
             @resizeGroup="onResizeGroup" @resizeGroupEnd="onResizeGroupEnd" />
-    </div>
 </template>
 
 <script setup>
@@ -33,6 +18,22 @@ import Moveable from "../../../components/Moveable.vue";
 import eventOperateStore from "../EventOperateStore.js";
 const movableRef = ref(null);
 const targets = ref([]);
+const snapDirections={
+                top: true,
+                right: true,
+                bottom: true,
+                left: true,
+                center: true,
+                middle: true
+            }
+            const elementSnapDirections={
+    top: true,
+    right: true,
+    bottom: true,
+    left: true,
+    center: true,
+    middle: true
+}
 const selectedTargets = document.getElementsByClassName('lc-comp-item');
 onMounted(() => {
     const {setMovableRef} = eventOperateStore();
