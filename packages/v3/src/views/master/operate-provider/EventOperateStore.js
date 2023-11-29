@@ -48,7 +48,6 @@ export default  defineStore('eventOperateStore', {
                 target && _targets.push(target);
             });
             this.targets = _targets;
-
             // 更新图层列表状态
             const { visible, layerInstances } = layerListStore();
             if (visible) {

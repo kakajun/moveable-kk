@@ -1,6 +1,6 @@
 
 <template>
-        <Moveable ref="movableRef" :target="targetsMain" :draggable="true" :resizable="true" :keepRatio="false"
+        <Moveable ref="movableRef" :target="targets" :draggable="true" :resizable="true" :keepRatio="false"
             :maxSnapElementGuidelineDistance="300" :snappable="true" :snapGap="false" :snapThreshold="5"
             :isDisplaySnapDigit="true" :snapDirections="snapDirections"
             :elementSnapDirections="elementSnapDirections"  :verticalGuidelines="['0', '50%', '100%']"
@@ -13,13 +13,17 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted ,watch,computed} from 'vue';
 import designerStore from "../../store/DesignerStore.js";
 import Moveable from "../../../components/Moveable.vue";
 import eventOperateStore from "../EventOperateStore.js";
 const {canvasConfig: {rasterize, dragStep, resizeStep}} = designerStore();
+import { storeToRefs } from 'pinia'
 const movableRef = ref(null);
-const {selectorRef, targets:targetsMain} = eventOperateStore();
+const {selectorRef, targets} =storeToRefs(eventOperateStore()) ;
+const big=computed(()=>{
+    return targets
+})
 const snapDirections={
                 top: true,
                 right: true,
