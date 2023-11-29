@@ -123,10 +123,10 @@ class HistoryRecordOperateProxy {
                 directDelIds.forEach((id) => {
                     const {type} = layerConfigs[id];
                     if (type === 'group') {
-                        prev.push({id, data: {layerConfig: toJS(layerConfigs[id])}});
+                        prev.push({id, data: {layerConfig: {...layerConfigs[id]}}});
                     } else {
                         const elemConfig = compInstances[id] && compInstances[id].getConfig();
-                        prev.push({id, data: {layerConfig: toJS(layerConfigs[id]), elemConfig: elemConfig}});
+                        prev.push({id, data: {layerConfig: {...layerConfigs[id]}, elemConfig: elemConfig}});
                     }
                 });
                 //需要维护图层关系的数据--构建操作记录
@@ -137,20 +137,20 @@ class HistoryRecordOperateProxy {
                         const groupLayer = layerConfigs[pid];
                         if (groupLayer.childIds.length === 1 && groupLayer.childIds[0] === id) {
                             //说明该分组下只有一个图层，且本次需要删除。这种场景下，将分组图层一起删除
-                            prev.push({id: pid, data: {layerConfig: toJS(layerConfigs[pid])}});
+                            prev.push({id: pid, data: {layerConfig: {...layerConfigs[pid]}}});
                             targetIds = [...targetIds, pid];
                         } else {
                             //否则，只需要更新分组图层的childIds字段即可
-                            updPrev.push({id: pid, childIds: toJS(groupLayer.childIds)});
+                            updPrev.push({id: pid, childIds: {...groupLayer.childIds}});
                             //删除分组图层中的目标子图层
                             const oldChildIds = cloneDeep(groupLayer.childIds);
                             const newChildIds = oldChildIds.filter((cid) => cid !== id);
                             updateLayout([{id: pid, childIds: newChildIds}], false);
-                            updNext.push({id: pid, childIds: toJS(groupLayer.childIds)});
+                            updNext.push({id: pid, childIds: {...groupLayer.childIds}});
                         }
                         //构建子图层的操作记录
                         const elemConfig = compInstances[id] && compInstances[id].getConfig();
-                        prev.push({id, data: {layerConfig: toJS(layerConfigs[id]), elemConfig: elemConfig}});
+                        prev.push({id, data: {layerConfig: {...layerConfigs[id]}, elemConfig: elemConfig}});
                     }
                 );
 
@@ -167,7 +167,7 @@ class HistoryRecordOperateProxy {
                 const enforcementCap = document.querySelector('.lc-ruler-content');
                 //删除组件后，重新聚焦鼠标指针到容器上，避免鼠标失去焦点导致其他快捷键失效。
                 setPointerTarget && setPointerTarget(enforcementCap);
-                console.log(toJS(designerStore.layerConfigs));
+                console.log({...designerStore.layerConfigs});
             }
 
             _copyGroupLayer(layout, newIds, newLayouts, maxLevel) {
@@ -291,15 +291,15 @@ class HistoryRecordOperateProxy {
                         next.push({
                             id: id,
                             data: {
-                                layerConfig: toJS(newLayout),
+                                layerConfig: {...newLayout},
                             }
                         });
                     } else {
                         next.push({
                             id: id,
                             data: {
-                                layerConfig: toJS(newLayout),
-                                elemConfig: toJS(newConfig)
+                                layerConfig: {...newLayout},
+                                elemConfig: {...newConfig}
                             }
                         });
                     }
