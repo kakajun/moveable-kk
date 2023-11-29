@@ -3,7 +3,7 @@ import SelectoGroup from '../views/Selecto-group.vue'
 import SelectoMany from '../views/Selecto-many.vue'
 import master from '../views/master/master.vue'
 import SelectoSelect from '../views/Selecto-select.vue'
-
+import SelectoManySelect from   '../views/Selecto-many-select.vue'
 const routes = [
   {
     path:'/',
@@ -11,7 +11,7 @@ const routes = [
   },
   {
     path:'/master',
-    component:master
+    // component:master
   },
   {
     path:'/SelectoGroup',
@@ -21,7 +21,10 @@ const routes = [
     path:'/SelectoMany',
     component:SelectoMany
   },
-
+  {
+    path:'/Selecto-many-select',
+    component:SelectoManySelect
+  },
   {
     path:'/SelectoSelect',
     component:SelectoSelect

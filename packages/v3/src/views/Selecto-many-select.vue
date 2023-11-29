@@ -5,7 +5,10 @@
         <button @click="onClick$0">Ungroup</button>
         <button @click="print">print</button>
         <div class="container" ref="refList" style="left: 0;top: 100px;width: 500px;height: 500px;border: 1px solid #f1eeee;">
-            <show-componet :componentSlist="componentSlist" :activeItem="activeItem"></show-componet>
+            <div @click="onClickItem" @mousedown="onMouseDownItem(item)"     v-for="(item, index) in componentSlist"
+                :key="index" :class="'target ' + item.id" :id='item.id' :style="getStyle(item)">
+                {{ item.id }}
+            </div>
         </div>
         <Moveable ref="moveableRef" :target="targets" :draggable="true"  :resizable="true" :scalable="true" :rotatable="true" :zoom="0.8"
             :snappable="snappable" :isDisplaySnapDigit="isDisplaySnapDigit"
@@ -24,12 +27,11 @@
     </div>
 </template>
 <script setup>
-import Moveable from "../components/index";
+import Moveable from "./components/index";
 import { ref, onMounted,reactive  } from "vue";
-import Selecto from "../components/Selecto.vue"
+import Selecto from "./components/Selecto.vue"
 import { GroupManager } from "@moveable/helper";
 import { deepFlat } from "@daybrush/utils";
-import showComponet from './show-component.vue';
 const snappable = true;
 const isDisplaySnapDigit = true;
 const isDisplayInnerSnapDigit = false;
@@ -113,10 +115,21 @@ onMounted(() => {
 let moveItem = {}
 let groupEvent = null
 const selectByClick = ref(true);
+const onMouseDownItem = item => {
+    console.log("onMouseDownItem");
+    activeItem.value = item
+}
+const getStyle = (item) => {
+    const { width, height, rotate, transform, top, left } = item.style
+    return `width:${width}px;height:${height}px;transform:${transform};top:${top}px;left:${left}px;transform:rotate(${rotate}deg);`
+}
+const onClickItem = item => {
+    console.log("onClickItem");
+}
+
 
 // dragGroup
 const onDragGroup = (e) => {
-
     for (const target of e.targets) {
         // console.log(target.style,"target");
         // const item = Object.assign({},  activeItem.value .style)
@@ -350,7 +363,20 @@ const setSelectedTargets = (nextTargetes) => {
     margin-top: 50px;
 }
 
-
+.target {
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    top: 150px;
+    left: 100px;
+    line-height: 100px;
+    text-align: center;
+    background: #ee8;
+    color: #333;
+    font-weight: bold;
+    border: 1px solid #333;
+    box-sizing: border-box;
+}
 
 /* pos guidelines */
 .moveable-normal.pink {

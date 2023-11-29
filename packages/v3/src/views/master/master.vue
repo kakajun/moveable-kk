@@ -4,7 +4,8 @@
         &nbsp;
         <button @click="onClick$0">Ungroup</button>
         <button @click="print">print</button>
-
+<GroupMovable></GroupMovable>
+<GroupSelectable></GroupSelectable>
     </div>
 </template>
 <script setup>

@@ -35,8 +35,6 @@ const movableRef = ref(null);
 const targets = ref([]);
 const selectedTargets = document.getElementsByClassName('lc-comp-item');
 onMounted(() => {
-    // Set movable ref
-    movableRef.value = new Moveable();
 });
 
 const handleClickGroup = (e) => {

@@ -1,12 +1,11 @@
 import designerStore from "../../store/DesignerStore";
 import {historyOperator} from "./HistoryOperator";
 import eventOperateStore from "../EventOperateStore";
-import {toJS} from "mobx";
 import rightStore from "../../store/RightStore";
 import {cloneDeep} from "lodash";
 import layerListStore from "../../store/LayerListStore";
 import IdGenerate from "../../util/IdGenerate";
-import LayerUtil from "../../float-configs/layer-list/util/LayerUtil";
+import LayerUtil from "../../util/LayerUtil";
 class HistoryRecordOperateProxy {
 
      doDrag(items){
