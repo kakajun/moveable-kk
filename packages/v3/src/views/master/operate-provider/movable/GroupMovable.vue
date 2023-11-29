@@ -187,8 +187,8 @@ const onResizeGroup = (e) => {
         const { setGroupCoordinate, groupCoordinate } = eventOperateStore;
         if (direction[0] === -1 || direction[1] === -1) {
             setGroupCoordinate({
-                minX: groupCoordinate.minX! - dist[0],
-                minY: groupCoordinate.minY! - dist[1],
+                minX: groupCoordinate.minX - dist[0],
+                minY: groupCoordinate.minY- dist[1],
                 groupWidth: groupCoordinate.groupWidth + dist[0],
                 groupHeight: groupCoordinate.groupHeight + dist[1],
             });
@@ -228,8 +228,8 @@ const onResizeGroupEnd = (e) => {
         const { setGroupCoordinate, groupCoordinate } = eventOperateStore;
         if (direction[0] === -1 || direction[1] === -1) {
             setGroupCoordinate({
-                minX: groupCoordinate.minX! - dist[0],
-                minY: groupCoordinate.minY! - dist[1],
+                minX: groupCoordinate.minX - dist[0],
+                minY: groupCoordinate.minY - dist[1],
                 groupWidth: groupCoordinate.groupWidth + dist[0],
                 groupHeight: groupCoordinate.groupHeight + dist[1],
             });

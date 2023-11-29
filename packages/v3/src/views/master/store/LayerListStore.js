@@ -1,10 +1,8 @@
 import { defineStore } from 'pinia';
-import eventOperateStore from '../operate-provider/EventOperateStore';
-import { setControlPointLineColor } from '../operate-provider/movable/GroupSelectable';
 import historyRecordOperateProxy from '../operate-provider/undo-redo/HistoryRecordOperateProxy';
 import LayerUtil from '../util/LayerUtil';
 import designerStore from './DesignerStore';
-
+import eventOperateStore from '../operate-provider/EventOperateStore';
 export default defineStore('layerList', {
     state: () => ({
         visible: false,
@@ -72,6 +70,26 @@ export default defineStore('layerList', {
 
             let finalLock = layerConfigs[selectedLayerIds[0]]?.lock;
             const tempTimer = setTimeout(() => {
+                /**
+ * 设置控制点和边框的颜色
+ * @param lock 是否锁定
+ */
+function setControlPointLineColor(lock) {
+    const { targetIds } = eventOperateStore;
+    //没有选中组件的情况下不会显示边框。
+    if (targetIds.length === 0) return;
+    const pointLineDom = document.querySelectorAll('.moveable-control,.moveable-line');
+    if (!pointLineDom) return;
+    if (lock) {
+        pointLineDom.forEach((child) => {
+            child.style.backgroundColor = '#ff4b29';
+        });
+    } else {
+        pointLineDom.forEach((child) => {
+            child.style.backgroundColor = '#00bbffff';
+        });
+    }
+}
                 setControlPointLineColor(finalLock);
                 clearTimeout(tempTimer);
             }, 0);
