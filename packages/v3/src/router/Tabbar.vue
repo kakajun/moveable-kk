@@ -1,6 +1,7 @@
 <template>
   <div>
-    <router-link to="/">SelectoGroup</router-link>
+    <router-link to="/">master</router-link>
+    <router-link to="/SelectoGroup">SelectoGroup</router-link>
     <router-link to="/SelectoMany">SelectoMany</router-link>
     <router-link to="/SelectoSelectMany">SelectoSelectMany</router-link>
     <router-link to="/SelectoSelect">SelectoSelect</router-link>

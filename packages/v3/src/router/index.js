@@ -1,13 +1,17 @@
 import { createRouter,createWebHashHistory } from "vue-router";
 import SelectoGroup from '../views/Selecto-group.vue'
 import SelectoMany from '../views/Selecto-many.vue'
-import SelectoSelectMany from '../views/Selecto-select-many.vue'
+import master from '../views/master/master.vue'
 import SelectoSelect from '../views/Selecto-select.vue'
 
 const routes = [
   {
     path:'/',
-    redirect:'/SelectoGroup'
+    redirect:'/master'
+  },
+  {
+    path:'/master',
+    component:master
   },
   {
     path:'/SelectoGroup',
@@ -17,10 +21,7 @@ const routes = [
     path:'/SelectoMany',
     component:SelectoMany
   },
-  {
-    path:'/SelectoSelectMany',
-    component:SelectoSelectMany
-  },
+
   {
     path:'/SelectoSelect',
     component:SelectoSelect
