@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
 import { isEqual } from 'lodash';
 import historyRecordOperateProxy from '../operate-provider/undo-redo/HistoryRecordOperateProxy';
-import ObjectUtil from '../../utils/ObjectUtil';
+import ObjectUtil from '../util/ObjectUtil';
 
  const useDesignerStore = defineStore('designer', {
     state: () => ({

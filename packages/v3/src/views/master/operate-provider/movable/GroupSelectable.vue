@@ -9,11 +9,11 @@
 
 <script setup>
 import { ref, onMounted } from 'vue';
-import Selecto from 'react-selecto';
+import Selecto from '../../../components/Selecto.vue';
 import eventOperateStore from '../EventOperateStore';
-import designerStore from '../../store/DesignerStore';
+import designerStore from '../../store/DesignerStore.js';
 import layerListStore from '../../store/LayerListStore.js';
-import LayerUtil from '../../float-configs/layer-list/util/LayerUtil';
+import LayerUtil from '../../util/LayerUtil.js';
 
 /**
  * 设置控制点和边框的颜色

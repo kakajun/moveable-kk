@@ -1,9 +1,9 @@
 import { defineStore } from 'pinia';
-import eventOperateStore from '../../operate-provider/EventOperateStore';
-import { setControlPointLineColor } from '../../operate-provider/movable/GroupSelectable';
-import historyRecordOperateProxy from '../../operate-provider/undo-redo/HistoryRecordOperateProxy';
-import LayerUtil from './util/LayerUtil';
-import designerStore from '../../store/DesignerStore';
+import eventOperateStore from '../operate-provider/EventOperateStore';
+import { setControlPointLineColor } from '../operate-provider/movable/GroupSelectable';
+import historyRecordOperateProxy from '../operate-provider/undo-redo/HistoryRecordOperateProxy';
+import LayerUtil from '../util/LayerUtil';
+import designerStore from './DesignerStore';
 
 export default defineStore('layerList', {
     state: () => ({

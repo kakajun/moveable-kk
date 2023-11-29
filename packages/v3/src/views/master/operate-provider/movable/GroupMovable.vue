@@ -1,7 +1,6 @@
 
 <template>
     <div>
-        <slot></slot>
         <Moveable ref="movableRef" :target="targets" :draggable="true" :resizable="true" :keepRatio="false"
             :maxSnapElementGuidelineDistance="300" :snappable="true" :snapGap="false" :snapThreshold="5"
             :isDisplaySnapDigit="true" :snapDirections="{
@@ -30,7 +29,7 @@
 
 <script setup>
 import { ref, onMounted } from 'vue';
-import { Moveable } from 'moveable';
+import Moveable from "../../../components/Moveable.vue";
 import eventOperateStore from "../EventOperateStore";
 const movableRef = ref(null);
 const targets = ref([]);

@@ -556,6 +556,3 @@ class HistoryRecordOperateProxy {
 
 const historyRecordOperateProxy = new HistoryRecordOperateProxy();
 export default historyRecordOperateProxy;
-
-
-

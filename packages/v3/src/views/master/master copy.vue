@@ -4,13 +4,27 @@
         &nbsp;
         <button @click="onClick$0">Ungroup</button>
         <button @click="print">print</button>
-
+        <div class="container" ref="refList" style="left: 0;top: 100px;width: 500px;height: 500px;border: 1px solid #f1eeee;">
+            <show-componet :componentSlist="componentSlist" :activeItem="activeItem"></show-componet>
+        </div>
+        <Moveable ref="moveableRef" :target="targets" :draggable="true"  :resizable="true" :scalable="true" :rotatable="true" :zoom="0.8"
+            :snappable="snappable" :isDisplaySnapDigit="isDisplaySnapDigit"
+            :isDisplayInnerSnapDigit="isDisplayInnerSnapDigit" :snapGap="snapGap" :snapDirections="snapDirections"
+            :elementSnapDirections="elementSnapDirections" :snapThreshold="snapThreshold"
+            :maxSnapElementGuidelineDistance="maxSnapElementGuidelineDistance" :elementGuidelines="elementGuidelines"
+            @resize="onResize" @rotate="onRotate" @rotate-start="eventStart" @rotate-end="eventEnd" @scale="onScale"
+            @resize-start="resizeStart" @resize-end="resizeEnd" @dragGroupEnd="dragGroupEnd" @dragStart='onDragStart'
+            @dragEnd="onDragEnd" @changeTargets="onChangeTargets" @drag="onDrag" @snap="onSnap"
+            @clickGroup="onClickGroup" @render="onRender" @renderGroup="onRenderGroup" @drag-group-start="dragGroupStart"
+            @drag-group-end="dragGroupEnd" @drag-group="onDragGroup" />
+        <Selecto ref="selectoRef" :dragContainer="'.container'" :getElementRect="Moveable.getElementInfo"
+        :selectableTargets="['.target']" :hitRate="hitRate"
+            :selectByClick="selectByClick" :selectFromInside="selectFromInside" :toggleContinueSelect="toggleContinueSelect"
+            :ratio="ratio"   @dragStart="onDragStartSelecto" @selectEnd="onSelectEnd" />
     </div>
 </template>
 <script setup>
-import GroupMovable from './operate-provider/movable/GroupMovable.vue';
-import GroupSelectable from  './operate-provider/movable/GroupSelectable.vue';
-
+import Moveable from "../components/index";
 import { ref, onMounted,reactive  } from "vue";
 import Selecto from "../components/Selecto.vue"
 import { GroupManager } from "@moveable/helper";
