@@ -1,6 +1,6 @@
 
 <template>
-        <Moveable ref="movableRef" :target="targets" :draggable="true" :resizable="true" :keepRatio="false"
+        <Moveable ref="movableRef" :target="targetsMain" :draggable="true" :resizable="true" :keepRatio="false"
             :maxSnapElementGuidelineDistance="300" :snappable="true" :snapGap="false" :snapThreshold="5"
             :isDisplaySnapDigit="true" :snapDirections="snapDirections"
             :elementSnapDirections="elementSnapDirections"  :verticalGuidelines="['0', '50%', '100%']"
@@ -19,7 +19,7 @@ import Moveable from "../../../components/Moveable.vue";
 import eventOperateStore from "../EventOperateStore.js";
 const {canvasConfig: {rasterize, dragStep, resizeStep}} = designerStore();
 const movableRef = ref(null);
-const targets = ref([]);
+const {selectorRef, targets:targetsMain} = eventOperateStore();
 const snapDirections={
                 top: true,
                 right: true,
@@ -44,7 +44,7 @@ onMounted(() => {
 });
 
 const handleClickGroup = (e) => {
-    this.$refs.selectorRef.clickTarget(e.inputEvent, e.inputTarget);
+   selectorRef.clickTarget(e.inputEvent, e.inputTarget);
 };
 
 const onDrag = (e) => {
@@ -53,6 +53,7 @@ const onDrag = (e) => {
 };
 
 const onDragStart = (e) => {
+    alert('msg');
     const { target } = e;
     const { layerConfigs } = designerStore();
     const { lock } = layerConfigs[target.id];

@@ -100,14 +100,16 @@ const onSelectEnd = (e) => {
 
     //更新选中组件的边框颜色（锁定状态组件为红色，非锁定状态组件为蓝色）
     setControlPointLineColor(lockState);
+    console.log("selectttttttttttttttttt");
 };
 
 const onDragStart = (e) => {
-    console.log("555555555555");
+
     const { movableRef, targets } = eventOperateStore();
     const target = e.inputEvent.target;
     if (movableRef.isMoveableElement(target) || targets.some((t) => t === target || t.contains(target))) {
         e.stop();
+        console.log("stopstopstopstop");
     }
 };
 

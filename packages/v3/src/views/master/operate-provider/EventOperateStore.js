@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia';
 import layerListStore from "../store/LayerListStore";
+import designerStore from '../store/DesignerStore.js';
 export default  defineStore('eventOperateStore', {
     state: () => ({
         movableRef: '',
@@ -78,7 +79,7 @@ export default  defineStore('eventOperateStore', {
             };
         },
         calculateGroupCoordinate(compArr) {
-            const { layerConfigs } = designerStore;
+            const { layerConfigs } = designerStore();
             let groupCoordinate = {
                 minX: Infinity,
                 minY: Infinity,
