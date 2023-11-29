@@ -12,7 +12,7 @@ export class DragRollbackImpl extends AbstractRollback {
         setTargetIds(nextRecordData.ids);
         setBackoff(true);
         //执行反向操作
-        movableRef?.current?.request("draggable", {
+        movableRef?.request("draggable", {
             x: nextRecordData!.x,
             y: nextRecordData!.y,
         }, true);
@@ -28,7 +28,7 @@ export class DragRollbackImpl extends AbstractRollback {
         setTargetIds(prevRecordData.ids);
         setBackoff(true);
         //执行反向操作
-        movableRef?.current?.request("draggable", {
+        movableRef?.request("draggable", {
             x: prevRecordData!.x,
             y: prevRecordData!.y,
         }, true);

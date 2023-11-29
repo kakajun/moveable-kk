@@ -73,7 +73,7 @@ import ObjectUtil from '../util/ObjectUtil';
 
     actions: {
         doInit(store) {
-            debugger
+
             this.id = store.id ?? this.id;
             this.canvasConfig = store.canvasConfig
                 ? { ...this.canvasConfig, ...store.canvasConfig }
@@ -86,7 +86,7 @@ import ObjectUtil from '../util/ObjectUtil';
                 : this.elemConfigs;
                 console.log(store.layerConfigs,"store.layerConfigs");
             this.layerConfigs = store.layerConfigs || this.layerConfigs;
-            debugger
+
             this.statisticInfo = store.statisticInfo
                 ? { ...this.statisticInfo, ...store.statisticInfo }
                 : this.statisticInfo;

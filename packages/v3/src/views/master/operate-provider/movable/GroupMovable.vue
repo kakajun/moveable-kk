@@ -37,7 +37,8 @@ const snapDirections={
 const selectedTargets = document.getElementsByClassName('lc-comp-item');
 onMounted(() => {
     const {setMovableRef} = eventOperateStore();
-        setMovableRef(movableRef);
+    console.log(movableRef,"movableRef");
+        setMovableRef(movableRef.value);
 });
 
 const handleClickGroup = (e) => {

@@ -1,12 +1,10 @@
 import { defineStore } from 'pinia';
-import { ref } from 'vue';
-
 export default  defineStore('eventOperateStore', {
     state: () => ({
-        movableRef: ref(null),
-        selectorRef: ref(null),
-        rulerRef: ref(null),
-        dsContentRef: ref(null),
+        movableRef: '',
+        selectorRef: '',
+        rulerRef: '',
+        dsContentRef:'',
         targets: [],
         targetIds: [],
         maxLevel: 0,
@@ -28,16 +26,16 @@ export default  defineStore('eventOperateStore', {
 
     actions: {
         setMovableRef(ref) {
-            this.movableRef.value = ref;
+            this.movableRef = ref;
         },
         setSelectorRef(ref) {
-            this.selectorRef.value = ref;
+            this.selectorRef = ref;
         },
         setRuleRef(ref) {
-            this.rulerRef.value = ref;
+            this.rulerRef = ref;
         },
         setDsContentRef(ref) {
-            this.dsContentRef.value = ref;
+            this.dsContentRef = ref;
         },
         setTargetIds(ids) {
             const oldTargetIds = [...this.targetIds];

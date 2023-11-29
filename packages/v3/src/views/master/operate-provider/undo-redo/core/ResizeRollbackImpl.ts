@@ -12,7 +12,7 @@ export class ResizeRollbackImpl extends AbstractRollback {
         setTargetIds(nextResizeData.ids);
         setBackoff(true);
         //执行反向操作
-        movableRef?.current?.request("resizable", {
+        movableRef?.request("resizable", {
             offsetWidth: nextResizeData!.width,
             offsetHeight: nextResizeData!.height,
             direction: nextResizeData!.direction,
@@ -28,7 +28,7 @@ export class ResizeRollbackImpl extends AbstractRollback {
         setTargetIds(prevResizeData.ids);
         setBackoff(true);
         //执行反向操作
-        movableRef?.current?.request("resizable", {
+        movableRef?.request("resizable", {
             offsetWidth: prevResizeData!.width,
             offsetHeight: prevResizeData!.height,
             direction: prevResizeData!.direction,

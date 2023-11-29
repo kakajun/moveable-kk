@@ -37,14 +37,15 @@ const selectorRef = ref(null);
 
 onMounted(() => {
     const { setSelectorRef } = eventOperateStore();
-    setSelectorRef(selectorRef);
+    setSelectorRef(selectorRef.value);
 });
 
 const onSelectEnd = (e) => {
     let { selected } = e;
+    debugger
     const { movableRef, setTargetIds } = eventOperateStore();
     if (!movableRef) return;
-    const movable = movableRef.current;
+    const movable = movableRef;
     //如果为拖拽，则将当前的整个dom事件传递给movable，确保选中元素后可以立马拖拽
     if (e.isDragStart) {
         e.inputEvent.preventDefault();
@@ -54,9 +55,10 @@ const onSelectEnd = (e) => {
         });
     }
 
-    const { layerConfigs } = designerStore;
+    const { layerConfigs } = designerStore();
     let layerIds = selected.map((item) => item.id);
-    let lockState = !!layerConfigs[layerIds[0]]?.lock;
+    // let lockState = !!layerConfigs[layerIds[0]]?.lock;
+    let lockState =false
     if (layerIds.length === 1) {
         //点选
         const pid = layerConfigs[layerIds[0]].pid;
@@ -103,9 +105,8 @@ const onSelectEnd = (e) => {
 const onDragStart = (e) => {
     console.log("555555555555");
     const { movableRef, targets } = eventOperateStore();
-    const movable = movableRef.current;
     const target = e.inputEvent.target;
-    if (movable.isMoveableElement(target) || targets.some((t) => t === target || t.contains(target))) {
+    if (movableRef.isMoveableElement(target) || targets.some((t) => t === target || t.contains(target))) {
         e.stop();
     }
 };

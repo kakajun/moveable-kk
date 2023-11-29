@@ -180,10 +180,10 @@ export const doMoveUp = () => {
     if (targets.length === 1) {
         let id = targets[0].id;
         let yPos = layerConfigs[id].position[1] - dragStep;
-        movableRef?.current?.request("draggable", { y: yPos }, true);
+        movableRef?.request("draggable", { y: yPos }, true);
     } else {
         const yPos = groupCoordinate.minY - dragStep;
-        movableRef?.current?.request("draggable", { y: yPos }, true);
+        movableRef?.request("draggable", { y: yPos }, true);
     }
 };
 
@@ -194,10 +194,10 @@ export const doMoveDown = () => {
     if (targets.length === 1) {
         let id = targets[0].id;
         let yPos = layerConfigs[id].position[1] + dragStep;
-        movableRef?.current?.request("draggable", { y: yPos }, true);
+        movableRef?.request("draggable", { y: yPos }, true);
     } else {
         const yPos = groupCoordinate.minY + dragStep;
-        movableRef?.current?.request("draggable", { y: yPos }, true);
+        movableRef?.request("draggable", { y: yPos }, true);
     }
 };
 
@@ -208,10 +208,10 @@ export const doMoveLeft = () => {
     if (targets.length === 1) {
         let id = targets[0].id;
         let xPos = layerConfigs[id].position[0];
-        movableRef?.current?.request("draggable", { x: xPos - dragStep }, true);
+        movableRef?.request("draggable", { x: xPos - dragStep }, true);
     } else {
         const xPos = groupCoordinate.minX - dragStep;
-        movableRef?.current?.request("draggable", { x: xPos }, true);
+        movableRef?.request("draggable", { x: xPos }, true);
     }
 };
 
@@ -222,10 +222,10 @@ export const doMoveRight = () => {
     if (targets.length === 1) {
         let id = targets[0].id;
         let xPos = layerConfigs[id].position[0];
-        movableRef?.current?.request("draggable", { x: xPos + dragStep }, true);
+        movableRef?.request("draggable", { x: xPos + dragStep }, true);
     } else {
         const xPos = groupCoordinate.minX + dragStep;
-        movableRef?.current?.request("draggable", { x: xPos }, true);
+        movableRef?.request("draggable", { x: xPos }, true);
     }
 };
 
@@ -245,7 +245,7 @@ export const doBaseBottomEnlargeUp = () => {
     } else {
         height = groupCoordinate.groupHeight + resizeStep;
     }
-    movableRef?.current?.request("resizable", { offsetHeight: height, direction: [1, -1] }, true);
+    movableRef?.request("resizable", { offsetHeight: height, direction: [1, -1] }, true);
 };
 
 /**
@@ -262,7 +262,7 @@ export const doBaseUpEnlargeDown = () => {
     } else {
         height = groupCoordinate.groupHeight + resizeStep;
     }
-    movableRef?.current?.request("resizable", { offsetHeight: height, direction: [1, 1] }, true);
+    movableRef?.request("resizable", { offsetHeight: height, direction: [1, 1] }, true);
 };
 
 /**
@@ -279,7 +279,7 @@ export const doBaseRightEnlargeLeft = () => {
     } else {
         width = groupCoordinate.groupWidth + resizeStep;
     }
-    movableRef?.current?.request("resizable", { offsetWidth: width, direction: [-1, 1] }, true);
+    movableRef?.request("resizable", { offsetWidth: width, direction: [-1, 1] }, true);
 };
 
 /**
@@ -296,7 +296,7 @@ export const doBaseLeftEnlargeRight = () => {
     } else {
         width = groupCoordinate.groupWidth + resizeStep;
     }
-    movableRef?.current?.request("resizable", { offsetWidth: width, direction: [1, 1] }, true);
+    movableRef?.request("resizable", { offsetWidth: width, direction: [1, 1] }, true);
 };
 
 
@@ -313,7 +313,7 @@ export const doBaseBottomDecreaseUp = () => {
     } else {
         height = groupCoordinate.groupHeight - resizeStep;
     }
-    movableRef?.current?.request("resizable", { offsetHeight: height, direction: [1, -1] }, true);
+    movableRef?.request("resizable", { offsetHeight: height, direction: [1, -1] }, true);
 };
 
 /**
@@ -330,7 +330,7 @@ export const doBaseUpDecreaseDown = () => {
     } else {
         height = groupCoordinate.groupHeight - resizeStep;
     }
-    movableRef?.current?.request("resizable", { offsetHeight: height, direction: [1, 1] }, true);
+    movableRef?.request("resizable", { offsetHeight: height, direction: [1, 1] }, true);
 };
 
 /**
@@ -347,7 +347,7 @@ export const doBaseRightDecreaseLeft = () => {
     } else {
         width = groupCoordinate.groupWidth - resizeStep;
     }
-    movableRef?.current?.request("resizable", { offsetWidth: width, direction: [-1, 1] }, true);
+    movableRef?.request("resizable", { offsetWidth: width, direction: [-1, 1] }, true);
 };
 
 /**
@@ -364,7 +364,7 @@ export const doBaseLeftDecreaseRight = () => {
     } else {
         width = groupCoordinate.groupWidth - resizeStep;
     }
-    movableRef?.current?.request("resizable", { offsetWidth: width, direction: [1, 1] }, true);
+    movableRef?.request("resizable", { offsetWidth: width, direction: [1, 1] }, true);
 };
 
 

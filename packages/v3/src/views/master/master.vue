@@ -7,6 +7,8 @@
             <ComponentContainer v-if="item.type !== 'group'" :layer="item"/>
         </div>
     </div>
+<GroupMovable></GroupMovable>
+<GroupSelectable></GroupSelectable>
 </template>
 
 <script setup>
@@ -15,6 +17,8 @@ import ComponentContainer from './ComponentContainer.vue';
 import { cloneDeep } from "lodash";
 import { onMounted, ref } from 'vue';
 import designerStore from "./store/DesignerStore.js";
+import GroupMovable from './operate-provider/movable/GroupMovable.vue';
+import GroupSelectable from './operate-provider/movable/GroupSelectable.vue';
 import eventOperateStore from "./operate-provider/EventOperateStore.js";
 import { storeToRefs } from 'pinia'
 const { getlayerConfigs } = storeToRefs(designerStore())
