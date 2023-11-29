@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia';
+import layerListStore from "../store/LayerListStore";
 export default  defineStore('eventOperateStore', {
     state: () => ({
         movableRef: '',
@@ -48,7 +49,7 @@ export default  defineStore('eventOperateStore', {
             this.targets = _targets;
 
             // 更新图层列表状态
-            const { visible, layerInstances } = layerListStore;
+            const { visible, layerInstances } = layerListStore();
             if (visible) {
                 // 清除之前的选中
                 oldTargetIds.forEach((id) => {

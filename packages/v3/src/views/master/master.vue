@@ -1,14 +1,16 @@
 <template>
-    <div class='lc-event-container'>
-        <div   v-for="item of  layerData" :key="item.id">
-            <div v-if="item.type === 'group'" :key="item.id" class='component-group'>
-                <ComponentContainer v-for="o of item.children" :layer="o"></ComponentContainer>
+    <div class="warapper">
+        <div class='lc-event-container'>
+            <div v-for="item of  layerData" :key="item.id">
+                <div v-if="item.type === 'group'" :key="item.id" class='component-group'>
+                    <ComponentContainer v-for="o of item.children" :layer="o"></ComponentContainer>
+                </div>
+                <ComponentContainer v-if="item.type !== 'group'" :layer="item" />
             </div>
-            <ComponentContainer v-if="item.type !== 'group'" :layer="item"/>
         </div>
+        <GroupMovable></GroupMovable>
+        <GroupSelectable></GroupSelectable>
     </div>
-<GroupMovable></GroupMovable>
-<GroupSelectable></GroupSelectable>
 </template>
 
 <script setup>
@@ -27,7 +29,7 @@ onMounted(() => {
     console.log(getlayerConfigs.value, "getlayerConfigs");
     initExistProject()
     layerData.value = parser(getlayerConfigs.value)
-    console.log(layerData.value,"layerData");
+    console.log(layerData.value, "layerData");
 })
 /**
  * 解析函数
@@ -100,7 +102,7 @@ const initExistProject = () => {
 </script>
 
 <style  lang='less' scoped>
-.warapper{
+.warapper {
     position: relative;
 }
 </style>

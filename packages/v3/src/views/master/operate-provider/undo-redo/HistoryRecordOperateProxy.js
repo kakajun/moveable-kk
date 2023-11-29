@@ -10,7 +10,7 @@ class HistoryRecordOperateProxy {
 
      doDrag(items){
         //构建历史记录数据
-        const {layerConfigs, updateLayout} = designerStore;
+        const {layerConfigs, updateLayout} = designerStore();
         const ids = [];
         let prev;
         let next;
@@ -51,7 +51,7 @@ class HistoryRecordOperateProxy {
 
      doResize(items, direction) {
         //构建历史记录数据
-        const {layerConfigs, updateLayout} = designerStore;
+        const {layerConfigs, updateLayout} = designerStore();
         const ids= [];
         let prev;
         let next;
@@ -96,9 +96,9 @@ class HistoryRecordOperateProxy {
 
             doDelete() {
                 let {targetIds, setTargetIds} = eventOperateStore();
-                const {delItem, layerConfigs, compInstances, updateLayout} = designerStore;
+                const {delItem, layerConfigs, compInstances, updateLayout} = designerStore();
                 if (!targetIds || targetIds.length === 0) return;
-                const {setContentVisible, activeConfig} = rightStore;
+                const {setContentVisible, activeConfig} = rightStore();
                 setContentVisible(false);
                 activeConfig(null, "");
 
@@ -166,11 +166,11 @@ class HistoryRecordOperateProxy {
                 const enforcementCap = document.querySelector('.lc-ruler-content');
                 //删除组件后，重新聚焦鼠标指针到容器上，避免鼠标失去焦点导致其他快捷键失效。
                 setPointerTarget && setPointerTarget(enforcementCap);
-                console.log({...designerStore.layerConfigs});
+                console.log({...designerStore().layerConfigs});
             }
 
             _copyGroupLayer(layout, newIds, newLayouts, maxLevel) {
-                const {layerConfigs} = designerStore;
+                const {layerConfigs} = designerStore();
                 //生成新id
                 const newId = IdGenerate.generateId();
                 newIds.push(newId);
@@ -185,7 +185,7 @@ class HistoryRecordOperateProxy {
             }
 
             _copyNormalLayer(layout, newLayouts, maxLevel, newIds) {
-                const {layerConfigs, compInstances, elemConfigs} = designerStore;
+                const {layerConfigs, compInstances, elemConfigs} = designerStore();
                 //生成新id
                 const newId = IdGenerate.generateId();
                 //生成新布局
@@ -213,7 +213,7 @@ class HistoryRecordOperateProxy {
              */
             doCopy(ids) {
                 let newIds = [];
-                const {layerConfigs, elemConfigs} = designerStore;
+                const {layerConfigs, elemConfigs} = designerStore();
                 let {maxLevel, setMaxLevel} = eventOperateStore();
                 //next用于保存操作记录的下一个状态
                 const next = [];
@@ -317,7 +317,7 @@ class HistoryRecordOperateProxy {
      doHideUpd(items) {
         let prev = [];
         let next = [];
-        const { layerConfigs, updateLayout } = designerStore;
+        const { layerConfigs, updateLayout } = designerStore();
         items.forEach((item) => {
             const { id, hide } = item;
             next.push({ id: id, hide: hide });
@@ -331,7 +331,7 @@ class HistoryRecordOperateProxy {
         //取消所有选中状态
         const { setTargetIds } = eventOperateStore();
         setTargetIds([]);
-        const { layerInstances, visible } = layerListStore;
+        const { layerInstances, visible } = layerListStore();
         if (visible) {
             //更新图层列表
             items.forEach((item) => {
@@ -343,7 +343,7 @@ class HistoryRecordOperateProxy {
      doLockUpd(items) {
         let prev = [];
         let next = [];
-        const { layerConfigs, updateLayout } = designerStore;
+        const { layerConfigs, updateLayout } = designerStore();
         items.forEach((item) => {
             const { id, lock } = item;
             next.push({ id: id, lock: lock });
@@ -353,7 +353,7 @@ class HistoryRecordOperateProxy {
         const data = { type: 'OperateType.LOCK', prev: prev, next: next };
         historyOperator.put({ actions: [data] });
         updateLayout(items);
-        const { layerInstances, visible } = layerListStore;
+        const { layerInstances, visible } = layerListStore();
         if (visible) {
             //更新图层列表
             items.forEach((item) => {
@@ -365,7 +365,7 @@ class HistoryRecordOperateProxy {
      doOrderUpd(items) {
         let prev = [];
         let next = [];
-        const { layerConfigs, updateLayout } = designerStore;
+        const { layerConfigs, updateLayout } = designerStore();
         items.forEach((item) => {
             const { id, order } = item;
             next.push({ id: id, order: order });
@@ -378,7 +378,7 @@ class HistoryRecordOperateProxy {
     }
 
      doStyleUpd(newData, oldData) {
-        const { id } = rightStore.activeElem;
+        const { id } = rightStore().activeElem;
         const record = {
             type: 'OperateType.UPD_STYLE',
             prev: { id: id, data: oldData },
@@ -394,7 +394,7 @@ class HistoryRecordOperateProxy {
         //查找当前选中的图层的所有父级图层
         const layerIdSet = LayerUtil.findTopGroupLayer(targetIds, true);
         //新建编组
-        const { addItem, updateLayout, layerConfigs } = designerStore;
+        const { addItem, updateLayout, layerConfigs } = designerStore();
         const order = maxLevel + 1;
         const pid = IdGenerate.generateId();
         const childIds = Array.from(layerIdSet);
@@ -444,7 +444,7 @@ class HistoryRecordOperateProxy {
         historyOperator.put({ actions });
         //特殊场景处理，如果编组时，所有的子图层都处于锁定状态，则编组后，编组图层也处于锁定状态
         if (allLock) {
-            const { layerInstances } = layerListStore;
+            const { layerInstances } = layerListStore();
             const groupTimer = setTimeout(() => {
                 layerInstances[pid].setState({ lock: true });
                 clearTimeout(groupTimer);
@@ -457,7 +457,7 @@ class HistoryRecordOperateProxy {
         //找出当前选中的图层中，最顶层的分组图层
         let groupIds = LayerUtil.findTopGroupLayer(targetIds, true);
         //过滤掉其中分组等于自身的图层（即非分组图层）
-        const { layerConfigs, updateLayout, delLayout } = designerStore;
+        const { layerConfigs, updateLayout, delLayout } = designerStore();
         groupIds = groupIds.filter((id) => layerConfigs[id].type === 'group');
         //对每个分组图层进行解组
         const actions = [];

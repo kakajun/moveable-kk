@@ -12,7 +12,7 @@ export default class LayerUtil {
      */
     static findPathGroupLayer(layerIds) {
         const groupLayerIdSet = new Set();
-        const {layerConfigs} = designerStore;
+        const {layerConfigs} = designerStore();
         layerIds.forEach((id) => {
             const layer = layerConfigs[id];
             if (layer.type === 'group')
@@ -40,7 +40,7 @@ export default class LayerUtil {
     static findTopGroupLayer(layerIds, hasSelf = false) {
         //使用set数据结构去重，多个不同的组件可能存在同一个分组内
         const groupLayerIdSet = new Set();
-        const {layerConfigs} = designerStore;
+        const {layerConfigs} = designerStore();
         layerIds.forEach((id) => {
             let _id = id;
             let _pid = layerConfigs[id]?.pid;
@@ -78,7 +78,7 @@ export default class LayerUtil {
     }
 
     static _findAllChildLayer(groupLayerIds, res) {
-        const {layerConfigs} = designerStore;
+        const {layerConfigs} = designerStore();
         groupLayerIds.forEach((id) => {
             if (layerConfigs[id]) {
                 let {childIds} = layerConfigs[id];
@@ -98,7 +98,7 @@ export default class LayerUtil {
      */
     static hasSameGroup(layerIds) {
         if (layerIds.length <= 1) return false;
-        const {layerConfigs} = designerStore;
+        const {layerConfigs} = designerStore();
         //如果layerIds中存在没有pid的图层，则说明这个图层一定没有编组，则直接返回false，说明本次可以编组
         if (layerIds.some((id) => layerConfigs[id].type !== 'group' && !layerConfigs[id].pid)) return false;
         const groupLayerIds = new Set();

@@ -57,8 +57,8 @@ const onSelectEnd = (e) => {
 
     const { layerConfigs } = designerStore();
     let layerIds = selected.map((item) => item.id);
-    // let lockState = !!layerConfigs[layerIds[0]]?.lock;
-    let lockState =false
+    let lockState = !!layerConfigs[layerIds[0]]?.lock;
+    // let lockState =false
     if (layerIds.length === 1) {
         //点选
         const pid = layerConfigs[layerIds[0]].pid;
