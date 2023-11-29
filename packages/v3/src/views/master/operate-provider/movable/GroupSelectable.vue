@@ -1,6 +1,5 @@
 <template>
     <div>
-        <!-- Your existing JSX code here -->
         <Selecto ref="selectorRef" :dragContainer="'.lc-event-container'" :selectableTargets="['.lc-comp-item']"
             :hitRate="0" :selectByClick="true" :selectFromInside="false" :toggleContinueSelect="['ctrl']" :ratio="0"
             @dragStart="onDragStart" @selectEnd="onSelectEnd" />
@@ -10,7 +9,7 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import Selecto from '../../../components/Selecto.vue';
-import eventOperateStore from '../EventOperateStore';
+import eventOperateStore from '../EventOperateStore.js';
 import designerStore from '../../store/DesignerStore.js';
 import layerListStore from '../../store/LayerListStore.js';
 import LayerUtil from '../../util/LayerUtil.js';
@@ -20,7 +19,7 @@ import LayerUtil from '../../util/LayerUtil.js';
  * @param lock 是否锁定
  */
 function setControlPointLineColor(lock) {
-    const { targetIds } = eventOperateStore;
+    const { targetIds } = eventOperateStore();
     //没有选中组件的情况下不会显示边框。
     if (targetIds.length === 0) return;
     const pointLineDom = document.querySelectorAll('.moveable-control,.moveable-line');
@@ -39,13 +38,13 @@ function setControlPointLineColor(lock) {
 const selectorRef = ref(null);
 
 onMounted(() => {
-    const { setSelectorRef } = eventOperateStore;
+    const { setSelectorRef } = eventOperateStore();
     setSelectorRef(selectorRef);
 });
 
 const onSelectEnd = (e) => {
     let { selected } = e;
-    const { movableRef, setTargetIds } = eventOperateStore;
+    const { movableRef, setTargetIds } = eventOperateStore();
     if (!movableRef) return;
     const movable = movableRef.current;
     //如果为拖拽，则将当前的整个dom事件传递给movable，确保选中元素后可以立马拖拽
@@ -104,7 +103,7 @@ const onSelectEnd = (e) => {
 };
 
 const onDragStart = (e) => {
-    const { movableRef, targets } = eventOperateStore;
+    const { movableRef, targets } = eventOperateStore();
     const movable = movableRef.current;
     const target = e.inputEvent.target;
     if (movable.isMoveableElement(target) || targets.some((t) => t === target || t.contains(target))) {

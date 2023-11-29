@@ -75,7 +75,7 @@ export default defineStore('layerList', {
  * @param lock 是否锁定
  */
 function setControlPointLineColor(lock) {
-    const { targetIds } = eventOperateStore;
+    const { targetIds } = eventOperateStore();
     //没有选中组件的情况下不会显示边框。
     if (targetIds.length === 0) return;
     const pointLineDom = document.querySelectorAll('.moveable-control,.moveable-line');

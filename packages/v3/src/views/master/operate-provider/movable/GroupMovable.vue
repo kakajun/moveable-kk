@@ -30,11 +30,13 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import Moveable from "../../../components/Moveable.vue";
-import eventOperateStore from "../EventOperateStore";
+import eventOperateStore from "../EventOperateStore.js";
 const movableRef = ref(null);
 const targets = ref([]);
 const selectedTargets = document.getElementsByClassName('lc-comp-item');
 onMounted(() => {
+    const {setMovableRef} = eventOperateStore();
+        setMovableRef(movableRef);
 });
 
 const handleClickGroup = (e) => {
@@ -55,7 +57,7 @@ const onDragStart = (e) => {
 
 const onDragEnd = (e) => {
     const { updateLayout } = designerStore;
-    const { backoff, setBackoff } = eventOperateStore;
+    const { backoff, setBackoff } = eventOperateStore();
     const { lastEvent, target } = e;
     if (lastEvent) {
         const { beforeTranslate } = lastEvent;
@@ -88,7 +90,7 @@ const onDragGroupEnd = (e) => {
     const { updateLayout, layerConfigs } = designerStore;
     const firstLock = layerConfigs[targets[0].id].lock;
     if (firstLock) return false;
-    const { backoff, setBackoff, setGroupCoordinate, groupCoordinate } = eventOperateStore;
+    const { backoff, setBackoff, setGroupCoordinate, groupCoordinate } = eventOperateStore();
     const data = [];
     e.events.forEach((ev) => {
         const { target, lastEvent } = ev;
@@ -131,7 +133,7 @@ const onResize = (e) => {
 
 const onResizeEnd = (e) => {
     const { updateLayout } = designerStore;
-    const { backoff, setBackoff } = eventOperateStore;
+    const { backoff, setBackoff } = eventOperateStore();
     const { target, lastEvent } = e;
     if (lastEvent) {
         const { width, height, drag: { translate }, direction } = lastEvent;
@@ -160,7 +162,7 @@ const onResizeGroupStart = (e) => {
 
 const onResizeGroup = (e) => {
     const { updateLayout } = designerStore;
-    const { backoff, setBackoff } = eventOperateStore;
+    const { backoff, setBackoff } = eventOperateStore();
     const data = [];
     e.events.forEach((ev) => {
         const { target, lastEvent } = ev;
@@ -182,7 +184,7 @@ const onResizeGroup = (e) => {
             updateLayout(data, false);
             setBackoff(false);
         } else historyRecordOperateProxy.doResize(data, direction);
-        const { setGroupCoordinate, groupCoordinate } = eventOperateStore;
+        const { setGroupCoordinate, groupCoordinate } = eventOperateStore();
         if (direction[0] === -1 || direction[1] === -1) {
             setGroupCoordinate({
                 minX: groupCoordinate.minX - dist[0],
@@ -201,7 +203,7 @@ const onResizeGroup = (e) => {
 
 const onResizeGroupEnd = (e) => {
     const { updateLayout } = designerStore;
-    const { backoff, setBackoff } = eventOperateStore;
+    const { backoff, setBackoff } = eventOperateStore();
     const data = [];
     e.events.forEach((ev) => {
         const { target, lastEvent } = ev;
@@ -223,7 +225,7 @@ const onResizeGroupEnd = (e) => {
             updateLayout(data, false);
             setBackoff(false);
         } else historyRecordOperateProxy.doResize(data, direction);
-        const { setGroupCoordinate, groupCoordinate } = eventOperateStore;
+        const { setGroupCoordinate, groupCoordinate } = eventOperateStore();
         if (direction[0] === -1 || direction[1] === -1) {
             setGroupCoordinate({
                 minX: groupCoordinate.minX - dist[0],

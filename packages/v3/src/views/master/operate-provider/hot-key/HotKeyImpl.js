@@ -17,7 +17,7 @@ import DesignerLoaderFactory from "../../loader/DesignerLoaderFactory";
 import { ElMessage } from 'element-plus'
 export const selectAll = () => {
     const { layerConfigs } = designerStore;
-    const { setTargetIds, calculateGroupCoordinate } = eventOperateStore;
+    const { setTargetIds, calculateGroupCoordinate } = eventOperateStore();
     const selected = Object.values(layerConfigs).map((item) => {
         if (!item.lock && !item.hide)
             return item.id;
@@ -32,7 +32,7 @@ export const selectAll = () => {
  * 普通复制，只复制非分组图层
  */
 export const doCopy = () => {
-    let { targetIds, setTargetIds } = eventOperateStore;
+    let { targetIds, setTargetIds } = eventOperateStore();
     if (!targetIds || targetIds.length === 0) return;
 
     const { copyItem } = designerStore;
@@ -42,7 +42,7 @@ export const doCopy = () => {
 }
 
 export const doLock = () => {
-    const { targetIds, setTargetIds } = eventOperateStore;
+    const { targetIds, setTargetIds } = eventOperateStore();
     if (!targetIds || targetIds.length === 0) return;
     const { layerConfigs } = designerStore;
     let toBeUpdate = [];
@@ -56,7 +56,7 @@ export const doLock = () => {
 }
 
 export const doUnLock = () => {
-    const { setTargetIds, targetIds } = eventOperateStore;
+    const { setTargetIds, targetIds } = eventOperateStore();
     if (!targetIds || targetIds.length === 0) return;
     const { layerConfigs } = designerStore;
     let toUpdate = [];
@@ -71,7 +71,7 @@ export const doUnLock = () => {
 }
 
 export const toTop = () => {
-    let { maxLevel, setMaxLevel, targetIds } = eventOperateStore;
+    let { maxLevel, setMaxLevel, targetIds } = eventOperateStore();
     if (!targetIds || targetIds.length === 0) return;
     const { layerConfigs } = designerStore;
     let toBeUpdate = [];
@@ -84,7 +84,7 @@ export const toTop = () => {
 }
 
 export const toBottom = () => {
-    let { minLevel, setMinLevel, targetIds } = eventOperateStore;
+    let { minLevel, setMinLevel, targetIds } = eventOperateStore();
     if (!targetIds || targetIds.length === 0) return;
     const { layerConfigs } = designerStore;
     let toBeUpdate = [];
@@ -99,7 +99,7 @@ export const toBottom = () => {
 export const doDelete = () => {
     //todo 考虑这段逻辑是否可以独立？
     //如果蓝图中使用了当前要被删除的组件，则需要先删除蓝图中的组件和连线，且蓝图中的删除操作目前无法回退
-    const { targetIds } = eventOperateStore;
+    const { targetIds } = eventOperateStore();
     if (targetIds && targetIds.length > 0) {
         const { delNode, bpNodeLayoutMap } = bpStore;
         const preDelNodeIds = [];
@@ -144,7 +144,7 @@ export const doSave = throttle(() => {
 }, 5000);
 
 export const doHide = () => {
-    const { targetIds, setTargetIds } = eventOperateStore;
+    const { targetIds, setTargetIds } = eventOperateStore();
     if (!targetIds || targetIds.length === 0) return;
     const { layerConfigs } = designerStore;
     let toBeUpdate = [];
@@ -174,7 +174,7 @@ export const doUnGrouping = () => {
 /*************************快捷键控制移动组件的位置*************************/
 
 export const doMoveUp = () => {
-    const { targets, movableRef, groupCoordinate } = eventOperateStore;
+    const { targets, movableRef, groupCoordinate } = eventOperateStore();
     if (!targets || targets.length === 0) return;
     const { layerConfigs, canvasConfig: { dragStep = 1 } } = designerStore;
     if (targets.length === 1) {
@@ -188,7 +188,7 @@ export const doMoveUp = () => {
 };
 
 export const doMoveDown = () => {
-    const { targets, movableRef, groupCoordinate } = eventOperateStore;
+    const { targets, movableRef, groupCoordinate } = eventOperateStore();
     if (!targets || targets.length === 0) return;
     const { layerConfigs, canvasConfig: { dragStep = 1 } } = designerStore;
     if (targets.length === 1) {
@@ -202,7 +202,7 @@ export const doMoveDown = () => {
 };
 
 export const doMoveLeft = () => {
-    const { targets, movableRef, groupCoordinate } = eventOperateStore;
+    const { targets, movableRef, groupCoordinate } = eventOperateStore();
     if (!targets || targets.length === 0) return;
     const { layerConfigs, canvasConfig: { dragStep = 1 } } = designerStore;
     if (targets.length === 1) {
@@ -216,7 +216,7 @@ export const doMoveLeft = () => {
 };
 
 export const doMoveRight = () => {
-    const { targets, movableRef, groupCoordinate } = eventOperateStore;
+    const { targets, movableRef, groupCoordinate } = eventOperateStore();
     if (!targets || targets.length === 0) return;
     const { layerConfigs, canvasConfig: { dragStep = 1 } } = designerStore;
     if (targets.length === 1) {
@@ -235,7 +235,7 @@ export const doMoveRight = () => {
  * 以底部为基准向上扩大
  */
 export const doBaseBottomEnlargeUp = () => {
-    const { targets, movableRef, groupCoordinate } = eventOperateStore;
+    const { targets, movableRef, groupCoordinate } = eventOperateStore();
     if (!targets || targets.length === 0) return;
     const { layerConfigs, canvasConfig: { resizeStep = 1 } } = designerStore;
     let height;
@@ -252,7 +252,7 @@ export const doBaseBottomEnlargeUp = () => {
  * 以顶部为基准向下扩大
  */
 export const doBaseUpEnlargeDown = () => {
-    const { targets, movableRef, groupCoordinate } = eventOperateStore;
+    const { targets, movableRef, groupCoordinate } = eventOperateStore();
     if (!targets || targets.length === 0) return;
     const { layerConfigs, canvasConfig: { resizeStep = 1 } } = designerStore;
     let height;
@@ -269,7 +269,7 @@ export const doBaseUpEnlargeDown = () => {
  * 以右边为基准向左扩大
  */
 export const doBaseRightEnlargeLeft = () => {
-    const { targets, movableRef, groupCoordinate } = eventOperateStore;
+    const { targets, movableRef, groupCoordinate } = eventOperateStore();
     if (!targets || targets.length === 0) return;
     const { layerConfigs, canvasConfig: { resizeStep = 1 } } = designerStore;
     let width;
@@ -286,7 +286,7 @@ export const doBaseRightEnlargeLeft = () => {
  * 以左边为基准向右扩大
  */
 export const doBaseLeftEnlargeRight = () => {
-    const { targets, movableRef, groupCoordinate } = eventOperateStore;
+    const { targets, movableRef, groupCoordinate } = eventOperateStore();
     if (!targets || targets.length === 0) return;
     const { layerConfigs, canvasConfig: { resizeStep = 1 } } = designerStore;
     let width;
@@ -304,7 +304,7 @@ export const doBaseLeftEnlargeRight = () => {
  * 以底部为基准向上缩小
  */
 export const doBaseBottomDecreaseUp = () => {
-    const { targets, movableRef, groupCoordinate } = eventOperateStore;
+    const { targets, movableRef, groupCoordinate } = eventOperateStore();
     if (!targets || targets.length === 0) return;
     const { layerConfigs, canvasConfig: { resizeStep = 1 } } = designerStore;
     let height;
@@ -320,7 +320,7 @@ export const doBaseBottomDecreaseUp = () => {
  * 以顶部为基准向下缩小
  */
 export const doBaseUpDecreaseDown = () => {
-    const { targets, movableRef, groupCoordinate } = eventOperateStore;
+    const { targets, movableRef, groupCoordinate } = eventOperateStore();
     if (!targets || targets.length === 0) return;
     const { layerConfigs, canvasConfig: { resizeStep = 1 } } = designerStore;
     let height;
@@ -337,7 +337,7 @@ export const doBaseUpDecreaseDown = () => {
  * 以右边为基准向左缩小
  */
 export const doBaseRightDecreaseLeft = () => {
-    const { targets, movableRef, groupCoordinate } = eventOperateStore;
+    const { targets, movableRef, groupCoordinate } = eventOperateStore();
     if (!targets || targets.length === 0) return;
     const { layerConfigs, canvasConfig: { resizeStep = 1 } } = designerStore;
     let width;
@@ -354,7 +354,7 @@ export const doBaseRightDecreaseLeft = () => {
  * 以左边为基准向右缩小
  */
 export const doBaseLeftDecreaseRight = () => {
-    const { targets, movableRef, groupCoordinate } = eventOperateStore;
+    const { targets, movableRef, groupCoordinate } = eventOperateStore();
     if (!targets || targets.length === 0) return;
     const { layerConfigs, canvasConfig: { resizeStep = 1 } } = designerStore;
     let width;

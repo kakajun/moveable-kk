@@ -35,7 +35,7 @@ class HistoryRecordOperateProxy {
             prev = {ids, x, y};
 
             //构建next数据
-            const {groupCoordinate} = eventOperateStore;
+            const {groupCoordinate} = eventOperateStore();
             next = {ids, x: groupCoordinate.minX, y: groupCoordinate.minY}
         }
         //构建历史记录节点
@@ -80,7 +80,7 @@ class HistoryRecordOperateProxy {
             prev = {ids, width, height, direction};
 
             //构建next数据
-            const {groupCoordinate} = eventOperateStore;
+            const {groupCoordinate} = eventOperateStore();
             next = {ids, width: groupCoordinate.groupWidth, height: groupCoordinate.groupHeight, direction}
         }
                 //构建历史记录节点
@@ -95,7 +95,7 @@ class HistoryRecordOperateProxy {
             }
 
             doDelete() {
-                let {targetIds, setTargetIds} = eventOperateStore;
+                let {targetIds, setTargetIds} = eventOperateStore();
                 const {delItem, layerConfigs, compInstances, updateLayout} = designerStore;
                 if (!targetIds || targetIds.length === 0) return;
                 const {setContentVisible, activeConfig} = rightStore;
@@ -162,7 +162,7 @@ class HistoryRecordOperateProxy {
                 //删除组件
                 targetIds.length > 0 && delItem(targetIds);
                 setTargetIds([]);
-                const {setPointerTarget} = eventOperateStore;
+                const {setPointerTarget} = eventOperateStore();
                 const enforcementCap = document.querySelector('.lc-ruler-content');
                 //删除组件后，重新聚焦鼠标指针到容器上，避免鼠标失去焦点导致其他快捷键失效。
                 setPointerTarget && setPointerTarget(enforcementCap);
@@ -214,7 +214,7 @@ class HistoryRecordOperateProxy {
             doCopy(ids) {
                 let newIds = [];
                 const {layerConfigs, elemConfigs} = designerStore;
-                let {maxLevel, setMaxLevel} = eventOperateStore;
+                let {maxLevel, setMaxLevel} = eventOperateStore();
                 //next用于保存操作记录的下一个状态
                 const next = [];
                 const newLayouts = [];
@@ -308,7 +308,7 @@ class HistoryRecordOperateProxy {
                 setMaxLevel(maxLevel);
                 //多个组件同时复制时，需要计算多选框的新位置
                 if (newLayouts.length > 1) {
-                    const {groupCoordinate, setGroupCoordinate} = eventOperateStore;
+                    const {groupCoordinate, setGroupCoordinate} = eventOperateStore();
                     setGroupCoordinate({minX: groupCoordinate.minX + 10, minY: groupCoordinate.minY + 10});
                 }
                 return newIds;
@@ -329,7 +329,7 @@ class HistoryRecordOperateProxy {
         //更新隐藏状态
         updateLayout(items);
         //取消所有选中状态
-        const { setTargetIds } = eventOperateStore;
+        const { setTargetIds } = eventOperateStore();
         setTargetIds([]);
         const { layerInstances, visible } = layerListStore;
         if (visible) {
@@ -388,7 +388,7 @@ class HistoryRecordOperateProxy {
     }
 
      doGrouping() {
-        const { targetIds, maxLevel, setMaxLevel, setTargetIds } = eventOperateStore;
+        const { targetIds, maxLevel, setMaxLevel, setTargetIds } = eventOperateStore();
         if (!targetIds || targetIds.length <= 1) return;
         if (LayerUtil.hasSameGroup(targetIds)) return;
         //查找当前选中的图层的所有父级图层
@@ -453,7 +453,7 @@ class HistoryRecordOperateProxy {
     }
 
      doUnGrouping() {
-        const { targetIds, setTargetIds } = eventOperateStore;
+        const { targetIds, setTargetIds } = eventOperateStore();
         //找出当前选中的图层中，最顶层的分组图层
         let groupIds = LayerUtil.findTopGroupLayer(targetIds, true);
         //过滤掉其中分组等于自身的图层（即非分组图层）
