@@ -2,12 +2,7 @@
     <div class="warapper">
         <div class='lc-event-container'>
             <div class='lc-ruler-content' :style="warapperStyle">
-                <div v-for="item of  layerData" :key="item.id">
-                    <div v-if="item.type === 'group'" :key="item.id" class='component-group'>
-                        <ComponentContainer v-for="o of item.children" :key="o.id" :layer="o" />
-                    </div>
-                    <ComponentContainer v-if="item.type !== 'group'" :layer="item" />
-                </div>
+                <ComponentContainer :layer="layerData" />
                 <GroupMovable></GroupMovable>
                 <GroupSelectable></GroupSelectable>
             </div>
