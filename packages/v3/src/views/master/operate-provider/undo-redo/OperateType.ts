@@ -1,7 +1,6 @@
-/**
- * 操作类型枚举
- */
-import {ConfigureObjectFragments} from "../../../utils/ObjectUtil";
+interface ConfigureObjectFragments {
+    [key: string]: ConfigureObjectFragments | string | number | null | undefined;
+}
 import {ILayerItem} from "./DesignerType";
 
 export enum OperateType {
