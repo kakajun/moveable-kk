@@ -1,16 +1,18 @@
 <template>
     <div class="warapper">
-        <div class='lc-event-container' style="left: 0;top: 100px;width: 1000px;height: 800px;border: 1px solid #f1eeee;position: absolute;">
-            <div v-for="item of  layerData" :key="item.id">
-                <div v-if="item.type === 'group'" :key="item.id" class='component-group'>
-                    <ComponentContainer v-for="o of item.children"  :key="o.id" :layer="o"></ComponentContainer>
+        <div class='lc-event-container'>
+            <div class='lc-ruler-content' :style="warapperStyle">
+                <div v-for="item of  layerData" :key="item.id">
+                    <div v-if="item.type === 'group'" :key="item.id" class='component-group'>
+                        <ComponentContainer v-for="o of item.children" :key="o.id" :layer="o"/>
+                    </div>
+                    <ComponentContainer v-if="item.type !== 'group'" :layer="item" />
                 </div>
-                <ComponentContainer v-if="item.type !== 'group'" :layer="item" />
+                <GroupMovable></GroupMovable>
+                <GroupSelectable></GroupSelectable>
             </div>
         </div>
-        <GroupMovable></GroupMovable>
-        <GroupSelectable></GroupSelectable>
-        <HotKey  :handlerMapping='hotkeyConfigs'></HotKey>
+        <HotKey :handlerMapping='hotkeyConfigs'></HotKey>
     </div>
 </template>
 
@@ -21,7 +23,7 @@ import { cloneDeep } from "lodash";
 import { onMounted, ref } from 'vue';
 import designerStore from "./store/DesignerStore.js";
 import GroupMovable from './operate-provider/movable/GroupMovable.vue';
-import {hotkeyConfigs} from "./operate-provider/hot-key/HotKeyConfig";
+import { hotkeyConfigs } from "./operate-provider/hot-key/HotKeyConfig";
 import GroupSelectable from './operate-provider/movable/GroupSelectable.vue';
 import HotKey from './operate-provider/hot-key/HotKey.vue';
 import eventOperateStore from "./operate-provider/EventOperateStore.js";
@@ -33,6 +35,13 @@ onMounted(() => {
     initExistProject()
     layerData.value = parser(getlayerConfigs.value)
     console.log(layerData.value, "layerData");
+})
+const warapperStyle = ref({
+    position: 'absolute',
+    width: '1000px', height: '800px', border: '1px solid #f1eeee', position: 'absolute',
+    overflow: 'hidden',
+    top: 0,
+    left: 0,
 })
 /**
  * 解析函数

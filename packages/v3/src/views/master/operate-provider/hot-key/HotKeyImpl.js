@@ -176,6 +176,7 @@ export const doUnGrouping = () => {
 /*************************快捷键控制移动组件的位置*************************/
 
 export const doMoveUp = () => {
+    console.log("doMoveUp");
     const { targets, movableRef, groupCoordinate } = eventOperateStore();
     if (!targets || targets.length === 0) return;
     const { layerConfigs, canvasConfig: { dragStep = 1 } } = designerStore();
