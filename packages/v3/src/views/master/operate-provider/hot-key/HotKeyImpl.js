@@ -98,20 +98,6 @@ export const toBottom = () => {
 }
 
 export const doDelete = () => {
-    //todo 考虑这段逻辑是否可以独立？
-    //如果蓝图中使用了当前要被删除的组件，则需要先删除蓝图中的组件和连线，且蓝图中的删除操作目前无法回退
-    const { targetIds } = eventOperateStore();
-    if (targetIds && targetIds.length > 0) {
-        // const { delNode, bpNodeLayoutMap } = bpStore;
-        // const preDelNodeIds = [];
-        // targetIds.forEach((id) => {
-        //     if (bpNodeLayoutMap[id])
-        //         preDelNodeIds.push(id);
-        // });
-        // if (preDelNodeIds.length > 0)
-        //     delNode(preDelNodeIds);
-    }
-
     //删除设计器中的组件，并记录到历史操作
     historyRecordOperateProxy.doDelete();
 }

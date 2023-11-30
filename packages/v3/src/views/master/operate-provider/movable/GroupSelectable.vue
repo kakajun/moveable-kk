@@ -89,7 +89,6 @@ const onSelectEnd = (e) => {
 
     //更新选中的组件id
     setTargetIds(layerIds);
-    debugger
     //更新图层列表状态
     const { visible, layerInstances } = layerListStore();
     if (visible) {

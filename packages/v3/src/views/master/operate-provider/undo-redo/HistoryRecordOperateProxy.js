@@ -1,26 +1,26 @@
 import designerStore from "../../store/DesignerStore";
-import {historyOperator} from "./HistoryOperator";
+import { historyOperator } from "./HistoryOperator";
 import eventOperateStore from "../EventOperateStore";
 import rightStore from "../../store/RightStore";
-import {cloneDeep} from "lodash";
+import { cloneDeep } from "lodash";
 import layerListStore from "../../store/LayerListStore";
 import IdGenerate from "../../util/IdGenerate";
 import LayerUtil from "../../util/LayerUtil";
 class HistoryRecordOperateProxy {
 
-     doDrag(items){
+    doDrag(items) {
         //构建历史记录数据
-        const {layerConfigs, updateLayout} = designerStore();
+        const { layerConfigs, updateLayout } = designerStore();
         const ids = [];
         let prev;
         let next;
         if (items.length === 1) { //单个组件拖动
             //构建prev数据
             const [x, y] = layerConfigs[items[0].id].position;
-            prev = {ids: [items[0].id], x, y}
+            prev = { ids: [items[0].id], x, y }
             //构建next数据
-            const {id, position} = items[0];
-            next = {ids: [id], x: position[0], y: position[1]}
+            const { id, position } = items[0];
+            next = { ids: [id], x: position[0], y: position[1] }
         } else { //多个组件拖动
             //构建prev数据
             const oldItems = [];
@@ -28,15 +28,15 @@ class HistoryRecordOperateProxy {
             ids.forEach((id) => oldItems.push(layerConfigs[id]))
             let x = +Infinity, y = +Infinity;
             oldItems.forEach((oldItem) => {
-                const {position} = oldItem;
+                const { position } = oldItem;
                 if (position[0] < x) x = position[0];
                 if (position[1] < y) y = position[1];
             });
-            prev = {ids, x, y};
+            prev = { ids, x, y };
 
             //构建next数据
-            const {groupCoordinate} = eventOperateStore();
-            next = {ids, x: groupCoordinate.minX, y: groupCoordinate.minY}
+            const { groupCoordinate } = eventOperateStore();
+            next = { ids, x: groupCoordinate.minX, y: groupCoordinate.minY }
         }
         //构建历史记录节点
         const data = {
@@ -46,22 +46,22 @@ class HistoryRecordOperateProxy {
         //更新布局数据
         updateLayout(items, false);
         //历史记录入队
-        historyOperator.put({actions: [data]});
+        historyOperator.put({ actions: [data] });
     };
 
-     doResize(items, direction) {
+    doResize(items, direction) {
         //构建历史记录数据
-        const {layerConfigs, updateLayout} = designerStore();
-        const ids= [];
+        const { layerConfigs, updateLayout } = designerStore();
+        const ids = [];
         let prev;
         let next;
         if (items.length === 1) { //单个组件缩放
             //构建prev数据
-            const {width = 0, height = 0} = layerConfigs[items[0].id];
-            prev = {ids: [items[0].id], width, height, direction}
+            const { width = 0, height = 0 } = layerConfigs[items[0].id];
+            prev = { ids: [items[0].id], width, height, direction }
             //构建next数据
-            const {id} = items[0];
-            next = {ids: [id], width: items[0].width, height: items[0].height, direction}
+            const { id } = items[0];
+            next = { ids: [id], width: items[0].width, height: items[0].height, direction }
         } else { //多个组件缩放
             //构建prev数据
             const oldItems = [];
@@ -69,7 +69,7 @@ class HistoryRecordOperateProxy {
             ids.forEach((id) => oldItems.push(layerConfigs[id]))
             let minX = +Infinity, minY = +Infinity, maxX = -Infinity, maxY = -Infinity;
             oldItems.forEach((oldItem) => {
-                const {position} = oldItem;
+                const { position } = oldItem;
                 if (position[0] < minX) minX = position[0];
                 if (position[1] < minY) minY = position[1];
                 if (position[0] + oldItem.width > maxX) maxX = position[0] + oldItem.width;
@@ -77,244 +77,244 @@ class HistoryRecordOperateProxy {
             });
             const width = maxX - minX;
             const height = maxY - minY;
-            prev = {ids, width, height, direction};
+            prev = { ids, width, height, direction };
 
             //构建next数据
-            const {groupCoordinate} = eventOperateStore();
-            next = {ids, width: groupCoordinate.groupWidth, height: groupCoordinate.groupHeight, direction}
+            const { groupCoordinate } = eventOperateStore();
+            next = { ids, width: groupCoordinate.groupWidth, height: groupCoordinate.groupHeight, direction }
         }
-                //构建历史记录节点
-                const data = {type: 'OperateType.RESIZE', prev: prev, next: next};
-                //更新布局数据
-                updateLayout(items, false);
-                //历史记录入队
-                historyOperator.put({actions: [data]});
+        //构建历史记录节点
+        const data = { type: 'OperateType.RESIZE', prev: prev, next: next };
+        //更新布局数据
+        updateLayout(items, false);
+        //历史记录入队
+        historyOperator.put({ actions: [data] });
+    }
+
+    doAdd(container, layout) {
+    }
+
+    doDelete() {
+        let { targetIds, setTargetIds } = eventOperateStore();
+        const { delItem, layerConfigs, compInstances, updateLayout } = designerStore();
+        if (!targetIds || targetIds.length === 0) return;
+        const { setContentVisible, activeConfig } = rightStore();
+        setContentVisible(false);
+        activeConfig(null, "");
+
+        //对被删除元素分类：1. 完全独立的组件（没有分组）2.分组的子组件（选中了分组中的子组件，但没有选中分组）3.分组图层（包括分组图层和其下所有子图层）
+        //可删除数据分为：1. 可以直接删除的数据。 2. 删除后需要维护图层关系的数据
+        const directDelIds = [];
+        const maintenanceDelIds = [];
+        targetIds.forEach((id) => {
+            const layer = layerConfigs[id];
+            if (layer) {
+                const { type, pid } = layer;
+                if (type !== 'group' && pid && !targetIds.includes(pid))
+                    maintenanceDelIds.push(id);
+                else
+                    directDelIds.push(id);
             }
+        });
 
-            doAdd(container, layout) {
+        const prev = [];
+        //可直接删除的数据--构建操作记录
+        directDelIds.forEach((id) => {
+            const { type } = layerConfigs[id];
+            if (type === 'group') {
+                prev.push({ id, data: { layerConfig: { ...layerConfigs[id] } } });
+            } else {
+                const elemConfig = compInstances[id] && compInstances[id].getConfig();
+                prev.push({ id, data: { layerConfig: { ...layerConfigs[id] }, elemConfig: elemConfig } });
             }
+        });
+        //需要维护图层关系的数据--构建操作记录
+        const updPrev = [];
+        const updNext = [];
+        maintenanceDelIds.forEach((id) => {
+            const { pid } = layerConfigs[id];
+            const groupLayer = layerConfigs[pid];
+            if (groupLayer.childIds.length === 1 && groupLayer.childIds[0] === id) {
+                //说明该分组下只有一个图层，且本次需要删除。这种场景下，将分组图层一起删除
+                prev.push({ id: pid, data: { layerConfig: { ...layerConfigs[pid] } } });
+                targetIds = [...targetIds, pid];
+            } else {
+                //否则，只需要更新分组图层的childIds字段即可
+                updPrev.push({ id: pid, childIds: { ...groupLayer.childIds } });
+                //删除分组图层中的目标子图层
+                const oldChildIds = cloneDeep(groupLayer.childIds);
+                const newChildIds = oldChildIds.filter((cid) => cid !== id);
+                updateLayout([{ id: pid, childIds: newChildIds }], false);
+                updNext.push({ id: pid, childIds: { ...groupLayer.childIds } });
+            }
+            //构建子图层的操作记录
+            const elemConfig = compInstances[id] && compInstances[id].getConfig();
+            prev.push({ id, data: { layerConfig: { ...layerConfigs[id] }, elemConfig: elemConfig } });
+        }
+        );
 
-            doDelete() {
-                let {targetIds, setTargetIds} = eventOperateStore();
-                const {delItem, layerConfigs, compInstances, updateLayout} = designerStore();
-                if (!targetIds || targetIds.length === 0) return;
-                const {setContentVisible, activeConfig} = rightStore();
-                setContentVisible(false);
-                activeConfig(null, "");
+        const actions = [{ type: 'OperateType.DEL', prev, next: null }];
+        if (updPrev.length > 0 || updNext.length > 0)
+            actions.push({ type: 'OperateType.UPD_LAYER_GROUP', prev: updPrev, next: updNext });
 
-                //对被删除元素分类：1. 完全独立的组件（没有分组）2.分组的子组件（选中了分组中的子组件，但没有选中分组）3.分组图层（包括分组图层和其下所有子图层）
-                //可删除数据分为：1. 可以直接删除的数据。 2. 删除后需要维护图层关系的数据
-                const directDelIds = [];
-                const maintenanceDelIds = [];
-                targetIds.forEach((id) => {
-                    const layer = layerConfigs[id];
-                    if (layer) {
-                        const {type, pid} = layer;
-                        if (type !== 'group' && pid && !targetIds.includes(pid))
-                            maintenanceDelIds.push(id);
-                        else
-                            directDelIds.push(id);
+        historyOperator.put({ actions });
+
+        //删除组件
+        targetIds.length > 0 && delItem(targetIds);
+        setTargetIds([]);
+        const { setPointerTarget } = eventOperateStore();
+        const enforcementCap = document.querySelector('.lc-ruler-content');
+        //删除组件后，重新聚焦鼠标指针到容器上，避免鼠标失去焦点导致其他快捷键失效。
+        setPointerTarget && setPointerTarget(enforcementCap);
+        console.log({ ...designerStore().layerConfigs });
+    }
+
+    _copyGroupLayer(layout, newIds, newLayouts, maxLevel) {
+        const { layerConfigs } = designerStore();
+        //生成新id
+        const newId = IdGenerate.generateId();
+        newIds.push(newId);
+        //生成新布局
+        const newLayout = cloneDeep(layout);
+        newLayouts.push(newLayout);
+        newLayout.id = newId;
+        newLayout.order = maxLevel;
+        newLayout.childIds = [];
+        layerConfigs[newId] = newLayout;
+        return newLayout;
+    }
+
+    _copyNormalLayer(layout, newLayouts, maxLevel, newIds) {
+        const { layerConfigs, compInstances, elemConfigs } = designerStore();
+        //生成新id
+        const newId = IdGenerate.generateId();
+        //生成新布局
+        const newLayout = cloneDeep(layout);
+        newLayouts.push(newLayout);
+        newLayout.id = newId;
+        const [x = 10, y = 10] = (newLayout.position || []).map((p) => p + 10);
+        newLayout.position = [x, y];
+        newLayout.order = maxLevel;
+        layerConfigs[newId] = newLayout;
+        //生成新组件配置项数据
+        const copiedInstance = compInstances[layout.id];
+        let newConfig = cloneDeep(copiedInstance.getConfig());
+        newConfig.info.id = newId;
+        elemConfigs[newId] = newConfig;
+        newIds.push(newId);
+        return newLayout;
+    }
+
+    /**
+     * 被复制的图层可以同时包含普通图层、分组图层和分组图层的子图层。
+     * 1.普通图层和没有包含分组图层的子图层，则直接复制。
+     * 2.对于分组图层和其下的子图层，复制时需要创建复制前后的映射关系，复制完毕后根据映射关系恢复新图层之前的层级关系。
+     * @param ids
+     */
+    doCopy(ids) {
+        let newIds = [];
+        const { layerConfigs, elemConfigs } = designerStore();
+        let { maxLevel, setMaxLevel } = eventOperateStore();
+        //next用于保存操作记录的下一个状态
+        const next = [];
+        const newLayouts = [];
+
+        //区分图层类型， 普通图层和独立的子图层一类（可直接复制），分组图层及其下子图层一类（复制后重新建立关系）。
+        const groupIds = [];
+        const normalIds = [];
+        ids.forEach((id) => {
+            const { type, pid } = layerConfigs[id];
+            if ((type !== 'group' && !pid) || (pid && !ids.includes(pid)))
+                normalIds.push(id);
+            else
+                groupIds.push(id);
+        });
+
+        //复制normalIds
+        for (const id of normalIds) {
+            //获取被复制元素布局
+            const { [id]: layout } = layerConfigs;
+            if (layout) {
+                maxLevel++;
+                const newLayout = this._copyNormalLayer(layout, newLayouts, maxLevel, newIds);
+                //如果本图层是属于单独选中的分组图层的子图层（有pid，但pid对应的图层未被选中），则需要将新复制出来的图层id加入到pid对应图层的childIds中
+                if (newLayout.pid)
+                    layerConfigs[newLayout.pid].childIds.push(newLayout.id);
+            }
+        }
+
+        /**
+         * 复制分组图层及其下子图层
+         */
+        const groupIdOldToNew = new Map(); //分组图层映射关系
+        const childIdNewToOld = new Map(); //子图层映射关系
+        //复制分组图层下的子图层
+        const onlyChildIds = groupIds.filter((id) => layerConfigs[id].type !== 'group');
+        for (const id of onlyChildIds) {
+            //获取被复制元素布局
+            const { [id]: layout } = layerConfigs;
+            if (layout) {
+                maxLevel++;
+                const newLayout = this._copyNormalLayer(layout, newLayouts, maxLevel, newIds);
+                childIdNewToOld.set(newLayout.id, id);
+            }
+        }
+
+        //复制type=group的图层
+        const onlyGroupIds = groupIds.filter((id) => layerConfigs[id].type === 'group');
+        for (const id of onlyGroupIds) {
+            //获取被复制元素布局
+            const { [id]: layout } = layerConfigs;
+            if (layout) {
+                maxLevel++;
+                const newLayout = this._copyGroupLayer(layout, newIds, newLayouts, maxLevel);
+                groupIdOldToNew.set(id, newLayout.id);
+            }
+        }
+
+        //根据映射，重新建立分组图层和子图层的关系
+        childIdNewToOld.forEach((oldId, newId) => {
+            const newLayerItem = layerConfigs[newId];
+            //设置新子图层的pid
+            newLayerItem.pid = groupIdOldToNew.get(layerConfigs[oldId].pid);
+            //设置新分组图层的childIds
+            layerConfigs[newLayerItem.pid].childIds.push(newId);
+        });
+
+
+        //设置分组复制的操作记录信息
+        newIds.forEach((id) => {
+            const newLayout = layerConfigs[id];
+            const newConfig = elemConfigs[id];
+            if (newLayout.type === 'group') {
+                next.push({
+                    id: id,
+                    data: {
+                        layerConfig: { ...newLayout },
                     }
                 });
-
-                const prev = [];
-                //可直接删除的数据--构建操作记录
-                directDelIds.forEach((id) => {
-                    const {type} = layerConfigs[id];
-                    if (type === 'group') {
-                        prev.push({id, data: {layerConfig: {...layerConfigs[id]}}});
-                    } else {
-                        const elemConfig = compInstances[id] && compInstances[id].getConfig();
-                        prev.push({id, data: {layerConfig: {...layerConfigs[id]}, elemConfig: elemConfig}});
+            } else {
+                next.push({
+                    id: id,
+                    data: {
+                        layerConfig: { ...newLayout },
+                        elemConfig: { ...newConfig }
                     }
                 });
-                //需要维护图层关系的数据--构建操作记录
-                const updPrev = [];
-                const updNext = [];
-                maintenanceDelIds.forEach((id) => {
-                        const {pid} = layerConfigs[id];
-                        const groupLayer = layerConfigs[pid];
-                        if (groupLayer.childIds.length === 1 && groupLayer.childIds[0] === id) {
-                            //说明该分组下只有一个图层，且本次需要删除。这种场景下，将分组图层一起删除
-                            prev.push({id: pid, data: {layerConfig: {...layerConfigs[pid]}}});
-                            targetIds = [...targetIds, pid];
-                        } else {
-                            //否则，只需要更新分组图层的childIds字段即可
-                            updPrev.push({id: pid, childIds: {...groupLayer.childIds}});
-                            //删除分组图层中的目标子图层
-                            const oldChildIds = cloneDeep(groupLayer.childIds);
-                            const newChildIds = oldChildIds.filter((cid) => cid !== id);
-                            updateLayout([{id: pid, childIds: newChildIds}], false);
-                            updNext.push({id: pid, childIds: {...groupLayer.childIds}});
-                        }
-                        //构建子图层的操作记录
-                        const elemConfig = compInstances[id] && compInstances[id].getConfig();
-                        prev.push({id, data: {layerConfig: {...layerConfigs[id]}, elemConfig: elemConfig}});
-                    }
-                );
-
-                const actions = [{type: 'OperateType.DEL', prev, next: null}];
-                if (updPrev.length > 0 || updNext.length > 0)
-                    actions.push({type: 'OperateType.UPD_LAYER_GROUP', prev: updPrev, next: updNext});
-
-                historyOperator.put({actions});
-
-                //删除组件
-                targetIds.length > 0 && delItem(targetIds);
-                setTargetIds([]);
-                const {setPointerTarget} = eventOperateStore();
-                const enforcementCap = document.querySelector('.lc-ruler-content');
-                //删除组件后，重新聚焦鼠标指针到容器上，避免鼠标失去焦点导致其他快捷键失效。
-                setPointerTarget && setPointerTarget(enforcementCap);
-                console.log({...designerStore().layerConfigs});
             }
+        });
 
-            _copyGroupLayer(layout, newIds, newLayouts, maxLevel) {
-                const {layerConfigs} = designerStore();
-                //生成新id
-                const newId = IdGenerate.generateId();
-                newIds.push(newId);
-                //生成新布局
-                const newLayout = cloneDeep(layout);
-                newLayouts.push(newLayout);
-                newLayout.id = newId;
-                newLayout.order = maxLevel;
-                newLayout.childIds = [];
-                layerConfigs[newId] = newLayout;
-                return newLayout;
-            }
+        historyOperator.put({ actions: [{ type: 'OperateType.ADD', prev: null, next }] });
+        setMaxLevel(maxLevel);
+        //多个组件同时复制时，需要计算多选框的新位置
+        if (newLayouts.length > 1) {
+            const { groupCoordinate, setGroupCoordinate } = eventOperateStore();
+            setGroupCoordinate({ minX: groupCoordinate.minX + 10, minY: groupCoordinate.minY + 10 });
+        }
+        return newIds;
+    };
 
-            _copyNormalLayer(layout, newLayouts, maxLevel, newIds) {
-                const {layerConfigs, compInstances, elemConfigs} = designerStore();
-                //生成新id
-                const newId = IdGenerate.generateId();
-                //生成新布局
-                const newLayout = cloneDeep(layout);
-                newLayouts.push(newLayout);
-                newLayout.id = newId;
-                const [x = 10, y = 10] = (newLayout.position || []).map((p) => p + 10);
-                newLayout.position = [x, y];
-                newLayout.order = maxLevel;
-                layerConfigs[newId] = newLayout;
-                //生成新组件配置项数据
-                const copiedInstance = compInstances[layout.id];
-                let newConfig = cloneDeep(copiedInstance.getConfig());
-                newConfig.info.id = newId;
-                elemConfigs[newId] = newConfig;
-                newIds.push(newId);
-                return newLayout;
-            }
-
-            /**
-             * 被复制的图层可以同时包含普通图层、分组图层和分组图层的子图层。
-             * 1.普通图层和没有包含分组图层的子图层，则直接复制。
-             * 2.对于分组图层和其下的子图层，复制时需要创建复制前后的映射关系，复制完毕后根据映射关系恢复新图层之前的层级关系。
-             * @param ids
-             */
-            doCopy(ids) {
-                let newIds = [];
-                const {layerConfigs, elemConfigs} = designerStore();
-                let {maxLevel, setMaxLevel} = eventOperateStore();
-                //next用于保存操作记录的下一个状态
-                const next = [];
-                const newLayouts = [];
-
-                //区分图层类型， 普通图层和独立的子图层一类（可直接复制），分组图层及其下子图层一类（复制后重新建立关系）。
-                const groupIds = [];
-                const normalIds = [];
-                ids.forEach((id) => {
-                    const {type, pid} = layerConfigs[id];
-                    if ((type !== 'group' && !pid) || (pid && !ids.includes(pid)))
-                        normalIds.push(id);
-                    else
-                        groupIds.push(id);
-                });
-
-                //复制normalIds
-                for (const id of normalIds) {
-                    //获取被复制元素布局
-                    const {[id]: layout} = layerConfigs;
-                    if (layout) {
-                        maxLevel++;
-                        const newLayout = this._copyNormalLayer(layout, newLayouts, maxLevel, newIds);
-                        //如果本图层是属于单独选中的分组图层的子图层（有pid，但pid对应的图层未被选中），则需要将新复制出来的图层id加入到pid对应图层的childIds中
-                        if (newLayout.pid)
-                            layerConfigs[newLayout.pid].childIds.push(newLayout.id);
-                    }
-                }
-
-                /**
-                 * 复制分组图层及其下子图层
-                 */
-                const groupIdOldToNew = new Map(); //分组图层映射关系
-                const childIdNewToOld = new Map(); //子图层映射关系
-                //复制分组图层下的子图层
-                const onlyChildIds = groupIds.filter((id) => layerConfigs[id].type !== 'group');
-                for (const id of onlyChildIds) {
-                    //获取被复制元素布局
-                    const {[id]: layout} = layerConfigs;
-                    if (layout) {
-                        maxLevel++;
-                        const newLayout = this._copyNormalLayer(layout, newLayouts, maxLevel, newIds);
-                        childIdNewToOld.set(newLayout.id, id);
-                    }
-                }
-
-                //复制type=group的图层
-                const onlyGroupIds = groupIds.filter((id) => layerConfigs[id].type === 'group');
-                for (const id of onlyGroupIds) {
-                    //获取被复制元素布局
-                    const {[id]: layout} = layerConfigs;
-                    if (layout) {
-                        maxLevel++;
-                        const newLayout = this._copyGroupLayer(layout, newIds, newLayouts, maxLevel);
-                        groupIdOldToNew.set(id, newLayout.id);
-                    }
-                }
-
-                //根据映射，重新建立分组图层和子图层的关系
-                childIdNewToOld.forEach((oldId, newId) => {
-                    const newLayerItem = layerConfigs[newId];
-                    //设置新子图层的pid
-                    newLayerItem.pid = groupIdOldToNew.get(layerConfigs[oldId].pid);
-                    //设置新分组图层的childIds
-                    layerConfigs[newLayerItem.pid].childIds.push(newId);
-                });
-
-
-                //设置分组复制的操作记录信息
-                newIds.forEach((id) => {
-                    const newLayout = layerConfigs[id];
-                    const newConfig = elemConfigs[id];
-                    if (newLayout.type === 'group') {
-                        next.push({
-                            id: id,
-                            data: {
-                                layerConfig: {...newLayout},
-                            }
-                        });
-                    } else {
-                        next.push({
-                            id: id,
-                            data: {
-                                layerConfig: {...newLayout},
-                                elemConfig: {...newConfig}
-                            }
-                        });
-                    }
-                });
-
-                historyOperator.put({actions: [{type: 'OperateType.ADD', prev: null, next}]});
-                setMaxLevel(maxLevel);
-                //多个组件同时复制时，需要计算多选框的新位置
-                if (newLayouts.length > 1) {
-                    const {groupCoordinate, setGroupCoordinate} = eventOperateStore();
-                    setGroupCoordinate({minX: groupCoordinate.minX + 10, minY: groupCoordinate.minY + 10});
-                }
-                return newIds;
-            };
-
-     doHideUpd(items) {
+    doHideUpd(items) {
         let prev = [];
         let next = [];
         const { layerConfigs, updateLayout } = designerStore();
@@ -340,7 +340,7 @@ class HistoryRecordOperateProxy {
         }
     }
 
-     doLockUpd(items) {
+    doLockUpd(items) {
         let prev = [];
         let next = [];
         const { layerConfigs, updateLayout } = designerStore();
@@ -362,7 +362,7 @@ class HistoryRecordOperateProxy {
         }
     }
 
-     doOrderUpd(items) {
+    doOrderUpd(items) {
         let prev = [];
         let next = [];
         const { layerConfigs, updateLayout } = designerStore();
@@ -377,7 +377,7 @@ class HistoryRecordOperateProxy {
         updateLayout(items);
     }
 
-     doStyleUpd(newData, oldData) {
+    doStyleUpd(newData, oldData) {
         const { id } = rightStore().activeElem;
         const record = {
             type: 'OperateType.UPD_STYLE',
@@ -387,7 +387,7 @@ class HistoryRecordOperateProxy {
         historyOperator.put({ actions: [record] });
     }
 
-     doGrouping() {
+    doGrouping() {
         const { targetIds, maxLevel, setMaxLevel, setTargetIds } = eventOperateStore();
         if (!targetIds || targetIds.length <= 1) return;
         if (LayerUtil.hasSameGroup(targetIds)) return;
@@ -452,7 +452,7 @@ class HistoryRecordOperateProxy {
         }
     }
 
-     doUnGrouping() {
+    doUnGrouping() {
         const { targetIds, setTargetIds } = eventOperateStore();
         //找出当前选中的图层中，最顶层的分组图层
         let groupIds = LayerUtil.findTopGroupLayer(targetIds, true);

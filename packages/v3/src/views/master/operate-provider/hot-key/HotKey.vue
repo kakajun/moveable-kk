@@ -43,7 +43,6 @@ const doHandler = (e, hotKey) => {
     const { handler, triggerType = TriggerType.SINGLE, range } = props.handlerMapping[hotKey] || {};
     if (handler) {
         console.log(hotKey,"doHandlerhotKey");
-        debugger
         if ((triggerType === TriggerType.SINGLE && existHandlerKey !== hotKey) || triggerType === TriggerType.COILED) {
             //如果设定了指定范围并且不在范围内则不执行
             if (range) {
