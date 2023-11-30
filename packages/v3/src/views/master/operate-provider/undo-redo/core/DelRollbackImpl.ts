@@ -8,7 +8,7 @@ export class DelRollbackImpl extends AbstractRollback {
         if (!record) return;
         const {prev} = record!;
         //执行正向操作删除元素
-        const {delItem} = designerStore;
+        const {delItem} = designerStore();
         const delIds: string[] = [];
         (prev as IDelOperateData[]).forEach((item) => delIds.push(item.id));
         delItem(delIds);
@@ -23,7 +23,7 @@ export class DelRollbackImpl extends AbstractRollback {
         const {prev} = record!;
         let prevDelData = prev! as IDelOperateData[];
         //执行反向操作添加元素
-        const {addItem, elemConfigs} = designerStore;
+        const {addItem, elemConfigs} = designerStore();
         const targetIds: string[] = [];
         prevDelData.forEach((item) => {
             addItem(item.data.layerConfig);

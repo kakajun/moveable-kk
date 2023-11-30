@@ -8,11 +8,11 @@ export class StyleRollbackImpl extends AbstractRollback {
         const {next} = record;
         if (next) {
             const {id, data} = next as IUpdStyleOperateData;
-            const {compInstances} = designerStore;
+            const {compInstances} = designerStore();
             const instance = compInstances[id];
             if (instance)
                 instance.update(data)
-            const {visible, setContentVisible} = rightStore;
+            const {visible, setContentVisible} = rightStore();
             //回滚时，若配置项开启，则关闭
             if (visible) {
                 setContentVisible(false)
@@ -27,11 +27,11 @@ export class StyleRollbackImpl extends AbstractRollback {
         const {prev} = record;
         if (prev) {
             const {id, data} = prev as IUpdStyleOperateData;
-            const {compInstances} = designerStore;
+            const {compInstances} = designerStore();
             const instance = compInstances[id];
             if (instance)
                 instance.update(data)
-            const {visible, setContentVisible} = rightStore;
+            const {visible, setContentVisible} = rightStore();
             //回滚时，若配置项开启，则关闭
             if (visible) {
                 setContentVisible(false)

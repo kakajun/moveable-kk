@@ -8,13 +8,13 @@ import designerStore from "../../../store/DesignerStore";
 export class OrderRollBackImpl extends AbstractRollback {
     redo(record: IHistoryRecord): void {
         const {next} = record;
-        const {updateLayout} = designerStore;
+        const {updateLayout} = designerStore();
         if (next) updateLayout(next as IOrderOperateData[]);
     }
 
     undo(record: IHistoryRecord): void {
         const {prev} = record;
-        const {updateLayout} = designerStore;
+        const {updateLayout} = designerStore();
         if (prev) updateLayout(prev as IOrderOperateData[]);
     }
 

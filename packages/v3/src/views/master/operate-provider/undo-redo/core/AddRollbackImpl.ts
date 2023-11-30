@@ -8,7 +8,7 @@ export class AddRollbackImpl extends AbstractRollback {
         if (!record) return;
         const {next} = record!;
         //执行正向操作添加元素
-        const {addItem} = designerStore;
+        const {addItem} = designerStore();
         (next as IAddOperateData[]).forEach((item) => addItem(item.data.layerConfig!));
     }
 
@@ -18,7 +18,7 @@ export class AddRollbackImpl extends AbstractRollback {
         const {next} = record!;
         let nextAddData = next! as IAddOperateData[];
         //执行反向操作删除元素
-        const {delItem} = designerStore;
+        const {delItem} = designerStore();
         const delIds: string[] = [];
         nextAddData.forEach((item) => delIds.push(item.id));
         delItem(delIds);

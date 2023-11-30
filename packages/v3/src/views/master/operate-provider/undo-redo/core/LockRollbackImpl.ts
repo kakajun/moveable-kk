@@ -10,7 +10,7 @@ import {Component} from "react";
 export class LockRollbackImpl extends AbstractRollback {
     redo(record: IHistoryRecord): void {
         const {next} = record;
-        const {updateLayout} = designerStore;
+        const {updateLayout} = designerStore();
         if (next)
             updateLayout(next as ILockOperateData[]);
         const {visible, layerInstances} = layerListStore;
@@ -25,7 +25,7 @@ export class LockRollbackImpl extends AbstractRollback {
 
     undo(record: IHistoryRecord): void {
         const {prev} = record;
-        const {updateLayout} = designerStore;
+        const {updateLayout} = designerStore();
         if (prev)
             updateLayout(prev as ILockOperateData[]);
         const {visible, layerInstances} = layerListStore;

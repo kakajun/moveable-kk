@@ -18,7 +18,7 @@ export default defineStore('layerList', {
         },
         lockChange(id, lock) {
             const updData = [];
-            const { layerConfigs } = designerStore;
+            const { layerConfigs } = designerStore();
             const { type } = layerConfigs[id];
             if (type === 'group') {
                 LayerUtil.findAllChildLayer([id]).forEach((id) => updData.push({ id, lock }));
@@ -29,7 +29,7 @@ export default defineStore('layerList', {
         },
         selectedChange(id, event) {
             const { targetIds, setTargetIds } = eventOperateStore;
-            const { layerConfigs } = designerStore;
+            const { layerConfigs } = designerStore();
             const { type, lock } = layerConfigs[id];
             if (!type) return;
             const groupLayer = type === 'group';
@@ -96,7 +96,7 @@ function setControlPointLineColor(lock) {
         },
         hideChange(id, hide) {
             const updData = [];
-            const { layerConfigs } = designerStore;
+            const { layerConfigs } = designerStore();
             const { type } = layerConfigs[id];
             if (type === 'group') {
                 LayerUtil.findAllChildLayer([id]).forEach((id) => updData.push({ id, hide }));
