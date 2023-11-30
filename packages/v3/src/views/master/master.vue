@@ -10,6 +10,7 @@
         </div>
         <GroupMovable></GroupMovable>
         <GroupSelectable></GroupSelectable>
+        <HotKey></HotKey>
     </div>
 </template>
 
@@ -21,6 +22,7 @@ import { onMounted, ref } from 'vue';
 import designerStore from "./store/DesignerStore.js";
 import GroupMovable from './operate-provider/movable/GroupMovable.vue';
 import GroupSelectable from './operate-provider/movable/GroupSelectable.vue';
+import HotKey from './operate-provider/hot-key/HotKey.vue';
 import eventOperateStore from "./operate-provider/EventOperateStore.js";
 import { storeToRefs } from 'pinia'
 const { getlayerConfigs } = storeToRefs(designerStore())
