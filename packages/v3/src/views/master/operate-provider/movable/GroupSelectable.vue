@@ -42,7 +42,6 @@ onMounted(() => {
 
 const onSelectEnd = (e) => {
     let { selected } = e;
-    debugger
     const { movableRef, setTargetIds } = eventOperateStore();
     if (!movableRef) return;
     const movable = movableRef;

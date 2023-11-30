@@ -1,6 +1,6 @@
 <template>
     <div class="warapper">
-        <div class='lc-event-container'>
+        <div class='lc-event-container' style="left: 0;top: 100px;width: 1000px;height: 800px;border: 1px solid #f1eeee;position: absolute;">
             <div v-for="item of  layerData" :key="item.id">
                 <div v-if="item.type === 'group'" :key="item.id" class='component-group'>
                     <ComponentContainer v-for="o of item.children"  :key="o.id" :layer="o"></ComponentContainer>

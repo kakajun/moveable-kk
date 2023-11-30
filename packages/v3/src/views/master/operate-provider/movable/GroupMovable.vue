@@ -1,38 +1,29 @@
 
 <template>
-        <Moveable ref="movableRef" :target="targets" :draggable="true" :resizable="true" :keepRatio="false"
-            :maxSnapElementGuidelineDistance="300" :snappable="true" :snapGap="false" :snapThreshold="5"
-            :isDisplaySnapDigit="true" :snapDirections="snapDirections"
-            :elementSnapDirections="elementSnapDirections"  :verticalGuidelines="['0', '50%', '100%']"
-            :horizontalGuidelines="['0', '50%', '100%']" :isDisplayInnerSnapDigit="true"
-            :elementGuidelines="selectedTargets" :throttleDrag="rasterize ? dragStep : 1"
-            :throttleResize="rasterize ? resizeStep : 1" @clickGroup="handleClickGroup" @drag="onDrag"
-            @dragStart="onDragStart" @dragEnd="onDragEnd" @dragGroup="onDragGroup" @dragGroupEnd="onDragGroupEnd"
-            @resizeStart="onResizeStart" @resize="onResize" @resizeEnd="onResizeEnd" @resizeGroupStart="onResizeGroupStart"
-            @resizeGroup="onResizeGroup" @resizeGroupEnd="onResizeGroupEnd" />
+    <Moveable ref="movableRef" :target="targets" :draggable="true" :resizable="true" :keepRatio="false"
+        :maxSnapElementGuidelineDistance="300" :snappable="true" :snapGap="false" :snapThreshold="5"
+        :isDisplaySnapDigit="true" :snapDirections="snapDirections" :elementSnapDirections="elementSnapDirections"
+        :verticalGuidelines="['0', '50%', '100%']" :horizontalGuidelines="['0', '50%', '100%']"
+        :isDisplayInnerSnapDigit="true" :elementGuidelines="elementGuidelines" :throttleDrag="rasterize ? dragStep : 1"
+        :throttleResize="rasterize ? resizeStep : 1" @clickGroup="handleClickGroup" @drag="onDrag" @dragStart="onDragStart"
+        @dragEnd="onDragEnd" @dragGroup="onDragGroup" @dragGroupEnd="onDragGroupEnd" @resizeStart="onResizeStart"
+        @resize="onResize" @resizeEnd="onResizeEnd" @resizeGroupStart="onResizeGroupStart" @resizeGroup="onResizeGroup"
+        @resizeGroupEnd="onResizeGroupEnd" />
 </template>
 
 <script setup>
-import { ref, onMounted ,watch,computed} from 'vue';
+import { ref, onMounted, watch, computed } from 'vue';
 import designerStore from "../../store/DesignerStore.js";
 import Moveable from "../../../components/Moveable.vue";
 import eventOperateStore from "../EventOperateStore.js";
-const {canvasConfig: {rasterize, dragStep, resizeStep}} = designerStore();
+const { canvasConfig: { rasterize, dragStep, resizeStep } } = designerStore();
 import { storeToRefs } from 'pinia'
 const movableRef = ref(null);
-const {selectorRef, targets} =storeToRefs(eventOperateStore()) ;
-const big=computed(()=>{
+const { selectorRef, targets } = storeToRefs(eventOperateStore());
+const big = computed(() => {
     return targets
 })
-const snapDirections={
-                top: true,
-                right: true,
-                bottom: true,
-                left: true,
-                center: true,
-                middle: true
-            }
-            const elementSnapDirections={
+const snapDirections = {
     top: true,
     right: true,
     bottom: true,
@@ -40,15 +31,24 @@ const snapDirections={
     center: true,
     middle: true
 }
-const selectedTargets = document.getElementsByClassName('lc-comp-item');
+const elementSnapDirections = {
+    top: true,
+    right: true,
+    bottom: true,
+    left: true,
+    center: true,
+    middle: true
+}
+let elementGuidelines=ref([])
 onMounted(() => {
-    const {setMovableRef} = eventOperateStore();
-    console.log(movableRef,"movableRef");
-        setMovableRef(movableRef.value);
+     const selectedTargets = document.getElementsByClassName("lc-comp-item");
+    elementGuidelines.value = ['lc-event-container', ...Array.from(selectedTargets)]
+    const { setMovableRef } = eventOperateStore();
+    setMovableRef(movableRef.value);
 });
 
 const handleClickGroup = (e) => {
-   selectorRef.clickTarget(e.inputEvent, e.inputTarget);
+    selectorRef.clickTarget(e.inputEvent, e.inputTarget);
 };
 
 const onDrag = (e) => {
@@ -57,7 +57,6 @@ const onDrag = (e) => {
 };
 
 const onDragStart = (e) => {
-    alert('msg');
     const { target } = e;
     const { layerConfigs } = designerStore();
     const { lock } = layerConfigs[target.id];
@@ -197,7 +196,7 @@ const onResizeGroup = (e) => {
         if (direction[0] === -1 || direction[1] === -1) {
             setGroupCoordinate({
                 minX: groupCoordinate.minX - dist[0],
-                minY: groupCoordinate.minY- dist[1],
+                minY: groupCoordinate.minY - dist[1],
                 groupWidth: groupCoordinate.groupWidth + dist[0],
                 groupHeight: groupCoordinate.groupHeight + dist[1],
             });
