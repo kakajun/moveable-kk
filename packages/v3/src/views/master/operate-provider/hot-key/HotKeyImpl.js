@@ -1,6 +1,6 @@
 import eventOperateStore from "../EventOperateStore";
 import designerStore from "../../store/DesignerStore";
-import { cloneDeep, throttle } from "lodash";
+import {  throttle } from "lodash";
 import { historyOperator } from "../undo-redo/HistoryOperator";
 import historyRecordOperateProxy from "../undo-redo/HistoryRecordOperateProxy";
 import undoRedoMap from "../undo-redo/core";
@@ -403,7 +403,7 @@ export const redo = () => {
  * 切换辅助线展示
  */
 export const toggleSecondaryBorder = () => {
-    const { auxiliaryBorder, setAuxiliaryBorder } = runtimeConfigStore;
+    const { auxiliaryBorder, setAuxiliaryBorder } = runtimeConfigStore();
     const newValue = !auxiliaryBorder;
     if (newValue) {
         //展示辅助线

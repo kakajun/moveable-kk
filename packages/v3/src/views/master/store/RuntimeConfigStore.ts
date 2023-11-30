@@ -10,6 +10,4 @@ export const useRuntimeConfigStore = defineStore('runtimeConfig', {
         },
     },
 });
-
-const runtimeConfigStore = useRuntimeConfigStore();
-export default runtimeConfigStore;
+export default useRuntimeConfigStore;
