@@ -1,7 +1,6 @@
 <script setup>
 import { ref, onMounted, onBeforeUnmount } from 'vue';
 import eventOperateStore from "../EventOperateStore";
-const {pointerTarget}=eventOperateStore();
 const TriggerType = {
     SINGLE: 'SINGLE',  //单次触发
     COILED: 'COILED' //连续触发
@@ -50,6 +49,7 @@ const doHandler = (e, hotKey) => {
             if (range) {
                 //先从缓存中获取dom元素，如果没有则从document中获取并缓存
                 const targetDom = getSpecialDomCache(range);
+                const {pointerTarget}=eventOperateStore();
                 if (!targetDom || !targetDom.contains(pointerTarget)) {
                     return;
                 }

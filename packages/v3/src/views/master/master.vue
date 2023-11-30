@@ -2,7 +2,7 @@
     <div class="warapper">
         <div class='lc-event-container'>
             <div class='lc-ruler-content' :style="warapperStyle">
-                <div v-for="item of  layerData" :key="item.id">
+                <div v-for="item of  layerData"  :key="item.id">
                     <div v-if="item.type === 'group'" :key="item.id" class='component-group'>
                         <ComponentContainer v-for="o of item.children" :key="o.id" :layer="o"/>
                     </div>
@@ -20,7 +20,7 @@
 import res from './res';
 import ComponentContainer from './ComponentContainer.vue';
 import { cloneDeep } from "lodash";
-import { onMounted, ref } from 'vue';
+import { onMounted, ref ,onUnmounted} from 'vue';
 import designerStore from "./store/DesignerStore.js";
 import GroupMovable from './operate-provider/movable/GroupMovable.vue';
 import { hotkeyConfigs } from "./operate-provider/hot-key/HotKeyConfig";
@@ -31,10 +31,14 @@ import { storeToRefs } from 'pinia'
 const { getlayerConfigs } = storeToRefs(designerStore())
 const layerData = ref([])
 onMounted(() => {
+    document.addEventListener("pointerup", pointerUpHandler);
     console.log(getlayerConfigs.value, "getlayerConfigs");
     initExistProject()
     layerData.value = parser(getlayerConfigs.value)
     console.log(layerData.value, "layerData");
+})
+onUnmounted(() => {
+    document.removeEventListener("pointerup", pointerUpHandler);
 })
 const warapperStyle = ref({
     position: 'absolute',
@@ -43,6 +47,11 @@ const warapperStyle = ref({
     top: 0,
     left: 0,
 })
+
+ const pointerUpHandler = (event) => {
+    const {setPointerTarget} = eventOperateStore();
+    setPointerTarget(event.target);
+}
 /**
  * 解析函数
  */
