@@ -2,11 +2,41 @@ import { defineStore } from 'pinia';
 import { isEqual } from 'lodash';
 import historyRecordOperateProxy from '../operate-provider/undo-redo/HistoryRecordOperateProxy';
 import ObjectUtil from '../util/ObjectUtil';
-
+import { cloneDeep } from "lodash";
+/**
+ * 解析函数
+ */
+const parser = (layerMap, order) => {
+    layerMap = cloneDeep(layerMap);
+    console.log(layerMap, "layerMap");
+    let sourceLayerArr;
+    if (order === 'DESC')
+        sourceLayerArr = Object.values(layerMap).sort((a, b) => b - a);
+    else
+        sourceLayerArr = Object.values(layerMap).sort((a, b) => a - b);
+    // console.log(sourceLayerArr, "sourceLayerArr");
+    // 构建树结构
+    const resData = [];
+    for (const layerItem of sourceLayerArr) {
+        if (!layerItem?.pid) {
+            // 根节点
+            resData.push(layerItem);
+        } else {
+            // 非根节点，将其加入父节点的 children 中
+            const parent = layerMap[layerItem.pid];
+            if (parent) {
+                parent.children = parent.children || [];
+                parent.children.push(layerItem);
+            }
+        }
+    }
+    return resData;
+};
  const useDesignerStore = defineStore('designer', {
     state: () => ({
         id: '',
         loaded: false,
+        layerData:[],
         canvasConfig: {
             rasterize: false,
             dragStep: 1,
@@ -50,8 +80,8 @@ import ObjectUtil from '../util/ObjectUtil';
     }),
 
     getters: {
-        getlayerConfigs(state) {
-            return state.layerConfigs;
+        getlayerData(state) {
+           return parser( state.layerConfigs)
         },
         getData() {
             // const elemConfigs = {};
@@ -136,6 +166,7 @@ import ObjectUtil from '../util/ObjectUtil';
         },
 
         delItem(ids) {
+            debugger
             for (const id of ids) {
                 delete this.layerConfigs[id];
                 delete this.compInstances[id];

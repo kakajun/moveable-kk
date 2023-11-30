@@ -7,7 +7,6 @@ import layerListStore from "../../store/LayerListStore";
 import IdGenerate from "../../util/IdGenerate";
 import LayerUtil from "../../util/LayerUtil";
 class HistoryRecordOperateProxy {
-
     doDrag(items) {
         //构建历史记录数据
         const { layerConfigs, updateLayout } = designerStore();

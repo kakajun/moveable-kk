@@ -27,7 +27,7 @@ import hotkeyRight from './hotkey-right.vue';
 import ContextMenu from './operate-provider/right-click-menu/ContextMenu.vue';
 import ComponentContainer from './ComponentContainer.vue';
 import useContextMenuStore from "./operate-provider/right-click-menu/ContextMenuStore";
-import { cloneDeep } from "lodash";
+
 import { onMounted, ref ,onUnmounted} from 'vue';
 import designerStore from "./store/DesignerStore.js";
 import GroupMovable from './operate-provider/movable/GroupMovable.vue';
@@ -36,14 +36,17 @@ import GroupSelectable from './operate-provider/movable/GroupSelectable.vue';
 import HotKey from './operate-provider/hot-key/HotKey.vue';
 import eventOperateStore from "./operate-provider/EventOperateStore.js";
 import { storeToRefs } from 'pinia'
-const { getlayerConfigs } = storeToRefs(designerStore())
-const layerData = ref([])
+const { getlayerData:layerData } = storeToRefs(designerStore())
+
 onMounted(() => {
   //绑定事件到dom元素
   bindEventToDom();
     initExistProject()
-    layerData.value = parser(getlayerConfigs.value)
+
     console.log(layerData.value, "layerData");
+    // setInterval(() => {
+    //     console.log(layerData.value,"layerData.value");
+    // },2000)
 })
 onUnmounted(() => {
   //卸载dom元素上的事件
@@ -57,35 +60,7 @@ const warapperStyle = ref({
     left: 0,
 })
 
-/**
- * 解析函数
- */
-const parser = (layerMap, order) => {
-    layerMap = cloneDeep(layerMap);
-    console.log(layerMap, "layerMap");
-    let sourceLayerArr;
-    if (order === 'DESC')
-        sourceLayerArr = Object.values(layerMap).sort((a, b) => b - a);
-    else
-        sourceLayerArr = Object.values(layerMap).sort((a, b) => a - b);
-    // console.log(sourceLayerArr, "sourceLayerArr");
-    // 构建树结构
-    const resData = [];
-    for (const layerItem of sourceLayerArr) {
-        if (!layerItem?.pid) {
-            // 根节点
-            resData.push(layerItem);
-        } else {
-            // 非根节点，将其加入父节点的 children 中
-            const parent = layerMap[layerItem.pid];
-            if (parent) {
-                parent.children = parent.children || [];
-                parent.children.push(layerItem);
-            }
-        }
-    }
-    return resData;
-};
+
 /**
 * 初始化以更新方式打开时项目信息
 */
