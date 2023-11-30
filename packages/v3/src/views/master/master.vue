@@ -14,12 +14,14 @@
         </div>
         <HotKey :handlerMapping='hotkeyConfigs'></HotKey>
         <hotkey-right></hotkey-right>
+        <ContextMenu></ContextMenu>
     </div>
 </template>
 
 <script setup>
 import res from './res';
 import hotkeyRight from './hotkey-right.vue';
+import ContextMenu from './operate-provider/right-click-menu/ContextMenu.vue';
 import ComponentContainer from './ComponentContainer.vue';
 import { cloneDeep } from "lodash";
 import { onMounted, ref ,onUnmounted} from 'vue';

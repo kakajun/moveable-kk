@@ -91,7 +91,6 @@ export default class LayerUtil {
         });
     }
 
-
     /**
      * 判断layerIds中的图层是否处于同一个图层 -- 用于判断是否可以进行图层编组
      * @param layerIds 图层id

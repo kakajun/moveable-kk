@@ -25,6 +25,4 @@ export const useContextMenuStore = defineStore('contextMenu', {
         },
     },
 });
-
-const contextMenuStore = useContextMenuStore();
-export default contextMenuStore;
+export default useContextMenuStore;

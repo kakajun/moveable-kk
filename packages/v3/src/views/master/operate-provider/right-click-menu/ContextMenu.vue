@@ -9,23 +9,23 @@
 
 <script>
 import { defineComponent } from 'vue';
-import contextMenuStore from './ContextMenuStore';
+import useContextMenuStore from './ContextMenuStore';
 import './OperateMenu.less';
-import {
-    CopyOutlined,
-    DeleteOutlined,
-    EyeInvisibleOutlined,
-    LockOutlined,
-    VerticalAlignBottomOutlined,
-    VerticalAlignTopOutlined,
-} from '@ant-design/icons';
+// import {
+//     CopyOutlined,
+//     DeleteOutlined,
+//     EyeInvisibleOutlined,
+//     LockOutlined,
+//     VerticalAlignBottomOutlined,
+//     VerticalAlignTopOutlined,
+// } from '@ant-design/icons';
 import { doCopy, doDelete, doHide, doLock, doUnLock, toBottom, toTop } from '../hot-key/HotKeyImpl';
 
 export default defineComponent({
     name: 'ContextMenu',
-    components: {
-        Icon: AntdIcon,
-    },
+    // components: {
+    //     Icon: AntdIcon,
+    // },
     data() {
         return {
             menuList: [
@@ -69,10 +69,10 @@ export default defineComponent({
     },
     computed: {
         visible() {
-            return contextMenuStore().visible;
+            return useContextMenuStore().visible;
         },
         position() {
-            return contextMenuStore().position || [0, 0];
+            return useContextMenuStore().position || [0, 0];
         },
     },
 });

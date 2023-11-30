@@ -13,15 +13,13 @@
 </template>
 
 <script setup>
-import { ref, onMounted, computed } from 'vue';
-// import historyRecordOperateProxy from './operate-provider/undo-redo/HistoryRecordOperateProxy.js';
+import { ref, computed } from 'vue';
 const props = defineProps({
     layer: {
         type: Object,
         required: true,
     },
 });
-
 
 const cpuStyle = computed(() => {
     const { layer } = props;
@@ -34,14 +32,4 @@ const cpuStyle = computed(() => {
         border: '1px solid #65eafc'
     }
 })
-onMounted(() => {
-    console.log(props.layer, "props.layer");
-});
-
 </script>
-
-<style scoped>
-.lc-comp-item {
-    /* styles for lc-comp-item */
-}
-</style>

@@ -59,7 +59,6 @@ export default class ObjectUtil {
             }
             return result;
         }
-
         return findAndExtract(originObj, newObj);
     }
 }

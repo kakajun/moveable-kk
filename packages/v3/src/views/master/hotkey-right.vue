@@ -55,6 +55,7 @@ export default {
   position: absolute;
   left: 1100px;
   max-height: 800px;
+  min-width: 280px;
   overflow-y: auto;
 
   .hotkey-des-item {

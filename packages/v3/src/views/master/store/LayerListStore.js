@@ -74,22 +74,22 @@ export default defineStore('layerList', {
  * 设置控制点和边框的颜色
  * @param lock 是否锁定
  */
-function setControlPointLineColor(lock) {
-    const { targetIds } = eventOperateStore()();
-    //没有选中组件的情况下不会显示边框。
-    if (targetIds.length === 0) return;
-    const pointLineDom = document.querySelectorAll('.moveable-control,.moveable-line');
-    if (!pointLineDom) return;
-    if (lock) {
-        pointLineDom.forEach((child) => {
-            child.style.backgroundColor = '#ff4b29';
-        });
-    } else {
-        pointLineDom.forEach((child) => {
-            child.style.backgroundColor = '#00bbffff';
-        });
-    }
-}
+                function setControlPointLineColor(lock) {
+                    const { targetIds } = eventOperateStore()();
+                    //没有选中组件的情况下不会显示边框。
+                    if (targetIds.length === 0) return;
+                    const pointLineDom = document.querySelectorAll('.moveable-control,.moveable-line');
+                    if (!pointLineDom) return;
+                    if (lock) {
+                        pointLineDom.forEach((child) => {
+                            child.style.backgroundColor = '#ff4b29';
+                        });
+                    } else {
+                        pointLineDom.forEach((child) => {
+                            child.style.backgroundColor = '#00bbffff';
+                        });
+                    }
+                }
                 setControlPointLineColor(finalLock);
                 clearTimeout(tempTimer);
             }, 0);

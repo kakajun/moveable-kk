@@ -5,7 +5,7 @@ export const useRuntimeConfigStore = defineStore('runtimeConfig', {
         auxiliaryBorder: false,
     }),
     actions: {
-        setAuxiliaryBorder(auxiliaryBorder: boolean) {
+        setAuxiliaryBorder(auxiliaryBorder) {
             this.auxiliaryBorder = auxiliaryBorder;
         },
     },

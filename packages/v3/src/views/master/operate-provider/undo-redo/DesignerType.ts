@@ -1,9 +1,6 @@
 /**
  * 主题
  */
-
-
-
 export interface ThemeColors {
     //主体色
     main?: string;
