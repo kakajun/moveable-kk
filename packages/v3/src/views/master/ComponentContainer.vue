@@ -14,7 +14,7 @@
 
 <script setup>
 import { ref, onMounted, computed } from 'vue';
-import historyRecordOperateProxy from './operate-provider/undo-redo/HistoryRecordOperateProxy.js';
+// import historyRecordOperateProxy from './operate-provider/undo-redo/HistoryRecordOperateProxy.js';
 const props = defineProps({
     layer: {
         type: Object,
