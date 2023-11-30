@@ -2,9 +2,9 @@
     <div class="warapper">
         <div class='lc-event-container'>
             <div class='lc-ruler-content' :style="warapperStyle">
-                <div v-for="item of  layerData"  :key="item.id">
+                <div v-for="item of  layerData" :key="item.id">
                     <div v-if="item.type === 'group'" :key="item.id" class='component-group'>
-                        <ComponentContainer v-for="o of item.children" :key="o.id" :layer="o"/>
+                        <ComponentContainer v-for="o of item.children" :key="o.id" :layer="o" />
                     </div>
                     <ComponentContainer v-if="item.type !== 'group'" :layer="item" />
                 </div>
@@ -27,8 +27,7 @@ import hotkeyRight from './hotkey-right.vue';
 import ContextMenu from './operate-provider/right-click-menu/ContextMenu.vue';
 import ComponentContainer from './ComponentContainer.vue';
 import useContextMenuStore from "./operate-provider/right-click-menu/ContextMenuStore";
-
-import { onMounted, ref ,onUnmounted} from 'vue';
+import { onMounted, ref, onUnmounted } from 'vue';
 import designerStore from "./store/DesignerStore.js";
 import GroupMovable from './operate-provider/movable/GroupMovable.vue';
 import { hotkeyConfigs } from "./operate-provider/hot-key/HotKeyConfig";
@@ -36,21 +35,16 @@ import GroupSelectable from './operate-provider/movable/GroupSelectable.vue';
 import HotKey from './operate-provider/hot-key/HotKey.vue';
 import eventOperateStore from "./operate-provider/EventOperateStore.js";
 import { storeToRefs } from 'pinia'
-const { getlayerData:layerData } = storeToRefs(designerStore())
+const { getlayerData: layerData } = storeToRefs(designerStore())
 
 onMounted(() => {
-  //绑定事件到dom元素
-  bindEventToDom();
+    //绑定事件到dom元素
+    bindEventToDom();
     initExistProject()
-
-    console.log(layerData.value, "layerData");
-    // setInterval(() => {
-    //     console.log(layerData.value,"layerData.value");
-    // },2000)
 })
 onUnmounted(() => {
-  //卸载dom元素上的事件
-  unbindEventToDom();
+    //卸载dom元素上的事件
+    unbindEventToDom();
 })
 const warapperStyle = ref({
     position: 'absolute',
@@ -87,7 +81,7 @@ const initExistProject = () => {
 /**
  * 绑定事件到dom元素
  */
- function bindEventToDom() {
+function bindEventToDom() {
     document.addEventListener("click", clickHandler);
     document.addEventListener("contextmenu", contextMenuHandler);
     document.addEventListener("pointerdown", pointerDownHandler);
@@ -106,7 +100,7 @@ function unbindEventToDom() {
 
 /*****************事件处理*****************/
 const clickHandler = (event) => {
-    const {visible, updateVisible} = useContextMenuStore();
+    const { visible, updateVisible } = useContextMenuStore();
     if (visible && event.button === 0) {
         //这里添加异步处理的原因：必须要在操作菜单执行点击事件执行之后才能卸载dom元素，不然操作菜单的点击事件会失效。
         setTimeout(() => {
@@ -117,7 +111,7 @@ const clickHandler = (event) => {
 
 const contextMenuHandler = (event) => {
     event.preventDefault();
-    const {mouseDownTime, mouseUpTime, setPosition, updateVisible} = useContextMenuStore();
+    const { mouseDownTime, mouseUpTime, setPosition, updateVisible } = useContextMenuStore();
     let targetArr = ['lc-comp-item', 'moveable-area'];
     if (targetArr.some((item) => event.target.classList.contains(item)) && mouseUpTime - mouseDownTime < 200) {
         updateVisible && updateVisible(true);
@@ -128,14 +122,14 @@ const contextMenuHandler = (event) => {
 }
 
 const pointerDownHandler = () => {
-    const {setMouseDownTime} = useContextMenuStore();
+    const { setMouseDownTime } = useContextMenuStore();
     setMouseDownTime(Date.now());
 }
 
 const pointerUpHandler = (event) => {
-    const {setMouseUpTime} = useContextMenuStore();
+    const { setMouseUpTime } = useContextMenuStore();
     setMouseUpTime(Date.now());
-    const {setPointerTarget} = eventOperateStore();
+    const { setPointerTarget } = eventOperateStore();
     setPointerTarget(event.target);
 }
 </script>
