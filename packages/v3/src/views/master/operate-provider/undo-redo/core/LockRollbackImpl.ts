@@ -13,7 +13,7 @@ export class LockRollbackImpl extends AbstractRollback {
         const {updateLayout} = designerStore();
         if (next)
             updateLayout(next as ILockOperateData[]);
-        const {visible, layerInstances} = layerListStore;
+        const {visible, layerInstances} = layerListStore();
         if (visible) {
             //图层列表若显示，则需要更新图层列表的组件状态
             (next as ILockOperateData[])?.forEach((item) => {
@@ -28,7 +28,7 @@ export class LockRollbackImpl extends AbstractRollback {
         const {updateLayout} = designerStore();
         if (prev)
             updateLayout(prev as ILockOperateData[]);
-        const {visible, layerInstances} = layerListStore;
+        const {visible, layerInstances} = layerListStore();
         if (visible) {
             //图层列表若显示，则需要更新图层列表的组件状态
             (prev as ILockOperateData[])?.forEach((item) => {

@@ -1,7 +1,7 @@
 import AbstractRollback from "./AbstractRollback";
 import {IHistoryRecord} from "../OperateType";
 import designerStore from "../../../store/DesignerStore";
-import {ILayerItem} from "../../../DesignerType";
+import {ILayerItem} from "../DesignerType";
 
 export class UpdLayerGroupRollbackImpl extends AbstractRollback {
     redo(record: IHistoryRecord): void {

@@ -14,7 +14,7 @@ export class AddRollbackImpl extends AbstractRollback {
 
     undo(record: IHistoryRecord): void {
         if (!record) return;
-        const {setTargetIds} = eventOperateStore;
+        const {setTargetIds} = eventOperateStore();
         const {next} = record!;
         let nextAddData = next! as IAddOperateData[];
         //执行反向操作删除元素

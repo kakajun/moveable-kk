@@ -2,7 +2,7 @@
  * 操作类型枚举
  */
 import {ConfigureObjectFragments} from "../../../utils/ObjectUtil";
-import {ILayerItem} from "../../DesignerType";
+import {ILayerItem} from "./DesignerType";
 
 export enum OperateType {
     /**
