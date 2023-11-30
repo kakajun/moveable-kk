@@ -54,15 +54,15 @@ import ObjectUtil from '../util/ObjectUtil';
             return state.layerConfigs;
         },
         getData() {
-            const elemConfigs = {};
-            Object.keys(this.compInstances).forEach((key) => {
-                elemConfigs[key] = this.compInstances[key].getConfig();
-            });
+            // const elemConfigs = {};
+            // Object.keys(this.compInstances).forEach((key) => {
+            //     elemConfigs[key] = this.compInstances[key].getConfig();
+            // });
             return {
                 id: this.id,
                 canvasConfig: { ...this.canvasConfig },
                 projectConfig: { ...this.projectConfig },
-                elemConfigs: { ...this.elemConfigs },
+                // elemConfigs: { ...this.elemConfigs },
                 layerConfigs: { ...this.layerConfigs },
                 statisticInfo: { ...this.statisticInfo },
                 themeConfig: [...this.themeConfig],
@@ -81,9 +81,9 @@ import ObjectUtil from '../util/ObjectUtil';
             this.projectConfig = store.projectConfig
                 ? { ...this.projectConfig, ...store.projectConfig }
                 : this.projectConfig;
-            this.elemConfigs = store.elemConfigs
-                ? { ...this.elemConfigs, ...store.elemConfigs }
-                : this.elemConfigs;
+            // this.elemConfigs = store.elemConfigs
+            //     ? { ...this.elemConfigs, ...store.elemConfigs }
+            //     : this.elemConfigs;
                 console.log(store.layerConfigs,"store.layerConfigs");
             this.layerConfigs = store.layerConfigs || this.layerConfigs;
 
@@ -100,7 +100,7 @@ import ObjectUtil from '../util/ObjectUtil';
             this.id = '';
             this.canvasConfig = {};
             this.projectConfig = {};
-            this.elemConfigs = null;
+            // this.elemConfigs = null;
             this.layerConfigs = {};
             this.statisticInfo = {};
             this.themeConfig = [

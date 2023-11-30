@@ -27,7 +27,7 @@ export class DelRollbackImpl extends AbstractRollback {
         const targetIds: string[] = [];
         prevDelData.forEach((item) => {
             addItem(item.data.layerConfig);
-            elemConfigs![item.id] = item.data.elemConfig;
+            // elemConfigs![item.id] = item.data.elemConfig;
             targetIds.push(item.id!);
         });
         //选中目标元素

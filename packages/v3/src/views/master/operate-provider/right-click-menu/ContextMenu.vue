@@ -1,7 +1,7 @@
 <template>
     <div v-if="visible" class="lc-right-menu" :style="{ position: 'fixed', top: position[1], left: position[0] }">
         <div v-for="(menuItem, index) in menuList" :key="index" class="menu-item" @click="menuItem.onClick">
-            <label><Icon :component="menuItem.icon" /></label>
+            <!-- <label><Icon :component="menuItem.icon" /></label> -->
             <span>{{ menuItem.name }}</span>
         </div>
     </div>

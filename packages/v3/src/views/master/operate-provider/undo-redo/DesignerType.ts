@@ -200,7 +200,7 @@ export interface ProjectDataType {
     //项目设置
     projectConfig?: ProjectConfig;
     //元素样式
-    elemConfigs?: { [key: string]: Record<string, any> };
+    // elemConfigs?: { [key: string]: Record<string, any> };
     //图层信息
     layerConfigs?: { [key: string]: ILayerItem };
     //统计信息

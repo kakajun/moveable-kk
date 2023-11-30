@@ -92,6 +92,29 @@ class HistoryRecordOperateProxy {
     }
 
     doAdd(container, layout) {
+        // TODO  这里跟react中的写法不一样, 先暂时这么写着
+        const { compInstances } = designerStore();
+        compInstances[layout.id + ''] = { container, config: layout };
+        //如果addRecordCompId存在，说明是新增组件，该组件的数据需要存储到历史记录中
+        const { addRecordCompId } = eventOperateStore();
+        if (addRecordCompId && addRecordCompId === layout.id) {
+            const data = {
+                type: OperateType.ADD,
+                prev: null,
+                next: [
+                    {
+                        id: layout.id,
+                        data: {
+                            layerConfig: toJS(layout),
+                            elemConfig: null,
+                        },
+                    },
+                ],
+            };
+            historyOperator.put({ actions: [data] });
+        }
+
+
     }
 
     doDelete() {
@@ -200,7 +223,7 @@ class HistoryRecordOperateProxy {
         const copiedInstance = compInstances[layout.id];
         let newConfig = cloneDeep(copiedInstance.getConfig());
         newConfig.info.id = newId;
-        elemConfigs[newId] = newConfig;
+        // elemConfigs[newId] = newConfig;
         newIds.push(newId);
         return newLayout;
     }
@@ -285,7 +308,7 @@ class HistoryRecordOperateProxy {
         //设置分组复制的操作记录信息
         newIds.forEach((id) => {
             const newLayout = layerConfigs[id];
-            const newConfig = elemConfigs[id];
+            // const newConfig = elemConfigs[id];
             if (newLayout.type === 'group') {
                 next.push({
                     id: id,
@@ -298,7 +321,7 @@ class HistoryRecordOperateProxy {
                     id: id,
                     data: {
                         layerConfig: { ...newLayout },
-                        elemConfig: { ...newConfig }
+                        // elemConfig: { ...newConfig }
                     }
                 });
             }

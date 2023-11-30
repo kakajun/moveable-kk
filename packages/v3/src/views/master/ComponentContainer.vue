@@ -1,7 +1,7 @@
 <template>
     <div :id="layer.id" :data-type="layer.type" :data-lock="layer.lock" :data-hide="layer.hide" :key="layer.id.toString()"
         :style="cpuStyle" class="lc-comp-item">
-        <div ref="ref" :style="{
+        <div ref="myref" :style="{
             width: '100%',
             height: '100%',
             textAlign: 'center',
@@ -13,14 +13,18 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue';
+import historyRecordOperateProxy from "./operate-provider/undo-redo/HistoryRecordOperateProxy";
+import { ref, computed,onMounted } from 'vue';
 const props = defineProps({
     layer: {
         type: Object,
         required: true,
     },
 });
-
+const myref=ref(null)
+onMounted(() => {
+    historyRecordOperateProxy.doAdd(myref, props.layer);
+})
 const cpuStyle = computed(() => {
     const { layer } = props;
     return {

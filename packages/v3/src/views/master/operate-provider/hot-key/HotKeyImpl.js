@@ -98,6 +98,7 @@ export const toBottom = () => {
 }
 
 export const doDelete = () => {
+
     //删除设计器中的组件，并记录到历史操作
     historyRecordOperateProxy.doDelete();
 }
@@ -109,7 +110,7 @@ export const doSave = throttle(() => {
         if (saveType === SaveType.LOCAL) {
             const { projectConfig: { saveType = SaveType.LOCAL }, updateProjectConfig } = designerStore();
             updateProjectConfig({ updateTime: DateUtil.format(new Date()) })
-            const proData = designerStore().getData();
+            // const proData = designerStore().getData();
             //设置蓝图数据
             // const { bpAPMap, bpLines, bpAPLineMap, getAllNodeConfig, bpNodeLayoutMap } = bpStore;
             // proData.bpAPMap = bpAPMap;
