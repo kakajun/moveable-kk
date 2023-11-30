@@ -31,37 +31,37 @@ export default defineComponent({
             menuList: [
                 {
                     name: '锁定',
-                    icon: LockOutlined,
+                    // icon: LockOutlined,
                     onClick: doLock,
                 },
                 {
                     name: '解锁',
-                    icon: LockOutlined,
+                    // icon: LockOutlined,
                     onClick: doUnLock,
                 },
                 {
                     name: '隐藏',
-                    icon: EyeInvisibleOutlined,
+                    // icon: EyeInvisibleOutlined,
                     onClick: doHide,
                 },
                 {
                     name: '复制',
-                    icon: CopyOutlined,
+                    // icon: CopyOutlined,
                     onClick: doCopy,
                 },
                 {
                     name: '置顶',
-                    icon: VerticalAlignTopOutlined,
+                    // icon: VerticalAlignTopOutlined,
                     onClick: toTop,
                 },
                 {
                     name: '置底',
-                    icon: VerticalAlignBottomOutlined,
+                    // icon: VerticalAlignBottomOutlined,
                     onClick: toBottom,
                 },
                 {
                     name: '删除',
-                    icon: DeleteOutlined,
+                    // icon: DeleteOutlined,
                     onClick: doDelete,
                 },
             ],

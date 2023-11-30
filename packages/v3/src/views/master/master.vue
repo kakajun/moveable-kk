@@ -12,8 +12,11 @@
                 <GroupSelectable></GroupSelectable>
             </div>
         </div>
+        <!-- 注册快捷键 -->
         <HotKey :handlerMapping='hotkeyConfigs'></HotKey>
+        <!-- 快捷键提示 -->
         <hotkey-right></hotkey-right>
+        <!-- 右击菜单 -->
         <ContextMenu></ContextMenu>
     </div>
 </template>
@@ -23,6 +26,7 @@ import res from './res';
 import hotkeyRight from './hotkey-right.vue';
 import ContextMenu from './operate-provider/right-click-menu/ContextMenu.vue';
 import ComponentContainer from './ComponentContainer.vue';
+import useContextMenuStore from "./operate-provider/right-click-menu/ContextMenuStore";
 import { cloneDeep } from "lodash";
 import { onMounted, ref ,onUnmounted} from 'vue';
 import designerStore from "./store/DesignerStore.js";
@@ -35,14 +39,15 @@ import { storeToRefs } from 'pinia'
 const { getlayerConfigs } = storeToRefs(designerStore())
 const layerData = ref([])
 onMounted(() => {
-    document.addEventListener("pointerup", pointerUpHandler);
-    console.log(getlayerConfigs.value, "getlayerConfigs");
+  //绑定事件到dom元素
+  bindEventToDom();
     initExistProject()
     layerData.value = parser(getlayerConfigs.value)
     console.log(layerData.value, "layerData");
 })
 onUnmounted(() => {
-    document.removeEventListener("pointerup", pointerUpHandler);
+  //卸载dom元素上的事件
+  unbindEventToDom();
 })
 const warapperStyle = ref({
     position: 'absolute',
@@ -52,10 +57,6 @@ const warapperStyle = ref({
     left: 0,
 })
 
- const pointerUpHandler = (event) => {
-    const {setPointerTarget} = eventOperateStore();
-    setPointerTarget(event.target);
-}
 /**
  * 解析函数
  */
@@ -106,23 +107,61 @@ const initExistProject = () => {
     const { setMinLevel, setMaxLevel } = eventOperateStore();
     setMinLevel(store?.extendParams?.minLevel || 0);
     setMaxLevel(store?.extendParams?.maxLevel || 0);
+}
 
-    // //初始化bpStore（蓝图状态） todo 是否可以以更规范的方式处理？
-    // const { setAPMap, setLines, setAPLineMap, setBpNodeLayoutMap, setBpNodeConfigMap } = bpStore;
-    // setAPMap(store?.bpAPMap || {});
-    // setLines(store?.bpLines || {});
-    // setAPLineMap(store?.bpAPLineMap || {});
-    // setBpNodeLayoutMap(store?.bpNodeLayoutMap || {});
-    // setBpNodeConfigMap(store?.bpNodeConfigMap || {});
-    // //初始化蓝图左侧节点列表
-    // const { initUsedLayerNodes } = bpLeftStore;
-    // const usedLayerNodes: Record<string, boolean> = {};
-    // Object.keys(store?.bpNodeLayoutMap || {}).forEach(key => {
-    //     usedLayerNodes[key] = true;
-    // })
-    // initUsedLayerNodes(usedLayerNodes);
-    // setLoaded(true);
+/**
+ * 绑定事件到dom元素
+ */
+ function bindEventToDom() {
+    document.addEventListener("click", clickHandler);
+    document.addEventListener("contextmenu", contextMenuHandler);
+    document.addEventListener("pointerdown", pointerDownHandler);
+    document.addEventListener("pointerup", pointerUpHandler);
+}
 
+/**
+ * 卸载dom元素上的事件
+ */
+function unbindEventToDom() {
+    document.removeEventListener("click", clickHandler);
+    document.removeEventListener("contextmenu", contextMenuHandler);
+    document.removeEventListener("pointerdown", pointerDownHandler);
+    document.removeEventListener("pointerup", pointerUpHandler);
+}
+
+/*****************事件处理*****************/
+const clickHandler = (event) => {
+    const {visible, updateVisible} = useContextMenuStore();
+    if (visible && event.button === 0) {
+        //这里添加异步处理的原因：必须要在操作菜单执行点击事件执行之后才能卸载dom元素，不然操作菜单的点击事件会失效。
+        setTimeout(() => {
+            updateVisible(false);
+        });
+    }
+}
+
+const contextMenuHandler = (event) => {
+    event.preventDefault();
+    const {mouseDownTime, mouseUpTime, setPosition, updateVisible} = useContextMenuStore();
+    let targetArr = ['lc-comp-item', 'moveable-area'];
+    if (targetArr.some((item) => event.target.classList.contains(item)) && mouseUpTime - mouseDownTime < 200) {
+        updateVisible && updateVisible(true);
+        setPosition([event.clientX, event.clientY]);
+    } else {
+        updateVisible && updateVisible(false);
+    }
+}
+
+const pointerDownHandler = () => {
+    const {setMouseDownTime} = useContextMenuStore();
+    setMouseDownTime(Date.now());
+}
+
+const pointerUpHandler = (event) => {
+    const {setMouseUpTime} = useContextMenuStore();
+    setMouseUpTime(Date.now());
+    const {setPointerTarget} = eventOperateStore();
+    setPointerTarget(event.target);
 }
 </script>
 
