@@ -10,7 +10,7 @@
         </div>
         <GroupMovable></GroupMovable>
         <GroupSelectable></GroupSelectable>
-        <HotKey></HotKey>
+        <HotKey  :handlerMapping='hotkeyConfigs'></HotKey>
     </div>
 </template>
 
@@ -21,6 +21,7 @@ import { cloneDeep } from "lodash";
 import { onMounted, ref } from 'vue';
 import designerStore from "./store/DesignerStore.js";
 import GroupMovable from './operate-provider/movable/GroupMovable.vue';
+import {hotkeyConfigs} from "./operate-provider/hot-key/HotKeyConfig";
 import GroupSelectable from './operate-provider/movable/GroupSelectable.vue';
 import HotKey from './operate-provider/hot-key/HotKey.vue';
 import eventOperateStore from "./operate-provider/EventOperateStore.js";

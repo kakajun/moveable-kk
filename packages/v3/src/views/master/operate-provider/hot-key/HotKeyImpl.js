@@ -1,22 +1,23 @@
 import eventOperateStore from "../EventOperateStore";
 import designerStore from "../../store/DesignerStore";
-import { ILayerItem, SaveType } from "../../DesignerType";
 import { cloneDeep, throttle } from "lodash";
 import { historyOperator } from "../undo-redo/HistoryOperator";
 import historyRecordOperateProxy from "../undo-redo/HistoryRecordOperateProxy";
 import undoRedoMap from "../undo-redo/core";
 import runtimeConfigStore from "../../store/RuntimeConfigStore";
-import headerStore from "../../header/HeaderStore";
-import layerListStore from "../../float-configs/layer-list/LayerListStore";
-import footerStore from "../../footer/FooterStore";
-import DateUtil from "../../../utils/DateUtil";
-import bpStore from "../../../blueprint/store/BPStore";
-import { reRenderLine } from "../../../blueprint/drag/BPMovable";
-import bpLeftStore from "../../../blueprint/left/BPLeftStore";
-import DesignerLoaderFactory from "../../loader/DesignerLoaderFactory";
+
+import layerListStore from "../../store/LayerListStore";
+
+import DateUtil from "../../util/DateUtil";
 import { ElMessage } from 'element-plus'
+const SaveType= {
+    //本地存储(indexedDB)
+    LOCAL : '0',
+    //服务器存储
+    SERVER : '1'
+}
 export const selectAll = () => {
-    const { layerConfigs } = designerStore;
+    const { layerConfigs } = designerStore();
     const { setTargetIds, calculateGroupCoordinate } = eventOperateStore();
     const selected = Object.values(layerConfigs).map((item) => {
         if (!item.lock && !item.hide)
@@ -35,7 +36,7 @@ export const doCopy = () => {
     let { targetIds, setTargetIds } = eventOperateStore();
     if (!targetIds || targetIds.length === 0) return;
 
-    const { copyItem } = designerStore;
+    const { copyItem } = designerStore();
     let newIds = copyItem(targetIds);
     //延迟10毫秒，等待dom元素渲染完毕后再获取。
     setTimeout(() => setTargetIds(newIds), 10);
@@ -44,7 +45,7 @@ export const doCopy = () => {
 export const doLock = () => {
     const { targetIds, setTargetIds } = eventOperateStore();
     if (!targetIds || targetIds.length === 0) return;
-    const { layerConfigs } = designerStore;
+    const { layerConfigs } = designerStore();
     let toBeUpdate = [];
     for (const targetId of targetIds) {
         let item = layerConfigs[targetId];
@@ -58,7 +59,7 @@ export const doLock = () => {
 export const doUnLock = () => {
     const { setTargetIds, targetIds } = eventOperateStore();
     if (!targetIds || targetIds.length === 0) return;
-    const { layerConfigs } = designerStore;
+    const { layerConfigs } = designerStore();
     let toUpdate = [];
     targetIds.filter(id => {
         //过滤出被锁定的组件
@@ -73,7 +74,7 @@ export const doUnLock = () => {
 export const toTop = () => {
     let { maxLevel, setMaxLevel, targetIds } = eventOperateStore();
     if (!targetIds || targetIds.length === 0) return;
-    const { layerConfigs } = designerStore;
+    const { layerConfigs } = designerStore();
     let toBeUpdate = [];
     targetIds.forEach((id) => {
         let item = layerConfigs[id];
@@ -86,7 +87,7 @@ export const toTop = () => {
 export const toBottom = () => {
     let { minLevel, setMinLevel, targetIds } = eventOperateStore();
     if (!targetIds || targetIds.length === 0) return;
-    const { layerConfigs } = designerStore;
+    const { layerConfigs } = designerStore();
     let toBeUpdate = [];
     targetIds.forEach((id) => {
         let item = layerConfigs[id];
@@ -101,14 +102,14 @@ export const doDelete = () => {
     //如果蓝图中使用了当前要被删除的组件，则需要先删除蓝图中的组件和连线，且蓝图中的删除操作目前无法回退
     const { targetIds } = eventOperateStore();
     if (targetIds && targetIds.length > 0) {
-        const { delNode, bpNodeLayoutMap } = bpStore;
-        const preDelNodeIds = [];
-        targetIds.forEach((id) => {
-            if (bpNodeLayoutMap[id])
-                preDelNodeIds.push(id);
-        });
-        if (preDelNodeIds.length > 0)
-            delNode(preDelNodeIds);
+        // const { delNode, bpNodeLayoutMap } = bpStore;
+        // const preDelNodeIds = [];
+        // targetIds.forEach((id) => {
+        //     if (bpNodeLayoutMap[id])
+        //         preDelNodeIds.push(id);
+        // });
+        // if (preDelNodeIds.length > 0)
+        //     delNode(preDelNodeIds);
     }
 
     //删除设计器中的组件，并记录到历史操作
@@ -118,25 +119,26 @@ export const doDelete = () => {
 //保存函数节流5s, 5s内不可重复保存
 export const doSave = throttle(() => {
     return new Promise(() => {
-        let { projectConfig: { saveType } } = designerStore;
+        let { projectConfig: { saveType } } = designerStore();
         if (saveType === SaveType.LOCAL) {
-            const { projectConfig: { saveType = SaveType.LOCAL }, updateProjectConfig } = designerStore;
+            const { projectConfig: { saveType = SaveType.LOCAL }, updateProjectConfig } = designerStore();
             updateProjectConfig({ updateTime: DateUtil.format(new Date()) })
-            const proData = designerStore.getData();
+            const proData = designerStore().getData();
             //设置蓝图数据
-            const { bpAPMap, bpLines, bpAPLineMap, getAllNodeConfig, bpNodeLayoutMap } = bpStore;
-            proData.bpAPMap = bpAPMap;
-            proData.bpLines = bpLines;
-            proData.bpAPLineMap = bpAPLineMap;
-            proData.bpNodeConfigMap = getAllNodeConfig();
-            proData.bpNodeLayoutMap = bpNodeLayoutMap;
-            DesignerLoaderFactory.getLoader().abstractOperatorMap[saveType].saveProject(cloneDeep(proData)).then((res) => {
-                const { status, msg } = res;
-                if (status)
-                    ElMessage.success(msg);
-                else
-                    ElMessage.error(msg);
-            });
+            // const { bpAPMap, bpLines, bpAPLineMap, getAllNodeConfig, bpNodeLayoutMap } = bpStore;
+            // proData.bpAPMap = bpAPMap;
+            // proData.bpLines = bpLines;
+            // proData.bpAPLineMap = bpAPLineMap;
+            // proData.bpNodeConfigMap = getAllNodeConfig();
+            // proData.bpNodeLayoutMap = bpNodeLayoutMap;
+            ElMessage.success('保存!!!');
+            // DesignerLoaderFactory.getLoader().abstractOperatorMap[saveType].saveProject(cloneDeep(proData)).then((res) => {
+            //     const { status, msg } = res;
+            //     if (status)
+            //         ElMessage.success(msg);
+            //     else
+            //         ElMessage.error(msg);
+            // });
         } else if (saveType === SaveType.SERVER) {
             alert("server save");
         }
@@ -146,7 +148,7 @@ export const doSave = throttle(() => {
 export const doHide = () => {
     const { targetIds, setTargetIds } = eventOperateStore();
     if (!targetIds || targetIds.length === 0) return;
-    const { layerConfigs } = designerStore;
+    const { layerConfigs } = designerStore();
     let toBeUpdate = [];
     targetIds.forEach((id) => {
         let item = layerConfigs[id];
@@ -176,7 +178,7 @@ export const doUnGrouping = () => {
 export const doMoveUp = () => {
     const { targets, movableRef, groupCoordinate } = eventOperateStore();
     if (!targets || targets.length === 0) return;
-    const { layerConfigs, canvasConfig: { dragStep = 1 } } = designerStore;
+    const { layerConfigs, canvasConfig: { dragStep = 1 } } = designerStore();
     if (targets.length === 1) {
         let id = targets[0].id;
         let yPos = layerConfigs[id].position[1] - dragStep;
@@ -190,7 +192,7 @@ export const doMoveUp = () => {
 export const doMoveDown = () => {
     const { targets, movableRef, groupCoordinate } = eventOperateStore();
     if (!targets || targets.length === 0) return;
-    const { layerConfigs, canvasConfig: { dragStep = 1 } } = designerStore;
+    const { layerConfigs, canvasConfig: { dragStep = 1 } } = designerStore();
     if (targets.length === 1) {
         let id = targets[0].id;
         let yPos = layerConfigs[id].position[1] + dragStep;
@@ -204,7 +206,7 @@ export const doMoveDown = () => {
 export const doMoveLeft = () => {
     const { targets, movableRef, groupCoordinate } = eventOperateStore();
     if (!targets || targets.length === 0) return;
-    const { layerConfigs, canvasConfig: { dragStep = 1 } } = designerStore;
+    const { layerConfigs, canvasConfig: { dragStep = 1 } } = designerStore();
     if (targets.length === 1) {
         let id = targets[0].id;
         let xPos = layerConfigs[id].position[0];
@@ -218,7 +220,7 @@ export const doMoveLeft = () => {
 export const doMoveRight = () => {
     const { targets, movableRef, groupCoordinate } = eventOperateStore();
     if (!targets || targets.length === 0) return;
-    const { layerConfigs, canvasConfig: { dragStep = 1 } } = designerStore;
+    const { layerConfigs, canvasConfig: { dragStep = 1 } } = designerStore();
     if (targets.length === 1) {
         let id = targets[0].id;
         let xPos = layerConfigs[id].position[0];
@@ -237,7 +239,7 @@ export const doMoveRight = () => {
 export const doBaseBottomEnlargeUp = () => {
     const { targets, movableRef, groupCoordinate } = eventOperateStore();
     if (!targets || targets.length === 0) return;
-    const { layerConfigs, canvasConfig: { resizeStep = 1 } } = designerStore;
+    const { layerConfigs, canvasConfig: { resizeStep = 1 } } = designerStore();
     let height;
     if (targets.length === 1) {
         let id = targets[0].id;
@@ -254,7 +256,7 @@ export const doBaseBottomEnlargeUp = () => {
 export const doBaseUpEnlargeDown = () => {
     const { targets, movableRef, groupCoordinate } = eventOperateStore();
     if (!targets || targets.length === 0) return;
-    const { layerConfigs, canvasConfig: { resizeStep = 1 } } = designerStore;
+    const { layerConfigs, canvasConfig: { resizeStep = 1 } } = designerStore();
     let height;
     if (targets.length === 1) {
         let id = targets[0].id;
@@ -271,7 +273,7 @@ export const doBaseUpEnlargeDown = () => {
 export const doBaseRightEnlargeLeft = () => {
     const { targets, movableRef, groupCoordinate } = eventOperateStore();
     if (!targets || targets.length === 0) return;
-    const { layerConfigs, canvasConfig: { resizeStep = 1 } } = designerStore;
+    const { layerConfigs, canvasConfig: { resizeStep = 1 } } = designerStore();
     let width;
     if (targets.length === 1) {
         let id = targets[0].id;
@@ -288,7 +290,7 @@ export const doBaseRightEnlargeLeft = () => {
 export const doBaseLeftEnlargeRight = () => {
     const { targets, movableRef, groupCoordinate } = eventOperateStore();
     if (!targets || targets.length === 0) return;
-    const { layerConfigs, canvasConfig: { resizeStep = 1 } } = designerStore;
+    const { layerConfigs, canvasConfig: { resizeStep = 1 } } = designerStore();
     let width;
     if (targets.length === 1) {
         let id = targets[0].id;
@@ -306,7 +308,7 @@ export const doBaseLeftEnlargeRight = () => {
 export const doBaseBottomDecreaseUp = () => {
     const { targets, movableRef, groupCoordinate } = eventOperateStore();
     if (!targets || targets.length === 0) return;
-    const { layerConfigs, canvasConfig: { resizeStep = 1 } } = designerStore;
+    const { layerConfigs, canvasConfig: { resizeStep = 1 } } = designerStore();
     let height;
     if (targets.length === 1) {
         height = layerConfigs[targets[0].id].height - resizeStep;
@@ -322,7 +324,7 @@ export const doBaseBottomDecreaseUp = () => {
 export const doBaseUpDecreaseDown = () => {
     const { targets, movableRef, groupCoordinate } = eventOperateStore();
     if (!targets || targets.length === 0) return;
-    const { layerConfigs, canvasConfig: { resizeStep = 1 } } = designerStore;
+    const { layerConfigs, canvasConfig: { resizeStep = 1 } } = designerStore();
     let height;
     if (targets.length === 1) {
         let id = targets[0].id;
@@ -339,7 +341,7 @@ export const doBaseUpDecreaseDown = () => {
 export const doBaseRightDecreaseLeft = () => {
     const { targets, movableRef, groupCoordinate } = eventOperateStore();
     if (!targets || targets.length === 0) return;
-    const { layerConfigs, canvasConfig: { resizeStep = 1 } } = designerStore;
+    const { layerConfigs, canvasConfig: { resizeStep = 1 } } = designerStore();
     let width;
     if (targets.length === 1) {
         let id = targets[0].id;
@@ -356,7 +358,7 @@ export const doBaseRightDecreaseLeft = () => {
 export const doBaseLeftDecreaseRight = () => {
     const { targets, movableRef, groupCoordinate } = eventOperateStore();
     if (!targets || targets.length === 0) return;
-    const { layerConfigs, canvasConfig: { resizeStep = 1 } } = designerStore;
+    const { layerConfigs, canvasConfig: { resizeStep = 1 } } = designerStore();
     let width;
     if (targets.length === 1) {
         let id = targets[0].id;
@@ -420,39 +422,6 @@ export const toggleSecondaryBorder = () => {
 };
 
 /**
- * 切换项目设置弹框
- */
-export const toggleProjectConfig = () => {
-    const { projectVisible, setProjectVisible } = headerStore;
-    console.log(projectVisible);
-    setProjectVisible(!projectVisible);
-};
-
-/**
- * 切换画布设置弹框
- */
-export const toggleCanvasConfig = () => {
-    const { canvasVisible, setCanvasVisible } = headerStore;
-    setCanvasVisible(!canvasVisible);
-};
-
-/**
- * 切换全局主题设置弹框
- */
-export const toggleGlobalThemeConfig = () => {
-    const { themeVisible, setThemeVisible } = headerStore;
-    setThemeVisible(!themeVisible);
-};
-
-/**
- * 切换快捷键说明弹框
- */
-export const toggleHotKeyDes = () => {
-    const { hotKeyVisible, setHotKeyVisible } = footerStore;
-    setHotKeyVisible(!hotKeyVisible);
-};
-
-/**
  * 切换组件库弹框
  */
 export const toggleLayer = () => {
@@ -466,30 +435,12 @@ export const toggleLayer = () => {
  * 删除蓝图中选中的节点
  */
 export const delBPNode = () => {
-    const { bluePrintVisible } = headerStore;
-    if (!bluePrintVisible) return;
-    const { selectedNodes, delNode } = bpStore;
-    if (selectedNodes.length === 0) return;
-    const selectedNodeIds = selectedNodes.map((node) => node.id.split(':')[1]);
-    delNode(selectedNodeIds);
-    //如果删除的是图层节点，则恢复左侧图层节点的可拖拽性
-    const { setUsedLayerNodes, usedLayerNodes } = bpLeftStore;
-    selectedNodeIds.forEach((nodeId) => {
-        if (nodeId in usedLayerNodes)
-            setUsedLayerNodes(nodeId, false);
-    });
-    reRenderLine();
+
 };
 
 /**
  * 删除蓝图中选中的连线
  */
 export const delBPLine = () => {
-    const { bluePrintVisible } = headerStore;
-    if (!bluePrintVisible) return;
-    const { selectedLines, delLine } = bpStore;
-    if (selectedLines.length === 0) return;
-    const selectedLineIds = selectedLines.map((line) => line.id);
-    delLine(selectedLineIds);
-    reRenderLine();
+
 };

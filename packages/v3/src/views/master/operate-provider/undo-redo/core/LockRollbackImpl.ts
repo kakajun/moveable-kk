@@ -1,7 +1,7 @@
 import AbstractRollback from "./AbstractRollback";
 import {IHistoryRecord, ILockOperateData} from "../OperateType";
 import designerStore from "../../../store/DesignerStore";
-import layerListStore from "../../../float-configs/layer-list/LayerListStore";
+import layerListStore from "../../../store/LayerListStore";
 import {Component} from "react";
 
 /**

@@ -1,6 +1,7 @@
 <script setup>
 import { ref, onMounted, onBeforeUnmount } from 'vue';
 import eventOperateStore from "../EventOperateStore";
+const {pointerTarget}=eventOperateStore();
 const TriggerType = {
     SINGLE: 'SINGLE',  //单次触发
     COILED: 'COILED' //连续触发
@@ -43,7 +44,6 @@ const doHandler = (e, hotKey) => {
     const { handler, triggerType = TriggerType.SINGLE, range } = props.handlerMapping[hotKey] || {};
     if (handler) {
         if ((triggerType === TriggerType.SINGLE && existHandlerKey !== hotKey) || triggerType === TriggerType.COILED) {
-            const pointerTarget = eventOperateStore().pointerTarget;
             //如果设定了指定范围并且不在范围内则不执行
             if (range) {
                 //先从缓存中获取dom元素，如果没有则从document中获取并缓存
