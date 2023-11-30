@@ -24,11 +24,11 @@ import {
     redo,
     selectAll,
     toBottom,
-    toggleCanvasConfig,
-    toggleGlobalThemeConfig,
-    toggleHotKeyDes,
+    // toggleCanvasConfig,
+    // toggleGlobalThemeConfig,
+    // toggleHotKeyDes,
     toggleLayer,
-    toggleProjectConfig,
+    // toggleProjectConfig,
     toggleSecondaryBorder,
     toTop,
     undo
@@ -76,18 +76,18 @@ export const hotkeyConfigs = {
     'control + k': {
         handler: toggleSecondaryBorder,
     },
-    'control + 1': {
-        handler: toggleProjectConfig,
-    },
-    'control + 2': {
-        handler: toggleCanvasConfig,
-    },
-    'control + 3': {
-        handler: toggleGlobalThemeConfig,
-    },
-    'control + 4': {
-        handler: toggleHotKeyDes,
-    },
+    // 'control + 1': {
+    //     handler: toggleProjectConfig,
+    // },
+    // 'control + 2': {
+    //     handler: toggleCanvasConfig,
+    // },
+    // 'control + 3': {
+    //     handler: toggleGlobalThemeConfig,
+    // },
+    // 'control + 4': {
+    //     handler: toggleHotKeyDes,
+    // },
     'control + 5': {
         handler: toggleLayer,
     },

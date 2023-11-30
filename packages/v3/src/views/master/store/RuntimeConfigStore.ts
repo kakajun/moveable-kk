@@ -1,21 +1,15 @@
-import {action, makeObservable, observable} from "mobx";
+import { defineStore } from 'pinia';
 
-class RuntimeConfigStore {
+export const useRuntimeConfigStore = defineStore('runtimeConfig', {
+    state: () => ({
+        auxiliaryBorder: false,
+    }),
+    actions: {
+        setAuxiliaryBorder(auxiliaryBorder: boolean) {
+            this.auxiliaryBorder = auxiliaryBorder;
+        },
+    },
+});
 
-    constructor() {
-        makeObservable(this, {
-            auxiliaryBorder: observable,
-            setAuxiliaryBorder: action,
-        })
-    }
-
-    auxiliaryBorder: boolean = false;
-
-    setAuxiliaryBorder = (auxiliaryBorder: boolean) => {
-        this.auxiliaryBorder = auxiliaryBorder;
-    }
-
-}
-
-const runtimeConfigStore = new RuntimeConfigStore();
+const runtimeConfigStore = useRuntimeConfigStore();
 export default runtimeConfigStore;

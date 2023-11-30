@@ -1,7 +1,7 @@
 import AbstractRollback from "./AbstractRollback";
 import {IHistoryRecord, IUpdStyleOperateData} from "../OperateType";
 import designerStore from "../../../store/DesignerStore";
-import rightStore from "../../../right/RightStore";
+import rightStore from "../../../store/RightStore";
 
 export class StyleRollbackImpl extends AbstractRollback {
     redo(record: IHistoryRecord): void {
