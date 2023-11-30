@@ -106,7 +106,7 @@ class HistoryRecordOperateProxy {
                         id: layout.id,
                         data: {
                             layerConfig: toJS(layout),
-                            elemConfig: null,
+                            // elemConfig: null,
                         },
                     },
                 ],
@@ -147,8 +147,11 @@ class HistoryRecordOperateProxy {
             if (type === 'group') {
                 prev.push({ id, data: { layerConfig: { ...layerConfigs[id] } } });
             } else {
-                const elemConfig = compInstances[id] && compInstances[id].getConfig();
-                prev.push({ id, data: { layerConfig: { ...layerConfigs[id] }, elemConfig: elemConfig } });
+                // const elemConfig = compInstances[id] && compInstances[id].getConfig();
+                prev.push({ id, data: { layerConfig: { ...layerConfigs[id] },
+                    //  elemConfig: elemConfig
+                     }
+                     });
             }
         });
         //需要维护图层关系的数据--构建操作记录
@@ -171,8 +174,10 @@ class HistoryRecordOperateProxy {
                 updNext.push({ id: pid, childIds: { ...groupLayer.childIds } });
             }
             //构建子图层的操作记录
-            const elemConfig = compInstances[id] && compInstances[id].getConfig();
-            prev.push({ id, data: { layerConfig: { ...layerConfigs[id] }, elemConfig: elemConfig } });
+            // const elemConfig = compInstances[id] && compInstances[id].getConfig();
+            prev.push({ id, data: { layerConfig: { ...layerConfigs[id] },
+                // elemConfig: elemConfig
+             } });
         }
         );
 
