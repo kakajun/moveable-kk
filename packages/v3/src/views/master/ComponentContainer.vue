@@ -1,9 +1,9 @@
 <template>
     <template v-for="item of  layer" :key="item.id">
-        <div v-if="item.type === 'group'" :key="item.id" class='component-group'>
-            <ComponentContainer  :layer="item.children" />
+        <div v-if="item.type === 'group'" :key="item.id" class='component-group lc-comp-item'>
+            <ComponentContainer  isGroup="true"  :layer="item.children" />
         </div>
-        <div v-else :id="item.id" :data-type="item.type" :data-lock="item.lock" :data-hide="item.hide" :style="cpuStyle(item)" class="lc-comp-item">
+        <div v-else :id="item.id" :data-type="item.type" :data-group="isGroup" :data-lock="item.lock" :data-hide="item.hide" :style="cpuStyle(item)" class="lc-comp-item">
             <div ref="myref" :style="{
                 width: '100%',
                 height: '100%',
@@ -24,6 +24,9 @@ const props = defineProps({
         type: Object,
         required: true,
     },
+    isGroup: {
+        type: String  // 给个标记证明是子节点
+    }
 });
 const myref = ref(null)
 onMounted(() => {
