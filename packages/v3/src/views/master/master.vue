@@ -30,7 +30,7 @@ import GroupSelectable from './operate-provider/movable/GroupSelectable.vue';
 import HotKey from './operate-provider/hot-key/HotKey.vue';
 import eventOperateStore from "./operate-provider/EventOperateStore.js";
 import { storeToRefs } from 'pinia'
-const { getlayerData: layerData } = storeToRefs(designerStore())
+const { layerData } = storeToRefs(designerStore())
 
 onMounted(() => {
     //绑定事件到dom元素

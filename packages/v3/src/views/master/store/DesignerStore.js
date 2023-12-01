@@ -36,7 +36,6 @@ const parser = (layerMap, order) => {
     state: () => ({
         id: '',
         loaded: false,
-        layerData:[],
         canvasConfig: {
             rasterize: false,
             dragStep: 1,
@@ -80,7 +79,7 @@ const parser = (layerMap, order) => {
     }),
 
     getters: {
-        getlayerData(state) {
+        layerData(state) {
            return parser( state.layerConfigs)
         },
         getData() {
