@@ -110,8 +110,11 @@ const contextMenuHandler = (event) => {
     let targetArr = ['lc-comp-item', 'moveable-area'];
     if (targetArr.some((item) => event.target.classList.contains(item)) && mouseUpTime - mouseDownTime < 200) {
         updateVisible && updateVisible(true);
+        debugger
         setPosition([event.clientX, event.clientY]);
+        console.log("true");
     } else {
+        console.log("false");
         updateVisible && updateVisible(false);
     }
 }

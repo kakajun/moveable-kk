@@ -11,16 +11,17 @@ export const useContextMenuStore = defineStore('contextMenu', {
         mouseUpTime: 0,
     }),
     actions: {
-        updateVisible(visible: boolean) {
+        updateVisible(visible) {
             this.visible = visible;
         },
-        setPosition(position: number[]) {
+        setPosition(position) {
+            debugger
             this.position = position;
         },
-        setMouseDownTime(time: any) {
+        setMouseDownTime(time) {
             this.mouseDownTime = time;
         },
-        setMouseUpTime(time: any) {
+        setMouseUpTime(time) {
             this.mouseUpTime = time;
         },
     },

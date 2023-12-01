@@ -1,16 +1,17 @@
 <template>
-    <div v-if="visible" class="lc-right-menu" :style="{ position: 'fixed', top: position[1], left: position[0] }">
+       <!-- <label><Icon :component="menuItem.icon" /></label> -->
+    <div v-if="visible" class="lc-right-menu" :style="computedStyle">
         <div v-for="(menuItem, index) in menuList" :key="index" class="menu-item" @click="menuItem.onClick">
-            <!-- <label><Icon :component="menuItem.icon" /></label> -->
             <span>{{ menuItem.name }}</span>
         </div>
     </div>
 </template>
 
-<script>
-import { defineComponent } from 'vue';
-import useContextMenuStore from './ContextMenuStore';
+<script setup>
+import useContextMenuStore from './ContextMenuStore.js';
+import {computed} from 'vue';
 import './OperateMenu.less';
+import { storeToRefs } from 'pinia'
 // import {
 //     CopyOutlined,
 //     DeleteOutlined,
@@ -20,60 +21,56 @@ import './OperateMenu.less';
 //     VerticalAlignTopOutlined,
 // } from '@ant-design/icons';
 import { doCopy, doDelete, doHide, doLock, doUnLock, toBottom, toTop } from '../hot-key/HotKeyImpl';
+const {visible,position} = storeToRefs(useContextMenuStore())
+const computedStyle=computed(()=>{
+    console.log({
+        position: 'fixed',
+        // zIndex: 999999999,
+        top: position.value[1]+'px',
+        left: position.value[0]+'px'
+    })
+    return {
+        position: 'fixed',
+        top: position.value[1]+'px',
+        left: position.value[0]+'px'
+    }
+})
+const menuList = [
+    {
+        name: '锁定',
+        // icon: LockOutlined,
+        onClick: doLock,
+    },
+    {
+        name: '解锁',
+        // icon: LockOutlined,
+        onClick: doUnLock,
+    },
+    {
+        name: '隐藏',
+        // icon: EyeInvisibleOutlined,
+        onClick: doHide,
+    },
+    {
+        name: '复制',
+        // icon: CopyOutlined,
+        onClick: doCopy,
+    },
+    {
+        name: '置顶',
+        // icon: VerticalAlignTopOutlined,
+        onClick: toTop,
+    },
+    {
+        name: '置底',
+        // icon: VerticalAlignBottomOutlined,
+        onClick: toBottom,
+    },
+    {
+        name: '删除',
+        // icon: DeleteOutlined,
+        onClick: doDelete,
+    },
+]
 
-export default defineComponent({
-    name: 'ContextMenu',
-    // components: {
-    //     Icon: AntdIcon,
-    // },
-    data() {
-        return {
-            menuList: [
-                {
-                    name: '锁定',
-                    // icon: LockOutlined,
-                    onClick: doLock,
-                },
-                {
-                    name: '解锁',
-                    // icon: LockOutlined,
-                    onClick: doUnLock,
-                },
-                {
-                    name: '隐藏',
-                    // icon: EyeInvisibleOutlined,
-                    onClick: doHide,
-                },
-                {
-                    name: '复制',
-                    // icon: CopyOutlined,
-                    onClick: doCopy,
-                },
-                {
-                    name: '置顶',
-                    // icon: VerticalAlignTopOutlined,
-                    onClick: toTop,
-                },
-                {
-                    name: '置底',
-                    // icon: VerticalAlignBottomOutlined,
-                    onClick: toBottom,
-                },
-                {
-                    name: '删除',
-                    // icon: DeleteOutlined,
-                    onClick: doDelete,
-                },
-            ],
-        };
-    },
-    computed: {
-        visible() {
-            return useContextMenuStore().visible;
-        },
-        position() {
-            return useContextMenuStore().position || [0, 0];
-        },
-    },
-});
 </script>
