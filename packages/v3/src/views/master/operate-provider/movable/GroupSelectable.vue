@@ -106,7 +106,6 @@ const onDragStart = (e) => {
     const target = e.inputEvent.target;
     if (movableRef.isMoveableElement(target) || targets.some((t) => t === target || t.contains(target))) {
         e.stop();
-        console.log("stopstopstopstop");
     }
 };
 
