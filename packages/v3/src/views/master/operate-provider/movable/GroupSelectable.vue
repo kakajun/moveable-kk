@@ -52,7 +52,6 @@ const onSelectEnd = (e) => {
             movableRef.dragStart(e.inputEvent);
         });
     }
-
     const { layerConfigs } = designerStore();
     let layerIds = selected.map((item) => item.id);
     let lockState = !!layerConfigs[layerIds[0]]?.lock;
