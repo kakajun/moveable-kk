@@ -1,6 +1,8 @@
 <template>
-    <div v-for="item of  layer" :key="item.id">
-        <ComponentContainer v-if="item.type === 'group'" :key="item.id" class='component-group' :layer="item.children" />
+    <template v-for="item of  layer" :key="item.id">
+        <div v-if="item.type === 'group'" :key="item.id" class='component-group'>
+            <ComponentContainer  :layer="item.children" />
+        </div>
         <div v-else :id="item.id" :data-type="item.type" :data-lock="item.lock" :data-hide="item.hide" :style="cpuStyle(item)" class="lc-comp-item">
             <div ref="myref" :style="{
                 width: '100%',
@@ -11,7 +13,7 @@
                 {{ item.name }}
             </div>
         </div>
-    </div>
+    </template>
 </template>
 
 <script setup>
