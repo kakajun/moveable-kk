@@ -44,17 +44,9 @@ onMounted(() => {
     elementGuidelines.value =  getAllDoms()
     const { setMovableRef } = eventOperateStore();
     setMovableRef(movableRef.value);
-    // setTimeout(() => {
-    //     movableRef.value.request("draggable", {
-    //               x: 0,
-    //               y: 130
-    //            }, true);
-    // }, 3000);
 });
 
 const getAllDoms=()=>{
-    // const selectedTargets = document.getElementsByClassName("lc-comp-item");
-    // return [ document.getElementsByClassName("lc-event-container")[0], ...Array.from(selectedTargets)]
     const selectedTargets = document.getElementsByClassName("lc-comp-item");
     // 如果是节点里面的就忽略不用再去对齐了, 直接跟group外面的框框对齐
     const allDoms = Array.from(selectedTargets).filter(item => {
