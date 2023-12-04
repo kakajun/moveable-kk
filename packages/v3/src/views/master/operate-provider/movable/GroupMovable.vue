@@ -44,6 +44,12 @@ onMounted(() => {
     elementGuidelines.value =  getAllDoms()
     const { setMovableRef } = eventOperateStore();
     setMovableRef(movableRef.value);
+    // setTimeout(() => {
+    //     movableRef.value.request("draggable", {
+    //               x: 0,
+    //               y: 130
+    //            }, true);
+    // }, 3000);
 });
 
 const getAllDoms=()=>{
@@ -71,6 +77,7 @@ const handleClickGroup = (e) => {
 
 const onDrag = (e) => {
     const { target, beforeTranslate } = e;
+    console.log(e,"onDrag");
     target.style.transform = `translate(${beforeTranslate[0]}px, ${beforeTranslate[1]}px)`;
 };
 
@@ -85,6 +92,7 @@ const onDragEnd = (e) => {
     const { updateLayout } = designerStore();
     const { backoff, setBackoff } = eventOperateStore();
     const { lastEvent, target } = e;
+    console.log(e,"onDragEnd");
     if (lastEvent) {
         const { beforeTranslate } = lastEvent;
         const data = [
@@ -114,6 +122,7 @@ const onDragGroup = (e) => {
 
 const onDragGroupEnd = (e) => {
     const { targets } = e;
+    console.log(e,"onDragGroupEnd");
  //通过第一个元素来判断。 框选的所有组件是否处于锁定状态，处于锁定状态，则不允许拖拽和缩放。
     const { updateLayout, layerConfigs } = designerStore();
     const firstLock = layerConfigs[targets[0].id].lock;

@@ -365,10 +365,13 @@ export const undo = () => {
     let history = historyOperator.backoff();
     if (!history) return;
     const { actions } = history;
+    console.log('actions', actions);
     actions.forEach((action) => {
         const { type } = action;
+        console.log('type', type);
         undoRedoMap.get(type)?.undo(action);
     });
+    console.log('撤销');
 };
 
 /**

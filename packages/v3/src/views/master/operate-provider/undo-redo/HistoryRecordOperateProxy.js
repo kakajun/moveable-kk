@@ -3,6 +3,9 @@ import { historyOperator } from "./HistoryOperator";
 import eventOperateStore from "../EventOperateStore";
 import rightStore from "../../store/RightStore";
 import { cloneDeep } from "lodash";
+import {
+    OperateType,
+} from "./OperateType";
 import layerListStore from "../../store/LayerListStore";
 import IdGenerate from "../../util/IdGenerate";
 import LayerUtil from "../../util/LayerUtil";
@@ -39,12 +42,14 @@ class HistoryRecordOperateProxy {
         }
         //构建历史记录节点
         const data = {
+            type: OperateType.DRAG,
             prev: prev,
             next: next
         }
         //更新布局数据
         updateLayout(items, false);
         //历史记录入队
+        debugger
         historyOperator.put({ actions: [data] });
     };
 
@@ -83,7 +88,7 @@ class HistoryRecordOperateProxy {
             next = { ids, width: groupCoordinate.groupWidth, height: groupCoordinate.groupHeight, direction }
         }
         //构建历史记录节点
-        const data = { type: 'OperateType.RESIZE', prev: prev, next: next };
+        const data = { type: OperateType.RESIZE, prev: prev, next: next };
         //更新布局数据
         updateLayout(items, false);
         //历史记录入队
@@ -180,9 +185,9 @@ class HistoryRecordOperateProxy {
         }
         );
 
-        const actions = [{ type: 'OperateType.DEL', prev, next: null }];
+        const actions = [{ type: OperateType.DEL, prev, next: null }];
         if (updPrev.length > 0 || updNext.length > 0)
-            actions.push({ type: 'OperateType.UPD_LAYER_GROUP', prev: updPrev, next: updNext });
+            actions.push({ type: OperateType.UPD_LAYER_GROUP, prev: updPrev, next: updNext });
 
         historyOperator.put({ actions });
 
@@ -331,7 +336,7 @@ class HistoryRecordOperateProxy {
             }
         });
 
-        historyOperator.put({ actions: [{ type: 'OperateType.ADD', prev: null, next }] });
+        historyOperator.put({ actions: [{ type: OperateType.ADD, prev: null, next }] });
         setMaxLevel(maxLevel);
         //多个组件同时复制时，需要计算多选框的新位置
         if (newLayouts.length > 1) {
@@ -351,7 +356,7 @@ class HistoryRecordOperateProxy {
             const oldHideData = layerConfigs[id];
             prev.push({ id: id, hide: oldHideData.hide });
         });
-        const data = { type: 'OperateType.HIDE', prev: prev, next: next };
+        const data = { type: OperateType.HIDE, prev: prev, next: next };
         historyOperator.put({ actions: [data] });
         //更新隐藏状态
         updateLayout(items);
@@ -377,7 +382,7 @@ class HistoryRecordOperateProxy {
             const oldLockData = layerConfigs[id];
             prev.push({ id: id, lock: oldLockData.lock });
         });
-        const data = { type: 'OperateType.LOCK', prev: prev, next: next };
+        const data = { type: OperateType.LOCK, prev: prev, next: next };
         historyOperator.put({ actions: [data] });
         updateLayout(items);
         const { layerInstances, visible } = layerListStore();
@@ -399,7 +404,7 @@ class HistoryRecordOperateProxy {
             const oldOrderData = layerConfigs[id];
             prev.push({ id: id, order: oldOrderData.order });
         });
-        const data = { type: 'OperateType.ORDER', prev: prev, next: next };
+        const data = { type: OperateType.ORDER, prev: prev, next: next };
         historyOperator.put({ actions: [data] });
         updateLayout(items);
     }
@@ -407,7 +412,7 @@ class HistoryRecordOperateProxy {
     doStyleUpd(newData, oldData) {
         const { id } = rightStore().activeElem;
         const record = {
-            type: 'OperateType.UPD_STYLE',
+            type: OperateType.UPD_STYLE,
             prev: { id: id, data: oldData },
             next: { id: id, data: newData }
         };
@@ -449,7 +454,7 @@ class HistoryRecordOperateProxy {
         };
 
         //操作记录-新增分组图层
-        actions.push({ type: 'OperateType.ADD', prev: null, next: [{ id: pid, data: { layerConfig: groupItem } }] });
+        actions.push({ type: OperateType.ADD, prev: null, next: [{ id: pid, data: { layerConfig: groupItem } }] });
 
         addItem(groupItem);
         setMaxLevel(order);
@@ -467,7 +472,7 @@ class HistoryRecordOperateProxy {
         });
         updateLayout(updateItems, false);
         setTargetIds([]);
-        actions.push({ type: 'OperateType.UPD_LAYER_GROUP', prev: childPrev, next: childNext });
+        actions.push({ type: OperateType.UPD_LAYER_GROUP, prev: childPrev, next: childNext });
         historyOperator.put({ actions });
         //特殊场景处理，如果编组时，所有的子图层都处于锁定状态，则编组后，编组图层也处于锁定状态
         if (allLock) {
@@ -506,9 +511,9 @@ class HistoryRecordOperateProxy {
             updateLayout(updateItems, false);
             groupPrev.push({ id: groupId, data: { layerConfig: item } });
         });
-        actions.push({ type: 'OperateType.UPD_LAYER_GROUP', prev: childPrev, next: childNext });
+        actions.push({ type: OperateType.UPD_LAYER_GROUP, prev: childPrev, next: childNext });
         //操作记录--被删除的分组图层
-        actions.push({ type: 'OperateType.DEL', prev: groupPrev, next: null });
+        actions.push({ type: OperateType.DEL, prev: groupPrev, next: null });
         //执行操作记录入队
         historyOperator.put({ actions });
         //2.删除分组图层
