@@ -76,18 +76,6 @@ export const hotkeyConfigs = {
     'control + k': {
         handler: toggleSecondaryBorder,
     },
-    // 'control + 1': {
-    //     handler: toggleProjectConfig,
-    // },
-    // 'control + 2': {
-    //     handler: toggleCanvasConfig,
-    // },
-    // 'control + 3': {
-    //     handler: toggleGlobalThemeConfig,
-    // },
-    // 'control + 4': {
-    //     handler: toggleHotKeyDes,
-    // },
     'control + 5': {
         handler: toggleLayer,
     },
@@ -156,5 +144,48 @@ export const hotkeyConfigs = {
     },
     'control + shift + g': {
         handler: doUnGrouping,
-    }
+    },
+     // 倒着来一遍
+  'shift + control + arrowup': {
+    handler: doBaseBottomEnlargeUp,
+    range: '.lc-ruler-content'
+  },
+  'shift + control + arrowdown': {
+    handler: doBaseUpEnlargeDown,
+    range: '.lc-ruler-content'
+  },
+  'shift + control + arrowleft': {
+    handler: doBaseRightEnlargeLeft,
+    range: '.lc-ruler-content'
+  },
+  'shift + control + arrowright': {
+    handler: doBaseLeftEnlargeRight,
+    range: '.lc-ruler-content'
+  },
+  'alt + control + arrowup': {
+    handler: doBaseBottomDecreaseUp,
+    range: '.lc-ruler-content'
+  },
+  'alt + control + arrowdown': {
+    handler: doBaseUpDecreaseDown,
+    range: '.lc-ruler-content'
+  },
+  'alt + control + arrowleft': {
+    handler: doBaseRightDecreaseLeft,
+    range: '.lc-ruler-content'
+  },
+  'alt + control + arrowright': {
+    handler: doBaseLeftDecreaseRight,
+    range: '.lc-ruler-content'
+  },
+  'shift + control + g': {
+    handler: doUnGrouping
+  },
+  'shift + control + z': {
+    handler: redo,
+    range: '.lc-ruler-content'
+  },
+  'shift + control + l': {
+    handler: doUnLock
+  }
 }
