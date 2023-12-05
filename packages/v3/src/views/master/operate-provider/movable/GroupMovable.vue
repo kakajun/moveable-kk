@@ -74,10 +74,11 @@ const onDrag = (e) => {
 };
 
 const onDragStart = (e) => {
+
     const { target } = e;
     const { layerConfigs } = designerStore();
     const { lock } = layerConfigs[target.id];
-    if (lock) return false;
+    if (lock)   e.stop();
 };
 
 const onDragEnd = (e) => {
@@ -108,7 +109,7 @@ const onDragGroup = (e) => {
     const { targets } = e;
     const { layerConfigs } = designerStore();
     const firstLock = layerConfigs[targets[0].id].lock;
-    if (firstLock) return false;
+    if (firstLock)     e.stop();
     else e.events.forEach((ev) => (ev.target.style.transform = ev.transform));
 };
 
@@ -118,7 +119,7 @@ const onDragGroupEnd = (e) => {
  //通过第一个元素来判断。 框选的所有组件是否处于锁定状态，处于锁定状态，则不允许拖拽和缩放。
     const { updateLayout, layerConfigs } = designerStore();
     const firstLock = layerConfigs[targets[0].id].lock;
-    if (firstLock) return false;
+    if (firstLock)     e.stop();
     const { backoff, setBackoff, setGroupCoordinate, groupCoordinate } = eventOperateStore();
     const data = [];
     e.events.forEach((ev) => {
@@ -152,7 +153,7 @@ const onResizeStart = (e) => {
     const { target } = e;
     const { layerConfigs } = designerStore();
     const { lock } = layerConfigs[target.id];
-    if (lock) return false;
+    if (lock)     e.stop();
 };
 
 const onResize = (e) => {
@@ -188,7 +189,7 @@ const onResizeGroupStart = (e) => {
     const { targets } = e;
     const { layerConfigs } = designerStore();
     const firstLock = layerConfigs[targets[0].id].lock;
-    if (firstLock) return false;
+    if (firstLock)     e.stop();
 };
 
 const onResizeGroup = (e) => {
