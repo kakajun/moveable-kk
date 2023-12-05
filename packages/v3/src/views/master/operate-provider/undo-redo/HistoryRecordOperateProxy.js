@@ -35,10 +35,12 @@ class HistoryRecordOperateProxy {
                 if (position[1] < y) y = position[1];
             });
             prev = { ids, x, y };
-
+            console.log(prev,"prev");
             //构建next数据
             const { groupCoordinate } = eventOperateStore();
             next = { ids, x: groupCoordinate.minX, y: groupCoordinate.minY }
+            console.log(groupCoordinate,"groupCoordinate");
+            console.log(next,"next");
         }
         //构建历史记录节点
         const data = {

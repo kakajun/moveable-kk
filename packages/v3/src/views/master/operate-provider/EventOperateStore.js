@@ -72,6 +72,7 @@ export default  defineStore('eventOperateStore', {
             this.pointerTarget = target;
         },
         setGroupCoordinate(coordinate) {
+
             this.groupCoordinate = {
                 ...this.groupCoordinate,
                 ...coordinate,
@@ -87,9 +88,11 @@ export default  defineStore('eventOperateStore', {
                 groupWidth: 0,
                 groupHeight: 0,
             };
+            console.log("动起来！！！！！！！！！！！！！");
             compArr.forEach((item) => {
                 const layerConfig = layerConfigs[item.id];
                 let { position, width, height } = layerConfig;
+                console.log(position, width, height,"layerConfig");
                 const x = position[0];
                 const y = position[1];
                 if (x < groupCoordinate.minX) groupCoordinate.minX = x;
