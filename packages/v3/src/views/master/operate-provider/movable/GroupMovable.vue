@@ -6,9 +6,10 @@
         :elementSnapDirections="elementSnapDirections" :verticalGuidelines="['0', '50%', '100%']"
         :horizontalGuidelines="['0', '50%', '100%']" :isDisplayInnerSnapDigit="true" @changeTargets="onChangeTargets"
         :elementGuidelines="elementGuidelines" :throttleDrag="rasterize ? dragStep : 1"
-        :throttleResize="rasterize ? resizeStep : 1" @clickGroup="handleClickGroup" @drag="onDrag" @dragStart="onDragStart"
-        @dragEnd="onDragEnd" @dragGroup="onDragGroup" @dragGroupEnd="onDragGroupEnd" @resizeStart="onResizeStart"
-        @resize="onResize" @resizeEnd="onResizeEnd" @resizeGroupStart="onResizeGroupStart" @resizeGroup="onResizeGroup"
+        :throttleResize="rasterize ? resizeStep : 1"  @dragStart="onDragStart"
+        @render="onRender"
+        @dragEnd="onDragEnd" @dragGroupEnd="onDragGroupEnd" @resizeStart="onResizeStart"
+      @resizeEnd="onResizeEnd" @resizeGroupStart="onResizeGroupStart" @render-group="onRenderGroup"
         @resizeGroupEnd="onResizeGroupEnd" />
 </template>
 
@@ -63,18 +64,10 @@ const onChangeTargets = e => {
     }
 }
 
-const handleClickGroup = (e) => {
-    selectorRef.clickTarget(e.inputEvent, e.inputTarget);
-};
-
-const onDrag = (e) => {
-    const { target, beforeTranslate } = e;
-    console.log(e, "onDrag");
-    target.style.transform = `translate(${beforeTranslate[0]}px, ${beforeTranslate[1]}px)`;
-};
-
+const onRender = (e) => {
+  e.target.style.cssText += e.cssText
+}
 const onDragStart = (e) => {
-
     const { target } = e;
     const { layerConfigs } = designerStore();
     const { lock } = layerConfigs[target.id];
@@ -104,15 +97,6 @@ const onDragEnd = (e) => {
             setBackoff(false);
         } else historyRecordOperateProxy.doDrag(data);
     }
-};
-
-const onDragGroup = (e) => {
-    const { targets } = e;
-    const { layerConfigs } = designerStore();
-    const firstLock = layerConfigs[targets[0].id].lock;
-    if (firstLock) { e.stop()
-         return false }
-    else e.events.forEach((ev) => (ev.target.style.transform = ev.transform));
 };
 
 const onDragGroupEnd = (e) => {
@@ -160,13 +144,6 @@ const onResizeStart = (e) => {
           return false };
 };
 
-const onResize = (e) => {
-    const { target, width, height, drag } = e;
-    target.style.width = `${width}px`;
-    target.style.height = `${height}px`;
-    target.style.transform = `translate(${drag.beforeTranslate[0]}px, ${drag.beforeTranslate[1]}px)`;
-};
-
 const onResizeEnd = (e) => {
     const { updateLayout } = designerStore();
     const { backoff, setBackoff } = eventOperateStore();
@@ -196,14 +173,11 @@ const onResizeGroupStart = (e) => {
     if (firstLock) { e.stop()
           return false };
 };
-
-const onResizeGroup = (e) => {
-    e.events.forEach((ev) => {
-        ev.target.style.width = `${ev.width}px`;
-        ev.target.style.height = `${ev.height}px`;
-        ev.target.style.transform = ev.drag.transform;
-    })
-};
+const onRenderGroup = (e) => {
+  e.events.forEach((ev) => {
+    ev.target.style.cssText += ev.cssText
+  })
+}
 
 const onResizeGroupEnd = (e) => {
     const { updateLayout } = designerStore();
