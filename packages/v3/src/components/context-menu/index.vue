@@ -6,7 +6,7 @@
         'context-menu_acctive': subShow,
         'context-menu_issub': sub
       }"
-      :style="{ width: `${width}px` }"
+      :style="{ width: `${props.width}px` }"
     >
       <div
         :class="{
@@ -14,9 +14,9 @@
           'is-disabled': item.disabled,
           'context-menu__item_active': currentIndex === index
         }"
-        v-for="(item, index) in data.filter(it => !it.hide)"
+        v-for="(item, index) in filteredData"
         :key="index"
-        @click="hander($event, item, index)"
+        @click="handleClick($event, item, index)"
       >
         <div class="context-menu__item-label">{{ item.label }}</div>
         <i
@@ -28,7 +28,7 @@
     <ContextMenu
       :sub="isSub"
       :data="children"
-      @click="data => $emit('click', data)"
+      @click="handleClick"
       v-if="subShow && children.length > 0"
       :style="{
         position: 'fixed',
@@ -39,11 +39,11 @@
   </div>
 </template>
 
-<script>
-export default {
-  name: 'ContextMenu',
-  props: {
-    value: Boolean,
+<script setup>
+import { ref, reactive ,onMounted,computed} from 'vue';
+const emit = defineEmits(['click'])
+const props = defineProps({
+  value: Boolean,
     data: {
       type: Array,
       default() {
@@ -61,46 +61,40 @@ export default {
       default() {
         return false
       }
+    }})
+
+const children = ref([]);
+const subShow = ref(false);
+const position = reactive({
+  x: 0,
+  y: 0
+});
+onMounted(() => {
+  console.log(props.data,"6666");
+})
+
+const isSub = ref(true);
+const currentIndex = ref('');
+const filteredData = computed(() => {
+  return props.data.filter(it => !it.hide);
+});
+
+const handleClick = (e, item, index) => {
+  currentIndex.value = index;
+  if (item.disabled) return;
+  if (item.children && item.children.length > 0) {
+    children.value = item.children;
+    subShow.value = !subShow.value;
+    let target = e.target;
+    if (e.target.className.indexOf('context-menu__item-label') > -1) {
+      target = target.parentNode;
     }
-  },
-  data() {
-    return {
-      children: [],
-      subShow: false,
-      position: {
-        x: 0,
-        y: 0
-      },
-      isSub: true,
-      currentIndex: ''
-    }
-  },
-  methods: {
-    /**
-     * @desc: 点击
-     * @author: wenrun
-     * @param {*} e
-     * @param {*} item
-     * @param {*} index
-     */
-    hander(e, item, index) {
-      this.currentIndex = index
-      if (item.disabled) return
-      if (item.children && item.children.length > 0) {
-        this.children = item.children
-        this.$set(this, 'subShow', !this.subShow)
-        let target = e.target
-        if (e.target.className.indexOf('context-menu__item-label') > -1) {
-          target = target.parentNode
-        }
-        let rect = target.getBoundingClientRect()
-        this.position.x = rect.width + rect.x
-        this.position.y = rect.y - 1
-      } else {
-        this.currentIndex = null
-        this.$emit('click', item)
-      }
-    }
+    let rect = target.getBoundingClientRect();
+    position.x = rect.width + rect.x;
+    position.y = rect.y - 1;
+  } else {
+    currentIndex.value = null;
+    emit('click', item);
   }
-}
+};
 </script>
