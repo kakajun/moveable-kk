@@ -33,6 +33,11 @@ const routes = [
     path:'/VueInfiniteViewer',
     component:()=>import('../views/VueInfiniteViewer.vue')
   },
+  {
+    path:'/context-menu',
+    component:()=>import('../views/context-menu.vue')
+  },
+
 ]
 
 const router = createRouter({
