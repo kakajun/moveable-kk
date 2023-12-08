@@ -26,6 +26,7 @@ import {ref} from 'vue';
   console.log("5555");
      position.value.x = event.pageX
      position.value.y = event.pageY
+     console.log(position.value,"777");
       createVisible.value = true
 
       console.log(item)

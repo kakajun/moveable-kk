@@ -4,6 +4,7 @@ import { createPinia } from 'pinia'
 import App from './App.vue'
 import 'virtual:svg-icons-register'
 import SvgIcon from './components/SvgIcon/index.vue'
+import '@/styles/index.less' // global css
 const pinia = createPinia()
 const app = createApp(App)
 app.use(pinia)
