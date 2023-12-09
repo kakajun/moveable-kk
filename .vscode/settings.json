@@ -109,7 +109,7 @@
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": true
+    "source.fixAll.eslint": "explicit"
   },
   "[vue]": {
     "editor.codeActionsOnSave": {
@@ -125,5 +125,11 @@
     "autoAlready": false, // 默认开启, 只给支持的语言添加注释
     "createHeader": false, // 新建文件不自动添加注释
     "prohibitAutoAdd": ["py"] // 禁止.json .md文件，自动添加头部注释
+  },
+  "[scss][vue]": {
+    "editor.codeActionsOnSave": {
+      "source.fixAll.eslint": "never",
+      "source.fixAll.stylelint": "explicit"
+    }
   }
 }
