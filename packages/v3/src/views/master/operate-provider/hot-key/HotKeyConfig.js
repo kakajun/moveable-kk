@@ -24,11 +24,7 @@ import {
     redo,
     selectAll,
     toBottom,
-    // toggleCanvasConfig,
-    // toggleGlobalThemeConfig,
-    // toggleHotKeyDes,
     toggleLayer,
-    // toggleProjectConfig,
     toggleSecondaryBorder,
     toTop,
     undo
