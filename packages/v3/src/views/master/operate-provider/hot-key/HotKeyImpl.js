@@ -1,7 +1,7 @@
 import eventOperateStore from "../EventOperateStore";
 import designerStore from "../../store/DesignerStore";
 import {  throttle } from "lodash";
-import useHistoryOperator from "../../store/HistoryOperator";
+// import useHistoryOperator from "../../store/HistoryOperator";
 import historyRecordOperateProxy from "../undo-redo/HistoryRecordOperateProxy";
 import undoRedoMap from "../undo-redo/core";
 import runtimeConfigStore from "../../store/RuntimeConfigStore";
@@ -10,7 +10,7 @@ import layerListStore from "../../store/LayerListStore";
 
 import DateUtil from "../../util/DateUtil";
 import { ElMessage } from 'element-plus'
-const historyOperator = useHistoryOperator()
+// const historyOperator = useHistoryOperator()
 const SaveType= {
     //本地存储(indexedDB)
     LOCAL : '0',

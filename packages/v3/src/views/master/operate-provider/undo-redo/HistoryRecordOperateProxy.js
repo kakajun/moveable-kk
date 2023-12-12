@@ -1,15 +1,16 @@
 import designerStore from "../../store/DesignerStore";
-import useHistoryOperator from "../../store/HistoryOperator";
+// import useHistoryOperator from "../../store/HistoryOperator";
 import eventOperateStore from "../EventOperateStore";
 import rightStore from "../../store/RightStore";
 import { cloneDeep } from "lodash";
 import {
     OperateType,
 } from "./OperateType";
+import { storeToRefs } from 'pinia'
 import layerListStore from "../../store/LayerListStore";
 import IdGenerate from "../../util/IdGenerate";
 import LayerUtil from "../../util/LayerUtil";
-const historyOperator = useHistoryOperator()
+// const historyOperator = useHistoryOperator()
 class HistoryRecordOperateProxy {
     doDrag(items) {
         //构建历史记录数据
