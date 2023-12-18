@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="wrapper">
     <router-link to="/">master</router-link>
     <router-link to="/SelectoGroup">SelectoGroup</router-link>
     <router-link to="/SelectoMany">SelectoMany</router-link>
@@ -20,6 +20,7 @@ div {
   height: 50px;
   line-height: 50px;
   text-align: center;
+  z-index: 999999;
   display: flex;
   justify-content: space-around;
 }
