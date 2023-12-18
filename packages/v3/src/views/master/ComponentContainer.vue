@@ -7,7 +7,6 @@
       :rotate="rotate"
       v-for="item in layerData"
       :key="item.id"
-      :playAnimate="playAnimate"
       :animate="item.animate || []"
       :isGroup="isGroup"
       :propItem="item"
@@ -16,10 +15,7 @@
 
   <script setup>
   import ComponentContainerItem from './ComponentContainerItem.vue'
-  import { storeToRefs } from 'pinia'
-  import useStore from '@/stores/store.js'
-  const store = useStore()
-  const { playAnimate } = storeToRefs(store)
+
   const props = defineProps({
     baseLeft: Number,
     baseTop: Number,

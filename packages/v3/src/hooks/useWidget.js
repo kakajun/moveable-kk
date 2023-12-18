@@ -4,9 +4,9 @@
 import { onUpdated, onMounted, watch, ref, computed } from 'vue'
 
 import { debounce, cloneDeep } from 'lodash'
-import useStore from '@/stores/store.js'
+
 import { isEqual } from 'lodash'
-import historyRecordOperateProxy from '@/views/EditMiddle/operate-provider/undo-redo/HistoryRecordOperateProxy'
+import historyRecordOperateProxy from '@/views/master/operate-provider/undo-redo/HistoryRecordOperateProxy.js'
 
 /*
  * props: 组件传过来的属性
@@ -18,7 +18,7 @@ export function useWidget(props) {
   let totalAnimate = 0
   let style = ref({})
   const layerRef = ref(undefined)
-  const store = useStore()
+
   const componentData = computed(() => propsItem.value.componentData)
   const setAnimationStyle = (animation) => {
     const { name, func, infinite, count, alternate, duration, delay } = animation
@@ -117,10 +117,10 @@ export function useWidget(props) {
   )
 
   onUpdated(() => {
-    // updateRecord && updateRecord()
+
   })
   onMounted(() => {
-    // updateRecord && updateRecord()
+
   })
 
   /**
@@ -137,7 +137,6 @@ export function useWidget(props) {
     commonStyle,
     flipStyle,
     propsItem,
-    store,
     update,
     componentData,
     animateEnd
