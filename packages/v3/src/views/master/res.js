@@ -105,7 +105,7 @@ export default {
           "lock": false,
           "hide": false,
           "order": 9,
-        //   "pid": "fIcxRvSMw2"
+          "pid": "fIcxRvSMw2"
       },
       "yz8ImoqTzH": {
           "name": "基础文本",
@@ -120,20 +120,20 @@ export default {
           "lock": false,
           "hide": false,
           "order": 10,
-        //   "pid": "fIcxRvSMw2"
+          "pid": "fIcxRvSMw2"
       },
-    //   "fIcxRvSMw2": {
-    //       "id": "fIcxRvSMw2",
-    //       "type": "group",
-    //       "name": "新建分组",
-    //       "hide": false,
-    //       "lock": false,
-    //       "childIds": [
-    //           "t5tVg0Ewtd",
-    //           "yz8ImoqTzH"
-    //       ],
-    //       "order": 11
-    //   }
+      "fIcxRvSMw2": {
+          "id": "fIcxRvSMw2",
+          "type": "group",
+          "name": "新建分组",
+          "hide": false,
+          "lock": false,
+          "childIds": [
+              "t5tVg0Ewtd",
+              "yz8ImoqTzH"
+          ],
+          "order": 11
+      }
   },
   "statisticInfo": {
       "count": 4

@@ -55,7 +55,14 @@ const warapperStyle = ref({
 */
 const initExistProject = () => {
     const { doInit, setLoaded } = designerStore();
-    const store = res
+    let storeSt=localStorage.getItem('layerConfigs')
+    let store={}
+    if (storeSt) {
+        store ={layerConfigs: JSON.parse(storeSt)}
+    }else{
+        store = res
+    }
+
     //初始化designerStore
     doInit({
         id: store?.id,

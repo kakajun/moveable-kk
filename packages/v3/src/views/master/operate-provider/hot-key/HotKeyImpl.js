@@ -108,7 +108,7 @@ export const doDelete = () => {
 export const doSave = throttle(() => {
     return new Promise(() => {
         let { layerConfigs } = designerStore();
-
+             localStorage.setItem('layerConfigs',JSON.stringify(layerConfigs));
             console.log(layerConfigs,'保存!!!');
             ElMessage.success('保存!!!');
 
