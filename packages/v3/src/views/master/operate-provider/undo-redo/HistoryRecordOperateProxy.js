@@ -92,7 +92,7 @@ class HistoryRecordOperateProxy {
         //更新布局数据
         updateLayout(items, false);
         //历史记录入队
-        debugger
+
         historyOperator.put({ actions: [data] });
     };
 
