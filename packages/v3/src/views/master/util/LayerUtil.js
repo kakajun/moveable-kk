@@ -17,10 +17,10 @@ export default class LayerUtil {
             const layer = layerConfigs[id];
             if (layer.type === 'group')
                 groupLayerIdSet.add(id);
-            let _pid = layer?.pid;
+            let _pid = layer?.parent;
             while (_pid) {
-                const {pid, id, type} = layerConfigs[_pid];
-                _pid = pid;
+                const {parent, id, type} = layerConfigs[_pid];
+                _pid = parent;
                 if (type === 'group')
                     groupLayerIdSet.add(id);
             }
@@ -43,10 +43,10 @@ export default class LayerUtil {
         const {layerConfigs} = designerStore();
         layerIds.forEach((id) => {
             let _id = id;
-            let _pid = layerConfigs[id]?.pid;
+            let _pid = layerConfigs[id]?.parent;
             while (_pid) {
-                const {pid, id} = layerConfigs[_pid];
-                _pid = pid;
+                const {parent, id} = layerConfigs[_pid];
+                _pid = parent;
                 _id = id;
             }
             if (hasSelf || _id !== id)
@@ -99,7 +99,7 @@ export default class LayerUtil {
         if (layerIds.length <= 1) return false;
         const {layerConfigs} = designerStore();
         //如果layerIds中存在没有pid的图层，则说明这个图层一定没有编组，则直接返回false，说明本次可以编组
-        if (layerIds.some((id) => layerConfigs[id].type !== 'group' && !layerConfigs[id].pid)) return false;
+        if (layerIds.some((id) => layerConfigs[id].type !== 'group' && !layerConfigs[id].parent)) return false;
         const groupLayerIds = new Set();
         layerIds.filter((id) => layerConfigs[id].type !== 'group').forEach((id) => {
             LayerUtil.findTopGroupLayer([id], true).forEach((id) => groupLayerIds.add(id));

@@ -20,12 +20,12 @@ const parser = (layerMap, order) => {
     // 构建树结构
     const resData = [];
     for (const layerItem of sourceLayerArr) {
-        if (!layerItem?.pid) {
+        if (!layerItem?.parent) {
             // 根节点
             resData.push(layerItem);
         } else {
             // 非根节点，将其加入父节点的 children 中
-            const parent = layerMap[layerItem.pid];
+            const parent = layerMap[layerItem.parent];
             if (parent) {
                 parent.children = parent.children || [];
                 parent.children.push(layerItem);

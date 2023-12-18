@@ -7,7 +7,7 @@
         :horizontalGuidelines="['0', '50%', '100%']" :isDisplayInnerSnapDigit="true" @changeTargets="onChangeTargets"
         :elementGuidelines="elementGuidelines" :throttleDrag="rasterize ? dragStep : 1"
         :throttleResize="rasterize ? resizeStep : 1"  @dragStart="onDragStart"
-        @render="onRender"
+        @render="onRender"  @rotate-group-end="onRotateGroupEnd"
         @dragEnd="onDragEnd" @dragGroupEnd="onDragGroupEnd" @resizeStart="onResizeStart"
       @resizeEnd="onResizeEnd" @resizeGroupStart="onResizeGroupStart" @render-group="onRenderGroup"
         @resizeGroupEnd="onResizeGroupEnd" />
@@ -19,7 +19,7 @@ import designerStore from "../../store/DesignerStore.js";
 import Moveable from "../../../components/Moveable.vue";
 import historyRecordOperateProxy from "../undo-redo/HistoryRecordOperateProxy";
 import eventOperateStore from "../EventOperateStore.js";
-const { canvasConfig: { rasterize, dragStep, resizeStep } } = designerStore();
+const { canvasConfig: { rasterize, dragStep, resizeStep },layerConfigs } = designerStore();
 import { storeToRefs } from 'pinia'
 const movableRef = ref(null);
 const { selectorRef, targets } = storeToRefs(eventOperateStore());
@@ -87,6 +87,46 @@ const onRotateEnd = (e) => {
       updateLayout(data, false)
       setBackoff(false)
     } else historyRecordOperateProxy.doRotate(data)
+  }
+}
+
+const onRotateGroupEnd = (e) => {
+  const { backoff, setBackoff } = eventOperateStore()
+  const {
+    lastEvent: { transform }
+  } = e
+  console.log(e, 'eeeee')
+  const target = e.events[0].target
+  const parent = layerConfigs[target.id].parent
+  const parentObj = layerConfigs[parent]
+  let rotate = ''
+  const tf = e.target.style.transform
+  const iof = tf.indexOf('rotate')
+  if (iof != -1) {
+    const index = iof + 'rotate'.length
+    const half = tf.substring(index + 1)
+    const result = half.replace(/deg/g, '')
+    rotate = result.slice(0, result.indexOf(')'))
+  }
+  // TODO 为什么translate(180px, 10px) 我也不知道,试出来的
+  const data = [
+    {
+      id: parentObj.id,
+      type: parentObj.type,
+      style: {
+        transform: `rotate(${rotate}deg)`
+      }
+    }
+  ]
+
+  if (!e.lastEvent) return
+  console.log(data, 'onRotateGroupEnd')
+  //更新组件位置信息并记录操作
+  if (data.length > 0) {
+    if (backoff) {
+      updateLayout(data, false)
+      setBackoff(false)
+    } else historyRecordOperateProxy.doRotate(data, transform)
   }
 }
 const onDragStart = (e) => {

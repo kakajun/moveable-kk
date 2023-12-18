@@ -105,7 +105,6 @@ export default {
           "lock": false,
           "hide": false,
           "order": 9,
-          "pid": "fIcxRvSMw2"
       },
       "yz8ImoqTzH": {
           "name": "基础文本",
@@ -119,20 +118,7 @@ export default {
           "id": "yz8ImoqTzH",
           "lock": false,
           "hide": false,
-          "order": 10,
-          "pid": "fIcxRvSMw2"
-      },
-      "fIcxRvSMw2": {
-          "id": "fIcxRvSMw2",
-          "type": "group",
-          "name": "新建分组",
-          "hide": false,
-          "lock": false,
-          "childIds": [
-              "t5tVg0Ewtd",
-              "yz8ImoqTzH"
-          ],
-          "order": 11
+          "order": 10
       }
   },
   "statisticInfo": {

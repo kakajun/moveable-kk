@@ -240,7 +240,7 @@ export interface ILayerItem {
     //顺序
     order?: number;
     //父图层id
-    pid?: string;
+    parent?: string;
     //子图层列表
     children?: ILayerItem[];
     //子图层id

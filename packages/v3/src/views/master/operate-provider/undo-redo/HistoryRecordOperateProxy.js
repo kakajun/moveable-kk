@@ -182,8 +182,8 @@ class HistoryRecordOperateProxy {
         targetIds.forEach((id) => {
             const layer = layerConfigs[id];
             if (layer) {
-                const { type, pid } = layer;
-                if (type !== 'group' && pid && !targetIds.includes(pid))
+                const { type, parent } = layer;
+                if (type !== 'group' && parent && !targetIds.includes(parent))
                     maintenanceDelIds.push(id);
                 else
                     directDelIds.push(id);
@@ -208,20 +208,20 @@ class HistoryRecordOperateProxy {
         const updPrev = [];
         const updNext = [];
         maintenanceDelIds.forEach((id) => {
-            const { pid } = layerConfigs[id];
-            const groupLayer = layerConfigs[pid];
+            const { parent } = layerConfigs[id];
+            const groupLayer = layerConfigs[parent];
             if (groupLayer.childIds.length === 1 && groupLayer.childIds[0] === id) {
                 //说明该分组下只有一个图层，且本次需要删除。这种场景下，将分组图层一起删除
-                prev.push({ id: pid, data: { layerConfig: { ...layerConfigs[pid] } } });
-                targetIds = [...targetIds, pid];
+                prev.push({ id: parent, data: { layerConfig: { ...layerConfigs[parent] } } });
+                targetIds = [...targetIds, parent];
             } else {
                 //否则，只需要更新分组图层的childIds字段即可
-                updPrev.push({ id: pid, childIds: { ...groupLayer.childIds } });
+                updPrev.push({ id: parent, childIds: { ...groupLayer.childIds } });
                 //删除分组图层中的目标子图层
                 const oldChildIds = cloneDeep(groupLayer.childIds);
                 const newChildIds = oldChildIds.filter((cid) => cid !== id);
-                updateLayout([{ id: pid, childIds: newChildIds }], false);
-                updNext.push({ id: pid, childIds: { ...groupLayer.childIds } });
+                updateLayout([{ id: parent, childIds: newChildIds }], false);
+                updNext.push({ id: parent, childIds: { ...groupLayer.childIds } });
             }
             //构建子图层的操作记录
             // const elemConfig = compInstances[id] && compInstances[id].getConfig();
@@ -302,8 +302,8 @@ class HistoryRecordOperateProxy {
         const groupIds = [];
         const normalIds = [];
         ids.forEach((id) => {
-            const { type, pid } = layerConfigs[id];
-            if ((type !== 'group' && !pid) || (pid && !ids.includes(pid)))
+            const { type, parent } = layerConfigs[id];
+            if ((type !== 'group' && !parent) || (parent && !ids.includes(parent)))
                 normalIds.push(id);
             else
                 groupIds.push(id);
@@ -317,8 +317,8 @@ class HistoryRecordOperateProxy {
                 maxLevel++;
                 const newLayout = this._copyNormalLayer(layout, newLayouts, maxLevel, newIds);
                 //如果本图层是属于单独选中的分组图层的子图层（有pid，但pid对应的图层未被选中），则需要将新复制出来的图层id加入到pid对应图层的childIds中
-                if (newLayout.pid)
-                    layerConfigs[newLayout.pid].childIds.push(newLayout.id);
+                if (newLayout.parent)
+                    layerConfigs[newLayout.parent].childIds.push(newLayout.id);
             }
         }
 
@@ -355,9 +355,9 @@ class HistoryRecordOperateProxy {
         childIdNewToOld.forEach((oldId, newId) => {
             const newLayerItem = layerConfigs[newId];
             //设置新子图层的pid
-            newLayerItem.pid = groupIdOldToNew.get(layerConfigs[oldId].pid);
+            newLayerItem.parent = groupIdOldToNew.get(layerConfigs[oldId].parent);
             //设置新分组图层的childIds
-            layerConfigs[newLayerItem.pid].childIds.push(newId);
+            layerConfigs[newLayerItem.parent].childIds.push(newId);
         });
 
 
@@ -480,7 +480,7 @@ class HistoryRecordOperateProxy {
         //新建编组
         const { addItem, updateLayout, layerConfigs } = designerStore();
         const order = maxLevel + 1;
-        const pid ='group' +IdGenerate.generateId();
+        const parent ='group' +IdGenerate.generateId();
         const childIds = Array.from(layerIdSet);
         //计算分组的锁定状态
         let allLock = layerConfigs[childIds[0]].lock;
@@ -496,7 +496,7 @@ class HistoryRecordOperateProxy {
 
         //构建分组数据
         const groupItem = {
-            id: pid,
+            id: parent,
             type: 'group',
             name: '新建分组',
             hide: false,
@@ -506,7 +506,7 @@ class HistoryRecordOperateProxy {
         };
 
         //操作记录-新增分组图层
-        actions.push({ type: OperateType.ADD, prev: null, next: [{ id: pid, data: { layerConfig: groupItem } }] });
+        actions.push({ type: OperateType.ADD, prev: null, next: [{ id: parent, data: { layerConfig: groupItem } }] });
 
         addItem(groupItem);
         setMaxLevel(order);
@@ -518,9 +518,9 @@ class HistoryRecordOperateProxy {
         //设置子图层的pid
         const updateItems = [];
         childIds.forEach((id) => {
-            childPrev.push({ id, pid: undefined });
-            updateItems.push({ id, pid });
-            childNext.push({ id, pid: undefined });
+            childPrev.push({ id, parent: undefined });
+            updateItems.push({ id, parent });
+            childNext.push({ id, parent: undefined });
         });
         updateLayout(updateItems, false);
         setTargetIds([]);
@@ -530,7 +530,7 @@ class HistoryRecordOperateProxy {
         if (allLock) {
             const { layerInstances } = layerListStore();
             const groupTimer = setTimeout(() => {
-                layerInstances[pid].setState({ lock: true });
+                layerInstances[parent].setState({ lock: true });
                 clearTimeout(groupTimer);
             }, 10);
         }
@@ -556,10 +556,10 @@ class HistoryRecordOperateProxy {
             let childIds = item.childIds;
             const updateItems = [];
             childIds && childIds.forEach((childId) => {
-                childPrev.push({ id: childId, pid: groupId });
+                childPrev.push({ id: childId, parent: groupId });
                 //更新每个分组图层的子图层的pid为null
-                updateItems.push({ id: childId, pid: undefined });
-                childNext.push({ id: childId, pid: undefined });
+                updateItems.push({ id: childId, parent: undefined });
+                childNext.push({ id: childId, parent: undefined });
             });
             updateLayout(updateItems, false);
             groupPrev.push({ id: groupId, data: { layerConfig: item } });

@@ -58,8 +58,8 @@ const onSelectEnd = (e) => {
     // let lockState =false
     if (layerIds.length === 1) {
         //点选
-        const pid = layerConfigs[layerIds[0]].pid;
-        if (!pid) {
+        const parent = layerConfigs[layerIds[0]].parent;
+        if (!parent) {
             //普通图层--不管是否锁定，都可以选中
         } else {
             //分组图层--选中这个分组下的所有未锁定、未隐藏的组件
