@@ -1,6 +1,6 @@
 
 <template>
-    <Moveable ref="movableRef" :target="targets" :draggable="true" :scalable="true" :resizable="true" :keepRatio="keepRatio"
+    <Moveable ref="movableRef" :target="targets" :draggable="true" :scalable="true" :rotatable="true" :resizable="true" :keepRatio="keepRatio"
         :zoom="0.8" className="zk-moveable-style" :maxSnapElementGuidelineDistance="300" :snappable="true" :snapGap="false"
         :snapThreshold="5" :isDisplaySnapDigit="true" :snapDirections="snapDirections"
         :elementSnapDirections="elementSnapDirections" :verticalGuidelines="['0', '50%', '100%']"
