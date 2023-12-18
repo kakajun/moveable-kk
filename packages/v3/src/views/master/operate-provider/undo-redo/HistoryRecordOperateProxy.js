@@ -12,6 +12,44 @@ import IdGenerate from "../../util/IdGenerate";
 import LayerUtil from "../../util/LayerUtil";
 
 class HistoryRecordOperateProxy {
+
+    doRotate(items, newTransform) {
+        const historyOperator = useHistoryOperator()
+        //构建历史记录数据
+        const { layerConfigs } = designerStore()
+        const ids = []
+        let prev
+        let next
+        if (items.length === 1) {
+          //单个组件缩放
+          //构建prev数据
+          const { transform } = layerConfigs[items[0].id].style
+          prev = { ids: [items[0].id], transform }
+          //构建next数据
+          const { id, style } = items[0]
+          next = { ids: [id], transform: style.transform }
+        } else {
+          //多个组件
+          const { groupCoordinate, setGroupCoordinateTransform } = eventOperateStore()
+          const oldItems = []
+          items.forEach((item) => ids.push(item.id))
+          ids.forEach((id) => oldItems.push(layerConfigs[id]))
+          prev = { ids, transform: groupCoordinate.transform }
+          setGroupCoordinateTransform(newTransform)
+          console.log(prev, 'prev')
+          next = {
+            ids,
+            transform: newTransform
+          }
+          console.log(next, 'next')
+        }
+        //构建历史记录节点
+        const data = { type: OperateType.ROTATE, prev: prev, next: next }
+        //更新布局数据
+        updateLayout(items, false)
+        //历史记录入队
+        historyOperator.put({ actions: [data] })
+      }
     doDrag(items) {
         //构建历史记录数据
         const { layerConfigs, updateLayout } = designerStore();

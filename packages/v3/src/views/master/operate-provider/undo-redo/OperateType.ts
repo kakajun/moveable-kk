@@ -12,9 +12,14 @@ export enum OperateType {
      * 缩放
      */
     RESIZE,
+      /**
+   * 旋转
+   */
+    ROTATE,
     /**
      * 添加组件
      */
+
     ADD,
     /**
      * 删除组件
@@ -49,7 +54,7 @@ export enum OperateType {
 /**
  * 记录操作对应的数据类型
  */
-type RecordDataType = IDragOperateData | IResizeOperateData | IUpdStyleOperateData | IAddOperateData[] |
+type RecordDataType = IDragOperateData | IResizeOperateData  | IROTATEOperateData | IUpdStyleOperateData | IAddOperateData[] |
     IDelOperateData[] | IHideOperateData[] | IOrderOperateData[] | ILockOperateData[] | ILayerItem[] | ILayerItem;
 
 /**
@@ -60,6 +65,13 @@ export interface IHistoriesRecord {
     actions: IHistoryRecord[];
 }
 
+/**
+ * 旋转数据类型
+ */
+export interface IROTATEOperateData {
+    ids: string[]
+    transform: string
+  }
 /**
  * 历史记录类型
  */

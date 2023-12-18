@@ -1,6 +1,7 @@
 import {OperateType} from "../OperateType";
 import AbstractRollback from "./AbstractRollback";
 import dragRollbackImpl from "./DragRollbackImpl";
+import rotateRollbackImpl from './RotateRollbackImpl' // 旋转
 import resizeRollbackImpl from "./ResizeRollbackImpl";
 import addRollbackImpl from "./AddRollbackImpl";
 import delRollbackImpl from "./DelRollbackImpl";
@@ -13,6 +14,7 @@ import updLayerGroupRollbackImpl from "./UpdLayerGroupRollbackImpl";
 const undoRedoMap = new Map<OperateType, AbstractRollback>();
 undoRedoMap.set(OperateType.DRAG, dragRollbackImpl);
 undoRedoMap.set(OperateType.RESIZE, resizeRollbackImpl);
+undoRedoMap.set(OperateType.ROTATE, rotateRollbackImpl)
 undoRedoMap.set(OperateType.ADD, addRollbackImpl);
 undoRedoMap.set(OperateType.DEL, delRollbackImpl);
 undoRedoMap.set(OperateType.UPD_STYLE, styleRollbackImpl);

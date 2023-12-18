@@ -2,7 +2,7 @@
 <template>
     <Moveable ref="movableRef" :target="targets" :draggable="true" :scalable="true" :rotatable="true" :resizable="true" :keepRatio="keepRatio"
         :zoom="0.8" className="zk-moveable-style" :maxSnapElementGuidelineDistance="300" :snappable="true" :snapGap="false"
-        :snapThreshold="5" :isDisplaySnapDigit="true" :snapDirections="snapDirections"
+        :snapThreshold="5" :isDisplaySnapDigit="true" :snapDirections="snapDirections"  @rotate-end="onRotateEnd"
         :elementSnapDirections="elementSnapDirections" :verticalGuidelines="['0', '50%', '100%']"
         :horizontalGuidelines="['0', '50%', '100%']" :isDisplayInnerSnapDigit="true" @changeTargets="onChangeTargets"
         :elementGuidelines="elementGuidelines" :throttleDrag="rasterize ? dragStep : 1"
@@ -66,6 +66,28 @@ const onChangeTargets = e => {
 
 const onRender = (e) => {
   e.target.style.cssText += e.cssText
+}
+const onRotateEnd = (e) => {
+  console.log('onRotateEnd')
+  const { backoff, setBackoff } = eventOperateStore()
+  const { lastEvent, target } = e
+  if (lastEvent) {
+    const { transform } = lastEvent
+    const data = [
+      {
+        id: target.id,
+        type: target.dataset.type,
+        style: {
+          transform
+        }
+      }
+    ]
+    //更新组件位置信息
+    if (backoff) {
+      updateLayout(data, false)
+      setBackoff(false)
+    } else historyRecordOperateProxy.doRotate(data)
+  }
 }
 const onDragStart = (e) => {
     const { target } = e;
