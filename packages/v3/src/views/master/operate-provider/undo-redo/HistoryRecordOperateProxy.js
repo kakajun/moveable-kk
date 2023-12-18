@@ -1,5 +1,5 @@
 import designerStore from "../../store/DesignerStore";
-// import useHistoryOperator from "../../store/HistoryOperator";
+import useHistoryOperator from "../../store/HistoryOperator";
 import eventOperateStore from "../EventOperateStore";
 import rightStore from "../../store/RightStore";
 import { cloneDeep } from "lodash";
@@ -10,11 +10,12 @@ import { storeToRefs } from 'pinia'
 import layerListStore from "../../store/LayerListStore";
 import IdGenerate from "../../util/IdGenerate";
 import LayerUtil from "../../util/LayerUtil";
-// const historyOperator = useHistoryOperator()
+
 class HistoryRecordOperateProxy {
     doDrag(items) {
         //构建历史记录数据
         const { layerConfigs, updateLayout } = designerStore();
+        const historyOperator = useHistoryOperator()
         const ids = [];
         let prev;
         let next;
@@ -58,6 +59,7 @@ class HistoryRecordOperateProxy {
     };
 
     doResize(items, direction) {
+        const historyOperator = useHistoryOperator()
         //构建历史记录数据
         const { layerConfigs, updateLayout } = designerStore();
         const ids = [];
@@ -100,6 +102,7 @@ class HistoryRecordOperateProxy {
     }
 
     doAdd(container, layout) {
+        const historyOperator = useHistoryOperator()
         // TODO  这里跟react中的写法不一样, 先暂时这么写着
         const { compInstances } = designerStore();
         compInstances[layout.id + ''] = { container, config: layout };
@@ -127,6 +130,7 @@ class HistoryRecordOperateProxy {
 
     doDelete() {
         let { targetIds, setTargetIds } = eventOperateStore();
+        const historyOperator = useHistoryOperator()
         const { delItem, layerConfigs, compInstances, updateLayout } = designerStore();
         if (!targetIds || targetIds.length === 0) return;
         const { setContentVisible, activeConfig } = rightStore();
@@ -248,6 +252,7 @@ class HistoryRecordOperateProxy {
      * @param ids
      */
     doCopy(ids) {
+        const historyOperator = useHistoryOperator()
         let newIds = [];
         const { layerConfigs, elemConfigs } = designerStore();
         let { maxLevel, setMaxLevel } = eventOperateStore();
@@ -351,6 +356,7 @@ class HistoryRecordOperateProxy {
     };
 
     doHideUpd(items) {
+        const historyOperator = useHistoryOperator()
         let prev = [];
         let next = [];
         const { layerConfigs, updateLayout } = designerStore();
@@ -377,6 +383,7 @@ class HistoryRecordOperateProxy {
     }
 
     doLockUpd(items) {
+        const historyOperator = useHistoryOperator()
         let prev = [];
         let next = [];
         const { layerConfigs, updateLayout } = designerStore();
@@ -399,6 +406,7 @@ class HistoryRecordOperateProxy {
     }
 
     doOrderUpd(items) {
+        const historyOperator = useHistoryOperator()
         let prev = [];
         let next = [];
         const { layerConfigs, updateLayout } = designerStore();
@@ -414,6 +422,7 @@ class HistoryRecordOperateProxy {
     }
 
     doStyleUpd(newData, oldData) {
+        const historyOperator = useHistoryOperator()
         const { id } = rightStore().activeElem;
         const record = {
             type: OperateType.UPD_STYLE,
@@ -424,6 +433,7 @@ class HistoryRecordOperateProxy {
     }
 
     doGrouping() {
+        const historyOperator = useHistoryOperator()
         const { targetIds, maxLevel, setMaxLevel, setTargetIds } = eventOperateStore();
         if (!targetIds || targetIds.length <= 1) return;
         if (LayerUtil.hasSameGroup(targetIds)) return;
@@ -432,7 +442,7 @@ class HistoryRecordOperateProxy {
         //新建编组
         const { addItem, updateLayout, layerConfigs } = designerStore();
         const order = maxLevel + 1;
-        const pid = IdGenerate.generateId();
+        const pid ='group' +IdGenerate.generateId();
         const childIds = Array.from(layerIdSet);
         //计算分组的锁定状态
         let allLock = layerConfigs[childIds[0]].lock;
@@ -489,6 +499,7 @@ class HistoryRecordOperateProxy {
     }
 
     doUnGrouping() {
+        const historyOperator = useHistoryOperator()
         const { targetIds, setTargetIds } = eventOperateStore();
         //找出当前选中的图层中，最顶层的分组图层
         let groupIds = LayerUtil.findTopGroupLayer(targetIds, true);

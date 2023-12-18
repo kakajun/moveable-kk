@@ -107,29 +107,12 @@ export const doDelete = () => {
 //保存函数节流5s, 5s内不可重复保存
 export const doSave = throttle(() => {
     return new Promise(() => {
-        let { projectConfig: { saveType } } = designerStore();
-        if (saveType === SaveType.LOCAL) {
-            const { projectConfig: { saveType = SaveType.LOCAL }, updateProjectConfig } = designerStore();
-            updateProjectConfig({ updateTime: DateUtil.format(new Date()) })
-            // const proData = designerStore().getData();
-            //设置蓝图数据
-            // const { bpAPMap, bpLines, bpAPLineMap, getAllNodeConfig, bpNodeLayoutMap } = bpStore;
-            // proData.bpAPMap = bpAPMap;
-            // proData.bpLines = bpLines;
-            // proData.bpAPLineMap = bpAPLineMap;
-            // proData.bpNodeConfigMap = getAllNodeConfig();
-            // proData.bpNodeLayoutMap = bpNodeLayoutMap;
+        let { layerConfigs } = designerStore();
+
+            console.log(layerConfigs,'保存!!!');
             ElMessage.success('保存!!!');
-            // DesignerLoaderFactory.getLoader().abstractOperatorMap[saveType].saveProject(cloneDeep(proData)).then((res) => {
-            //     const { status, msg } = res;
-            //     if (status)
-            //         ElMessage.success(msg);
-            //     else
-            //         ElMessage.error(msg);
-            // });
-        } else if (saveType === SaveType.SERVER) {
-            alert("server save");
-        }
+
+
     });
 }, 5000);
 

@@ -2,6 +2,8 @@ import { defineStore } from 'pinia';
 import { isEqual } from 'lodash';
 import historyRecordOperateProxy from '../operate-provider/undo-redo/HistoryRecordOperateProxy';
 import ObjectUtil from '../util/ObjectUtil';
+import {doSave}
+ from "../operate-provider/hot-key/HotKeyImpl";
 import { cloneDeep } from "lodash";
 /**
  * 解析函数
@@ -181,6 +183,7 @@ const parser = (layerMap, order) => {
                         : ObjectUtil.merge(oldItem, item);
                 }
             }
+            doSave();
         },
 
         delLayout(ids) {
