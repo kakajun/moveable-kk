@@ -19,7 +19,7 @@ import designerStore from "../../store/DesignerStore.js";
 import Moveable from "../../../components/Moveable.vue";
 import historyRecordOperateProxy from "../undo-redo/HistoryRecordOperateProxy";
 import eventOperateStore from "../EventOperateStore.js";
-const { canvasConfig: { rasterize, dragStep, resizeStep },layerConfigs } = designerStore();
+const { canvasConfig: { rasterize, dragStep, resizeStep },layerConfigs ,statisticInfo} = designerStore();
 import { storeToRefs } from 'pinia'
 const movableRef = ref(null);
 const { selectorRef, targets } = storeToRefs(eventOperateStore());
@@ -69,6 +69,8 @@ const onRender = (e) => {
 }
 const onRotateEnd = (e) => {
   console.log('onRotateEnd')
+
+
   const { backoff, setBackoff } = eventOperateStore()
   const { lastEvent, target } = e
   if (lastEvent) {
@@ -95,7 +97,7 @@ const onRotateGroupEnd = (e) => {
   const {
     lastEvent: { transform }
   } = e
-  console.log(e, 'eeeee')
+  const { layerConfigs } = designerStore();
   const target = e.events[0].target
   const parent = layerConfigs[target.id].parent
   const parentObj = layerConfigs[parent]
@@ -141,7 +143,6 @@ const onDragEnd = (e) => {
     const { updateLayout } = designerStore();
     const { backoff, setBackoff } = eventOperateStore();
     const { lastEvent, target } = e;
-    console.log(e, "onDragEnd");
     if (lastEvent) {
         const { beforeTranslate } = lastEvent;
         const data = [
