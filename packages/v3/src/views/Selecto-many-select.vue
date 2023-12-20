@@ -27,9 +27,9 @@
     </div>
 </template>
 <script setup>
-import Moveable from "./components/index";
+  import Moveable from '@/components/moveable/index'
 import { ref, onMounted,reactive  } from "vue";
-import Selecto from "./components/Selecto.vue"
+  import Selecto from '@/components/moveable/Selecto.vue'
 import { GroupManager } from "@moveable/helper";
 import { deepFlat } from "@daybrush/utils";
 const snappable = true;

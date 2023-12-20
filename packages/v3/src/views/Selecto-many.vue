@@ -1,7 +1,7 @@
 <script setup>
-import Moveable from "./components/index";
+  import Moveable from '@/components/moveable/index'
 import { ref, onMounted } from "vue";
-import Selecto from "./components/Selecto.vue"
+  import Selecto from '@/components/moveable/Selecto.vue'
 const snapDirections = { "top": true, "left": true, "bottom": true, "right": true, "center": true, "middle": true };
 const elementSnapDirections = { "top": true, "left": true, "bottom": true, "right": true, "center": true, "middle": true };
 const elementGuidelines=ref([])

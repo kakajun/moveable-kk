@@ -1,7 +1,7 @@
 <script setup>
 import { deepFlat } from "@daybrush/utils";
-import Selecto from "./components/Selecto.vue"
-import Moveable from "./components/index";
+  import Selecto from '@/components/moveable/Selecto.vue'
+  import Moveable from '@/components/moveable/index'
 import { GroupManager } from "@moveable/helper";
 import { ref, onMounted } from "vue";
 

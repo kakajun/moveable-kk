@@ -1,6 +1,6 @@
 <script setup>
-import Moveable from "./components/index";
-import Selecto from "./components/Selecto.vue"
+  import Moveable from '@/components/moveable/index'
+  import Selecto from '@/components/moveable/Selecto.vue'
 import { ref } from "vue";
 const hitRate = 0;
 const selectByClick = true;

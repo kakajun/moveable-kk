@@ -33,9 +33,9 @@
 </template>
 <script setup>
 import { VueInfiniteViewer } from "vue3-infinite-viewer";
-import Moveable from "./components/index";
+  import Moveable from '@/components/moveable/index'
 import { ref, onMounted ,watch} from "vue";
-import Selecto from "./components/Selecto.vue"
+  import Selecto from '@/components/moveable/Selecto.vue'
 const snappable = true;
 const isDisplaySnapDigit = true;
 const isDisplayInnerSnapDigit = false;
