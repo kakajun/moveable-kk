@@ -1,7 +1,7 @@
 import { createRouter,createWebHashHistory } from "vue-router";
 import SelectoGroup from '../views/Selecto-group.vue'
 import SelectoMany from '../views/Selecto-many.vue'
-import master from '../views/master/master.vue'
+import master from '../views/EditMiddle/ContentCanvas.vue'
 import SelectoSelect from '../views/Selecto-select.vue'
 import SelectoManySelect from   '../views/Selecto-many-select.vue'
 const routes = [

@@ -7,7 +7,7 @@ export {}
 
 declare module 'vue' {
   export interface GlobalComponents {
-    ContextMenu: typeof import('./src/components/context-menu/index.vue')['default']
+    ContextMenu: typeof import('./src/components/ContextMenu/index.vue')['default']
     Image: typeof import('./src/components/components/Image.vue')['default']
     Moveable: typeof import('./src/components/moveable/Moveable.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
@@ -15,5 +15,8 @@ declare module 'vue' {
     Selecto: typeof import('./src/components/moveable/Selecto.vue')['default']
     SvgIcon: typeof import('./src/components/SvgIcon/index.vue')['default']
     Text: typeof import('./src/components/components/Text.vue')['default']
+  }
+  export interface ComponentCustomProperties {
+    vLoading: typeof import('element-plus/es')['ElLoadingDirective']
   }
 }
