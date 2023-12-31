@@ -16,7 +16,7 @@
 <script setup>
 import { ref, onMounted, watch, computed } from 'vue';
 import designerStore from "../../store/DesignerStore.js";
-import Moveable from "../../../components/Moveable.vue";
+import Moveable from '@/components/moveable/Moveable.vue'
 import historyRecordOperateProxy from "../undo-redo/HistoryRecordOperateProxy";
 import eventOperateStore from "../EventOperateStore.js";
 const { canvasConfig: { rasterize, dragStep, resizeStep },layerConfigs ,statisticInfo} = designerStore();
